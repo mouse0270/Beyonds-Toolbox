@@ -28,6 +28,9 @@ So this dice roller is a little cooler because it doesn't require the user to do
 
 > Please note that features with a double astricks are not currently implemented, they are either planned features or features that have not made the conversion to open source code yet. These features are still being worked on.
 
+#### Compatibility with other plugins
+This is just a small note I would like to point out, there are currently two other plugins for Beyond's website that I am aware of [D&D Beyond Interaction](https://chrome.google.com/webstore/detail/dd-beyond-interaction/bjldjglkgldigknoeebkiflgmcckikpf?hl=en) by [BitsInBytes](https://www.dndbeyond.com/forums/d-d-beyond-general/general-discussion/7320-d-d-beyond-interaction-chrome-extension) and [Beyond Help](https://chrome.google.com/webstore/detail/beyond-help/aojmegjchfjmkgmihimpplblfalnpdop?hl=en) by [Kabalistus](https://www.dndbeyond.com/forums/d-d-beyond-general/general-discussion/8477-beyond-help-chrome-extension). Both of these plugins are great additions to Beyonds website. I do try to make sure my plugin works well with [Beyond Help](https://chrome.google.com/webstore/detail/beyond-help/aojmegjchfjmkgmihimpplblfalnpdop?hl=en) however, as I don't use [D&D Beyond Interaction](https://chrome.google.com/webstore/detail/dd-beyond-interaction/bjldjglkgldigknoeebkiflgmcckikpf?hl=en) due to our plugins covering very similar things (Dice rolling for Monsters and Players) there may be incompatibilties.
+
 ## Todo
 
  1. Content Sync
