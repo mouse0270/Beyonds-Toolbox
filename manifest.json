@@ -1,0 +1,41 @@
+{
+	"name": "D&D Toolbox",
+	"short_name": "D&D Toolbox",
+	"version": "0.5.0",
+	"manifest_version": 2,
+	"description": "Adds a toolbox and expands on features provided by D&D Beyond, such as Dice Rollders and Intiative Tracker.",
+	"homepage_url": "http://www.dndbeyond.com/forums/d-d-beyond-general/general-discussion/10544-d-d-toolbox-chrome-extension",
+	"permissions": [ "activeTab", "commands", "cookies", "notifications", "storage", "tabs", "webRequest", "*://*.dndbeyond.com/*" ],
+	"web_accessible_resources": [ "webaccessible/*" ],
+	"icons": { 
+		"16": "webaccessible/images/icon16.png",
+		"32": "webaccessible/images/icon32.png",
+		"48": "webaccessible/images/icon48.png",
+		"64": "webaccessible/images/icon64.png",
+		"128": "webaccessible/images/icon128.png",
+		"256": "webaccessible/images/icon256.png"
+	},
+	"externally_connectable": {
+		"matches": [ "*://*.dndbeyond.com/*" ]
+	},
+	"background": {
+		"persistent": true,
+		"scripts": [ "scripts/xbackground.js" ]
+	},
+	"content_scripts": [{
+		"matches": [ "*://*.dndbeyond.com/*" ],
+		"css": [ "styles/xcontent.css" ],
+		"js": [
+			"scripts/xplugins.js",
+			"scripts/toolbox.config.js",
+			"scripts/toolbox.helpers.js",
+			"scripts/toolbox.container.js",
+			"scripts/toolbox.notes.js",
+			"scripts/toolbox.initiative.js",
+			"scripts/toolbox.players.js",
+			"scripts/toolbox.encounters.js",
+			"scripts/toolbox.asyncdiceroller.js",
+			"scripts/toolbox.extra.js"
+		]
+	}]
+}
