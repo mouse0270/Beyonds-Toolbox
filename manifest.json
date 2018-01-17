@@ -31,6 +31,7 @@
 			"scripts/toolbox.helpers.js",
 			"scripts/toolbox.container.js",
 			"scripts/toolbox.notes.js",
+			"scripts/toolbox.monster.js",
 			"scripts/toolbox.initiative.js",
 			"scripts/toolbox.players.js",
 			"scripts/toolbox.encounters.js",

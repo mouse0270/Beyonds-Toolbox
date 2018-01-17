@@ -32,6 +32,7 @@ body .ddb-pronunciation-clip.tb-audio.playing {
 td.character-ability-save,
 span.skill-item-modifier,
 div.attack-item-callout-tohit-value,*/
+span.tb-roller-attack,
 span.tb-roller {
     color: rgb(188, 15, 15);
     cursor: pointer; 
@@ -305,6 +306,7 @@ body.tb-shown .builder-navigation-large-action-next {
 .tb-toolbox .tb-manager-group ul.quick-menu .quick-menu-item > div > p {
 	margin-bottom: 0px;
 }
+.tb-modal ul.quick-menu .quick-menu-item > div > p > span,
 .tb-toolbox .tb-manager-group ul.quick-menu .quick-menu-item > div > p > span {
     display: block;
     font-size: 12px;
@@ -417,6 +419,9 @@ body.modal-shown {
 	margin: 0px;
 	margin-bottom: 20px;
 }
+.tb-modal .fullscreen-modal .fullscreen-modal-content ul.quick-menu {
+    width: 100%;
+}
 .tb-modal .fullscreen-modal .fullscreen-modal-footer {
     display: flex;
     flex-flow: row nowrap;
@@ -424,7 +429,6 @@ body.modal-shown {
     height: auto;
     position: relative;
 }
-
 /* MONSTER
 =================================*/
 .tb-processed .mon-stat-block__header {

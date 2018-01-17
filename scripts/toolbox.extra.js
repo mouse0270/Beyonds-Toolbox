@@ -2,6 +2,8 @@
 	'use strict';
 
     $.log(Toolbox);
+    Toolbox.Encounters.parse();
+    Toolbox.AsyncDiceRoller.scan();
 
 	// Chrome Extension Event Listener
 	chrome.extension.onMessage.addListener(function(msg, sender, sendResponse) {

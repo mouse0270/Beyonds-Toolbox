@@ -6,12 +6,14 @@
 			var _this = this;
 
 			this.scan = function () {
-				var inputstring = "/([1-9]\\d*)?d([1-9]\\d*)\\s*([+-−]\\s*\\d+)?/i";
+				//var inputstring = "/([1-9]\\d*)?d([1-9]\\d*)\\s*([+-−]\\s*\\d+)?/i";
+				var inputstring = "/([+−-]\\d+)|(([1-9]\\d*)?d([1-9]\\d*)\\s*([+-−]\\s*\\d+)?)/i";
 				var flags = inputstring.replace(/.*\/([gimy]*)$/, '$1');
 				var pattern = inputstring.replace(new RegExp('^/(.*?)/' + flags + '$'), '$1');
 				var regex = new RegExp(pattern, flags);
 
 				$('body').unmark({
+					className: 'tb-roller',
 					done: function() {
 						$('body').markRegExp(regex, {
 							element: 'span',
@@ -26,6 +28,8 @@
 						});
 					}
 				});
+
+				Toolbox.Monsters.scan();
 			};
 
 			this.bind = function ($item) {
@@ -48,6 +52,11 @@
 			this.roll = function (dice, title) {
 				var diceRolls = droll.roll(dice.replace('−', '-')),
 					rolls = "";
+
+				if (diceRolls == false) {
+					dice = "1d20{0}".format(dice);
+					diceRolls = droll.roll(dice);
+				}
 
 				if (diceRolls !== false) {
 					for (var iRoll = 0; iRoll < diceRolls.rolls.length; iRoll++) {
