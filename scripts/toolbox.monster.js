@@ -62,17 +62,19 @@
 
 			this.build = function(attack) {
 				var $content = $('<div><h4 class="tb-modal-attack-desc">{0}<small>{1}</small></h4></div>'.format(attack.name, attack.type)),
-					$list = $('<ul class="quick-menu quick-menu-tier-2"></ul>');
+					$list = $('<ul class="quick-menu quick-menu-tier-2"></ul>'),
+					isCritical = false;
 
 				if (attack.toHit.length >= 1) {
 					var template = $.grab('config', 'templates').quickMenuItem,
-						roll = _this.roll(attack.toHit),
+						roll = _this.roll(attack.toHit, false),
 						$item = $(template.format('', "<strong>{0}</strong> to Hit".format(roll.total), 'Rolls: {0}'.format(roll.summary), 'Status'));
 
 					if (roll.rolls[0] == 1) {
 						$item.find('.limited-list-item-callout > a.character-button').toggleClass('character-button-outline tb-btn-fail').text('Fail');
 					}else if (roll.rolls[0] == 20) {
 						$item.find('.limited-list-item-callout > a.character-button').toggleClass('character-button-outline').text('Critical');
+						isCritical = true;
 					}else{
 						$item.find('.limited-list-item-callout').remove();
 					}
@@ -92,12 +94,11 @@
 
 
 				$list.find('.quick-menu-item:last-child > .quick-menu-item-label').after('<hr />');
-				console.log($list.find('.quick-menu-item:last-child'));
 
 				if (attack.rolls.length >= 1) {
 					var attacks = false, totalDamage = 0;
 					attack.rolls.forEach(function(roll, index) {
-						var status = _this.roll(roll),
+						var status = _this.roll(roll, isCritical),
 							template = $.grab('config', 'templates').quickMenuItem;
 
 						if (status !== false) {
@@ -149,7 +150,6 @@
 					label: "Reroll",
 					className: '',
 					callback: function() {
-						console.log('I was called');
 						$('.tb-modal .fullscreen-modal-content').html(_this.build(attack));
 						return false;
 					}
@@ -158,11 +158,18 @@
 				$('.tb-modal').addClass('tb-modal-small');
 			}
 
-			this.roll = function (dice) {
-				var diceRolls = droll.roll(dice.replace(/ /g, '').replace(/−/g, '-')),
+			this.roll = function (dice, isCritical) {
+				var diceRolls = droll.parse(dice),
 					rolls = "";
 
 				if (diceRolls !== false) {
+					var formula = '{0}d{1}{2}{3}'.format(diceRolls.numDice, diceRolls.numSides, (diceRolls.modifier >= 0 ? '+' : ''), diceRolls.modifier)
+					if (isCritical) {
+						diceRolls.numDice = diceRolls.numDice * 2; 
+						formula = '{0}d{1}{2}{3}'.format(diceRolls.numDice, diceRolls.numSides, (diceRolls.modifier >= 0 ? '+' : ''), diceRolls.modifier)
+					}
+					diceRolls = droll.roll(formula);
+
 					for (var iRoll = 0; iRoll < diceRolls.rolls.length; iRoll++) {
 						rolls += "+ {0} ".format(diceRolls.rolls[iRoll]);
 					}
