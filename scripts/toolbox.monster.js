@@ -77,7 +77,6 @@
 						$item.find('.limited-list-item-callout').remove();
 					}
 
-					$item.addClass('tb-quick-menu-total').find('.quick-menu-item-label').after('<hr />');
 					$item.find('.remove').remove();
 					$list.append($item);
 				}
@@ -90,6 +89,10 @@
 					$item.find('.remove').remove();
 					$list.append($item);
 				}
+
+
+				$list.find('.quick-menu-item:last-child > .quick-menu-item-label').after('<hr />');
+				console.log($list.find('.quick-menu-item:last-child'));
 
 				if (attack.rolls.length >= 1) {
 					var attacks = false, totalDamage = 0;
