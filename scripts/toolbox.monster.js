@@ -125,7 +125,8 @@
 					});
 
 					if (totalDamage >= 1) {
-						var $item = $(template.format('', '{0} Total Damage'.format(totalDamage), '', ''));
+						var template = $.grab('config', 'templates').quickMenuItem;
+							$item = $(template.format('', '{0} Total Damage'.format(totalDamage), '', ''));
 
 						$item.addClass('tb-quick-menu-total').find('.limited-list-item-callout').remove();
 						$item.find('.remove').remove();
@@ -166,7 +167,7 @@
 					var formula = '{0}d{1}{2}{3}'.format(diceRolls.numDice, diceRolls.numSides, (diceRolls.modifier >= 0 ? '+' : ''), diceRolls.modifier)
 					if (isCritical) {
 						diceRolls.numDice = diceRolls.numDice * 2; 
-						formula = '{0}d{1}{2}{3}'.format(diceRolls.numDice, diceRolls.numSides, (diceRolls.modifier >= 0 ? '+' : ''), diceRolls.modifier)
+						formula = '{0}d{1}{2}{3}'.format(diceRolls.numDice, diceRolls.numSides, (diceRolls.modifier > 0 ? '+' : ''), (diceRolls.modifier > 0 ? diceRolls.modifier : ''));
 					}
 					diceRolls = droll.roll(formula);
 
@@ -177,7 +178,7 @@
 
 					if (diceRolls.modifier != 0) {
 						rolls = "( {0}) + {1}".format(rolls, diceRolls.modifier);
-					}				
+					}
 
 					var content = {
 							rolls: diceRolls.rolls,
