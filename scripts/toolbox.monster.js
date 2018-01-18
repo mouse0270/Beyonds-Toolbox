@@ -29,7 +29,7 @@
 
 			this.attack = function() {
 				var $dice = $(this).closest('.tb-processed');
-				var inputstring = "/(\\w* or \\w* \\w* Attack)|(\\w* \\w* Attack)|( or )|(DC \\d+( \\w*)?)|(\\w* Damage)|([+−-]\\d+)|(([1-9]\\d*)?d([1-9]\\d*)\\s*([+-−]\\s*\\d+)?)/gi";
+				var inputstring = "/(\\w* or \\w* \\w* Attack)|(\\w* \\w* Attack)|(, or )|(DC \\d+( \\w*)?)|(\\w* Damage)|([+−-]\\d+)|(([1-9]\\d*)?d([1-9]\\d*)\\s*([+-−]\\s*\\d+)?)/gi";
 				var flags = inputstring.replace(/.*\/([gimy]*)$/, '$1');
 				var pattern = inputstring.replace(new RegExp('^/(.*?)/' + flags + '$'), '$1');
 				var regex = new RegExp(pattern, flags);
@@ -38,6 +38,7 @@
 
 				var attack = {
 					name: $(this).text(),
+					description: '<p>{0}</p>'.format($dice.text()),
 					type: '',
 					toHit: '',
 					dcSave: '',
@@ -56,11 +57,11 @@
 	        		}
 	        	});
 
-	        	_this.modal(attack);
+	        	_this.modal(attack, $(this).closest('.mon-stat-block').find('.mon-stat-block__name-link').text());
 			};
 
 			this.build = function(attack) {
-				var $content = $('<div><h6>{0}<small>{1}</small></h6></div>'.format(attack.name, attack.type)),
+				var $content = $('<div><h4 class="tb-modal-attack-desc">{0}<small>{1}</small></h4></div>'.format(attack.name, attack.type)),
 					$list = $('<ul class="quick-menu quick-menu-tier-2"></ul>');
 
 				if (attack.toHit.length >= 1) {
@@ -90,6 +91,7 @@
 				}
 
 				if (attack.rolls.length >= 1) {
+					var attacks = false;
 					attack.rolls.forEach(function(roll, index) {
 						var status = _this.roll(roll),
 							template = $.grab('config', 'templates').quickMenuItem;
@@ -101,8 +103,9 @@
 							$item.find('.limited-list-item-callout').remove();
 							$item.find('.remove').remove();
 							$list.append($item);
-						}else if (/ or /.test(roll)) {
-							console.log(typeof attack.rolls[index + 1])
+
+							attacks = true;
+						}else if (/ or /.test(roll) && attacks) {
 							if (typeof attack.rolls[index + 1] !== 'undefined') {
 								var $item = $(template.format('', 'OR', '', ''));
 
@@ -116,13 +119,25 @@
 
 				$content.append($list);
 
+				var manager = $.grab('config', 'templates').manager,
+					$manager = $(manager.format('tbAttackDesc', '{0} Description'.format(attack.name)));
+
+				$manager.find('.tb-manager-content').append(attack.description);
+
+				$content.append($manager);
+
 				return $content[0].outerHTML;
 			}
 
-			this.modal = function(attack) {
-				$.modal(_this.build(attack), 'Dice Roll Results', [{
+			this.modal = function(attack, monster) {
+				$.modal(_this.build(attack), monster, [{
 					label: "Reroll",
-					className: ''
+					className: '',
+					callback: function() {
+						console.log('I was called');
+						$('.tb-modal .fullscreen-modal-content').html(_this.build(attack));
+						return false;
+					}
 				},{ label: "Cancel" }]);
 
 				$('.tb-modal').addClass('tb-modal-small');

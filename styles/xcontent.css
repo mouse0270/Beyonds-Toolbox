@@ -197,10 +197,10 @@ body.tb-shown .builder-navigation-large-action-next {
 	padding: 0 10px 10px;
 }
 
-.tb-toolbox .tb-manager-group {
+.tb-manager-group {
 	margin-top: 5px;
 }
-.tb-toolbox .tb-manager-group .tb-manager-header {
+.tb-manager-group .tb-manager-header {
     -webkit-align-items: center;
     -ms-flex-align: center;
     align-items: center;
@@ -211,12 +211,12 @@ body.tb-shown .builder-navigation-large-action-next {
     display: flex;
 	padding: 10px;
 }
-.tb-toolbox .tb-manager-group .tb-manager-header .character-button-outline {
+.tb-manager-group .tb-manager-header .character-button-outline {
     margin-top: -22px;
     padding: 5px 15px;
 	transform: translateY(50%);
 }
-.tb-toolbox .tb-manager-group .tb-manager-header .tb-manager-heading {
+.tb-manager-group .tb-manager-header .tb-manager-heading {
     -webkit-align-items: center;
     -ms-flex-align: center;
     align-items: center;
@@ -229,7 +229,7 @@ body.tb-shown .builder-navigation-large-action-next {
     -ms-flex: 1;
     flex: 1;
 }
-.tb-toolbox .tb-manager-group .tb-manager-header .tb-manager-trigger {
+.tb-manager-group .tb-manager-header .tb-manager-trigger {
     background: rgba(0, 0, 0, 0) 0 0 url(chrome-extension://__MSG_@@extension_id__/webaccessible/images/icons/charsheet-atlas.svg) no-repeat;
     background-position: 0 0;
     background-size: cover;
@@ -239,44 +239,44 @@ body.tb-shown .builder-navigation-large-action-next {
 	min-width: 16px;
     width: 16px;
 }
-.tb-toolbox .tb-manager-group.tb-manager-group-opened .tb-manager-header .tb-manager-trigger {
+.tb-manager-group.tb-manager-group-opened .tb-manager-header .tb-manager-trigger {
     background-position: -17px 0;
 }
-.tb-toolbox .tb-manager-group .tb-manager-content {
+.tb-manager-group .tb-manager-content {
 	display: none;
 }
-.tb-toolbox .tb-manager-group.tb-manager-group-opened .tb-manager-content {
+.tb-manager-group.tb-manager-group-opened .tb-manager-content {
 	display: block;
 	margin: 10px 0px;
 }
-.tb-toolbox .tb-manager-group .tb-manager-content .collapsible-opened > .collapsible-body {
+.tb-manager-group .tb-manager-content .collapsible-opened > .collapsible-body {
 	padding: 20px 15px;
 }
-.tb-toolbox .tb-manager-group .tb-manager-content .collapsible-opened > .collapsible-body > ul.quick-menu {
+.tb-manager-group .tb-manager-content .collapsible-opened > .collapsible-body > ul.quick-menu {
     margin-left: -15px;
     width: calc(100% + 30px);
 }
-.tb-toolbox .tb-manager-group .tb-manager-content ul.quick-menu {
+.tb-manager-group .tb-manager-content ul.quick-menu {
 	list-style: none;
 	margin: 0px;
 	width: 100%;
 }
-.tb-toolbox .tb-manager-group .tb-manager-content ul.quick-menu .quick-menu-item {
+.tb-manager-group .tb-manager-content ul.quick-menu .quick-menu-item {
 	position: relative;
 }
-.tb-toolbox .tb-manager-group .tb-manager-content ul.quick-menu .quick-menu-item .quick-menu-item-link {
+.tb-manager-group .tb-manager-content ul.quick-menu .quick-menu-item .quick-menu-item-link {
 	padding-right: 70px;
 }
-.tb-toolbox .tb-manager-group .tb-manager-content ul.quick-menu .quick-menu-item .quick-menu-item-link .quick-menu-item-meta {
+.tb-manager-group .tb-manager-content ul.quick-menu .quick-menu-item .quick-menu-item-link .quick-menu-item-meta {
     color: rgba(0, 0, 0, 0.6);
 	font-size: 0.7rem;
     font-weight: 600;	
 }
-.tb-toolbox .tb-manager-group .tb-manager-content ul.quick-menu .quick-menu-item .limited-list-item-callout > .character-button-outline {
+.tb-manager-group .tb-manager-content ul.quick-menu .quick-menu-item .limited-list-item-callout > .character-button-outline {
 	color: rgb(150, 191, 107);
 	cursor: pointer;
 }
-.tb-toolbox .tb-manager-group .tb-manager-content .tb-manager-item-actions {
+.tb-manager-group .tb-manager-content .tb-manager-item-actions {
     border-top: 1px solid rgb(241, 241, 241);
 	display: -webkit-flex;
     display: flex;
@@ -289,7 +289,7 @@ body.tb-shown .builder-navigation-large-action-next {
     -webkit-align-items: center;
     align-items: center;	
 }
-.tb-toolbox .tb-manager-group .tb-manager-content .tb-manager-item-actions .tb-manager-item-remove {
+.tb-manager-group .tb-manager-content .tb-manager-item-actions .tb-manager-item-remove {
 	display: -webkit-flex;
     display: flex;
     -webkit-align-items: center;
@@ -297,22 +297,22 @@ body.tb-shown .builder-navigation-large-action-next {
     font-size: 12px;
     cursor: pointer;
 }
-.tb-toolbox .tb-manager-group .tb-manager-content .character-button-oversized {
+.tb-manager-group .tb-manager-content .character-button-oversized {
 	display: inline-block;
 	font-size: 0.9rem;
     padding: 10px 15px;
     width: 50%;
 }
-.tb-toolbox .tb-manager-group ul.quick-menu .quick-menu-item > div > p {
+.tb-manager-group ul.quick-menu .quick-menu-item > div > p {
 	margin-bottom: 0px;
 }
 .tb-modal ul.quick-menu .quick-menu-item > div > p > span,
-.tb-toolbox .tb-manager-group ul.quick-menu .quick-menu-item > div > p > span {
+.tb-manager-group ul.quick-menu .quick-menu-item > div > p > span {
     display: block;
     font-size: 12px;
     opacity: 0.8
 }
-.tb-toolbox .tb-manager-group ul.quick-menu .quick-menu-item > div > .limited-list-item-callout {
+.tb-manager-group ul.quick-menu .quick-menu-item > div > .limited-list-item-callout {
     margin-right: 10px;
 }
 
@@ -422,6 +422,9 @@ body.modal-shown {
 .tb-modal .fullscreen-modal .fullscreen-modal-content ul.quick-menu {
     width: 100%;
 }
+.tb-modal .fullscreen-modal .fullscreen-modal-content ul.quick-menu  .quick-menu-item .quick-menu-item-link {
+    margin-bottom: 0px;
+}
 .tb-modal .fullscreen-modal .fullscreen-modal-footer {
     display: flex;
     flex-flow: row nowrap;
@@ -429,6 +432,25 @@ body.modal-shown {
     height: auto;
     position: relative;
 }
+
+.tb-modal .fullscreen-modal .fullscreen-modal-content .tb-btn-fail {
+    background-color: rgb(188, 15, 15);
+}
+.tb-modal .fullscreen-modal .fullscreen-modal-content .tb-btn-fail:active {
+    box-shadow: 0 0 10px 2px #770a0a inset;
+}
+
+.tb-modal .fullscreen-modal .fullscreen-modal-content .tb-modal-attack-desc {
+    font-size: 18px;
+}
+.tb-modal .fullscreen-modal .fullscreen-modal-content .tb-modal-attack-desc > small {
+    display: block;
+    font-size: 12px;
+}
+.tb-modal .fullscreen-modal .fullscreen-modal-content .tb-manager-group > .tb-manager-content p {
+    padding: 0px 10px;
+}
+
 /* MONSTER
 =================================*/
 .tb-processed .mon-stat-block__header {

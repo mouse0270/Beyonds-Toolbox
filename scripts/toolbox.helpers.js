@@ -29,6 +29,13 @@
 		}
 	});
 
+	$('body').on('click', '.tb-manager-group > .tb-manager-header', function(evt) {
+		evt.preventDefault();
+		if (!$(evt.target).hasClass('character-button')) {
+			$(this).closest('.tb-manager-group').toggleClass('tb-manager-group-collapsed tb-manager-group-opened');
+		}
+	});
+
 	$('body').on('click', '.tb-toolbox .quick-menu .quick-menu-item .quick-menu-item-trigger', function(evt) {
 	    evt.preventDefault();
 	    $(this).closest('li').toggleClass('quick-menu-item-closed quick-menu-item-opened');

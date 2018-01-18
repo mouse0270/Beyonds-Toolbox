@@ -37,13 +37,6 @@
 				    evt.preventDefault();
 				    $('body').toggleClass('tb-shown');
 				});
-
-				$('.tb-manager-group > .tb-manager-header').off('click').on('click', function(evt) {
-				    evt.preventDefault();
-				    if (!$(evt.target).hasClass('character-button')) {
-				        $(this).closest('.tb-manager-group').toggleClass('tb-manager-group-collapsed tb-manager-group-opened');
-				    }
-				});
 			};
 
 			this.init = function () {
