@@ -425,6 +425,9 @@ body.modal-shown {
 .tb-modal .fullscreen-modal .fullscreen-modal-content ul.quick-menu  .quick-menu-item .quick-menu-item-link {
     margin-bottom: 0px;
 }
+.tb-modal .fullscreen-modal .fullscreen-modal-content ul.quick-menu  .quick-menu-item.tb-quick-menu-total {
+    font-weight: 600;
+}
 .tb-modal .fullscreen-modal .fullscreen-modal-footer {
     display: flex;
     flex-flow: row nowrap;

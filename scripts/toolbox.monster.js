@@ -77,6 +77,7 @@
 						$item.find('.limited-list-item-callout').remove();
 					}
 
+					$item.addClass('tb-quick-menu-total').find('.quick-menu-item-label').after('<hr />');
 					$item.find('.remove').remove();
 					$list.append($item);
 				}
@@ -91,7 +92,7 @@
 				}
 
 				if (attack.rolls.length >= 1) {
-					var attacks = false;
+					var attacks = false, totalDamage = 0;
 					attack.rolls.forEach(function(roll, index) {
 						var status = _this.roll(roll),
 							template = $.grab('config', 'templates').quickMenuItem;
@@ -104,17 +105,28 @@
 							$item.find('.remove').remove();
 							$list.append($item);
 
-							attacks = true;
+							attacks = true; totalDamage += status.total;
 						}else if (/ or /.test(roll) && attacks) {
 							if (typeof attack.rolls[index + 1] !== 'undefined') {
-								var $item = $(template.format('', 'OR', '', ''));
+								var $item = $(template.format('', '{0} Total Damage'.format(totalDamage), '', ''));
 
 								$item.find('.limited-list-item-callout').remove();
 								$item.find('.remove').remove();
+								$item.addClass('tb-quick-menu-total').find('.quick-menu-item-label').after('<hr />');
 								$list.append($item);
+
+								totalDamage = 0;
 							}
 						}
 					});
+
+					if (totalDamage >= 1) {
+						var $item = $(template.format('', '{0} Total Damage'.format(totalDamage), '', ''));
+
+						$item.addClass('tb-quick-menu-total').find('.limited-list-item-callout').remove();
+						$item.find('.remove').remove();
+						$list.append($item);
+					}
 				}
 
 				$content.append($list);
