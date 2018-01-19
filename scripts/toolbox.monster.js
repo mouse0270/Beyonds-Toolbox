@@ -7,7 +7,15 @@
 			var $manager;
 
 			this.scan = function () {
-				$('.mon-stat-block__description-block-content > p:not(.tb-processed)').each(function(index, item) {
+				// Basically used because people cant fucking hit enter. WHY MUST YOU HIT SHIFT+ENTER
+				if ($('.mon-stat-block__description-block-content:not(.tb-processed)').closest('li').find('.list-row-monster-homebrew').length >= 1) {
+					$('.mon-stat-block__description-block-content:not(.tb-processed)').each(function(index, item) {
+						$(item).html($(item).html().replace(/<br>\\*/g,"</p><p>"));
+						$(item).addClass('tb-processed')
+					});
+				}
+
+				$('.mon-stat-block__description-block-content > :not(.tb-processed)').each(function(index, item) {
 					var $item = $(item);
 
 					if ($item.find('.tb-roller').length >= 1) {

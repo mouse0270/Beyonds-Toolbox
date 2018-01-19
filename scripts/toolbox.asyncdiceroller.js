@@ -23,7 +23,8 @@
 								'div.tb-modal *'
 							],
 							each: function(item) {
-								_this.bind($(item));
+								$(item).attr('title', 'Roll {0}'.format($(item).text()));
+								//_this.bind($(item));
 							}
 						});
 					}
@@ -32,9 +33,8 @@
 				Toolbox.Monsters.scan();
 			};
 
-			this.bind = function ($item) {
-				$item.attr('title', 'Roll {0}'.format($item.text()));
-				$item.on('click', function() {
+			this.bind = function () {
+				$('body').on('click', '.tb-roller', function() {
 					var dice = $(this).text().replace(/ /g,''),
 				        title = 'Dice Roller';
 
@@ -77,6 +77,7 @@
 			};
 
 			this.init = function () {
+				_this.bind();
 				return this;
 			};
 
