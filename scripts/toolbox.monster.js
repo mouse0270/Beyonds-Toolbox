@@ -11,7 +11,7 @@
 					var $item = $(item);
 
 					if ($item.find('.tb-roller').length >= 1) {
-						$item.find('em:first-child').wrap('<span class="tb-roller-attack"></span>');
+						$item.find('strong:first-child').wrap('<span class="tb-roller-attack"></span>');
 						var $attack = $item.find('.tb-roller-attack');
 
 						$attack.attr('title', 'Roll Attack');
@@ -27,6 +27,12 @@
 
 			};
 
+			this.cleanup = function(text) {
+				text = text.replace(/\u00a0/g, " ");
+
+				return text;
+			};
+
 			this.attack = function() {
 				var $dice = $(this).closest('.tb-processed');
 				var inputstring = "/(\\w* or \\w* \\w* Attack)|(\\w* \\w* Attack)|(, or )|(DC \\d+( \\w*)?)|(\\w* Damage)|([+−-]\\d+)|(([1-9]\\d*)?d([1-9]\\d*)\\s*([+-−]\\s*\\d+)?)/gi";
@@ -34,7 +40,7 @@
 				var pattern = inputstring.replace(new RegExp('^/(.*?)/' + flags + '$'), '$1');
 				var regex = new RegExp(pattern, flags);
 
-				var diceRolls = $dice.text().match(regex);
+				var diceRolls = _this.cleanup($dice.text()).match(regex);
 
 				var attack = {
 					name: $(this).text(),
@@ -45,6 +51,7 @@
 					rolls: []
 				}
 
+				console.log(diceRolls);
 				diceRolls.forEach(function(roll, index) {
 	        		if (/\w* \w* Attack/.test(roll)) {
 	        			attack.type = roll;
@@ -53,6 +60,7 @@
 	        		}else if (/DC \d+( \w*)?/.test(roll)) {
 	        			attack.dcSave = roll;
 	        		}else{
+						console.log(roll);
 	        			attack.rolls.push(roll);
 	        		}
 	        	});
@@ -102,6 +110,7 @@
 							template = $.grab('config', 'templates').quickMenuItem;
 
 						if (status !== false) {
+							console.log(attack.rolls);
 							var damage = (typeof attack.rolls[index + 1] === 'undefined' ? '' : attack.rolls[index + 1])
 								$item = $(template.format('', '<strong>{0}</strong> {1}'.format(status.total, damage), 'Rolls: {0}'.format(status.summary), ''));
 
