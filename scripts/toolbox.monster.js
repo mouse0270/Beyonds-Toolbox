@@ -43,7 +43,7 @@
 
 			this.attack = function() {
 				var $dice = $(this).closest('.tb-processed');
-				var inputstring = "/(\\w* or \\w* \\w* Attack)|(\\w* \\w* Attack)|(, or )|(DC \\d+( \\w*)?)|(\\w* Damage)|([+−-]\\d+)|(([1-9]\\d*)?d([1-9]\\d*)\\s*([+-−]\\s*\\d+)?)/gi";
+				var inputstring = "/(\\w* or \\w* \\w* Attack)|(\\w* \\w* Attack)|(\\) or )|(, or )|(DC \\d+( \\w*)?)|(\\w* Damage)|([+−-]\\d+)|(([1-9]\\d*)?d([1-9]\\d*)\\s*([+-−]\\s*\\d+)?)/gi";
 				var flags = inputstring.replace(/.*\/([gimy]*)$/, '$1');
 				var pattern = inputstring.replace(new RegExp('^/(.*?)/' + flags + '$'), '$1');
 				var regex = new RegExp(pattern, flags);
@@ -57,9 +57,8 @@
 					toHit: '',
 					dcSave: '',
 					rolls: []
-				}
+				};
 
-				console.log(diceRolls);
 				diceRolls.forEach(function(roll, index) {
 	        		if (/\w* \w* Attack/.test(roll)) {
 	        			attack.type = roll;
@@ -68,8 +67,7 @@
 	        		}else if (/DC \d+( \w*)?/.test(roll)) {
 	        			attack.dcSave = roll;
 	        		}else{
-						console.log(roll);
-	        			attack.rolls.push(roll);
+	        			attack.rolls.push(roll.replace(/\)/gi, ''));
 	        		}
 	        	});
 
@@ -113,12 +111,12 @@
 
 				if (attack.rolls.length >= 1) {
 					var attacks = false, totalDamage = 0;
+
 					attack.rolls.forEach(function(roll, index) {
 						var status = _this.roll(roll, isCritical),
 							template = $.grab('config', 'templates').quickMenuItem;
-
+							
 						if (status !== false) {
-							console.log(attack.rolls);
 							var damage = (typeof attack.rolls[index + 1] === 'undefined' ? '' : attack.rolls[index + 1])
 								$item = $(template.format('', '<strong>{0}</strong> {1}'.format(status.total, damage), 'Rolls: {0}'.format(status.summary), ''));
 
