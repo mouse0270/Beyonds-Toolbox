@@ -11,13 +11,17 @@
         	Toolbox.Encounters.parse();
     	} else if (msg.action == 'tb-scan-page') {
 			Toolbox.AsyncDiceRoller.scan();
-	    }
+	    }else if (msg.action == 'tb-rebuild') {
+            console.log('reload content');
+            Toolbox.Loader.notes();
+            Toolbox.Loader.initiative();
+        }
 	});
 
 	//Toolbox.config.storage.clear();
 
 	// GET NOTES
-    Toolbox.config.storage.get("notes", function(items) {
+    /*Toolbox.config.storage.get("notes", function(items) {
         if (typeof items.notes !== 'undefined') {
         	Toolbox.settings.notes = items.notes;
         	Toolbox.settings.notes.forEach(function(note) {
@@ -33,7 +37,7 @@
                 Toolbox.Initiative.build(player);
             });
         }
-    });
+    });*/
 
 	// GET PLAYERS
     Toolbox.config.storage.get("players", function(items) {

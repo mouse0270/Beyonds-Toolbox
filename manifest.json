@@ -36,6 +36,7 @@
 			"scripts/toolbox.players.js",
 			"scripts/toolbox.encounters.js",
 			"scripts/toolbox.asyncdiceroller.js",
+			"scripts/toolbox.loader.js",
 			"scripts/toolbox.extra.js"
 		]
 	}]

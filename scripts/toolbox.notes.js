@@ -38,6 +38,10 @@
 				_this.save({ target: $manager.find('.tb-manager-content .collapsible:last-child')[0] });
 			};
 
+			this.clear = function() {
+				$manager.find('.tb-manager-content').empty();
+			};
+
 			this.build = function(note) {
 				var template = $.grab('config', 'templates').collapsible,
 					$note = $(template.format(note.title, '', 'Save'));

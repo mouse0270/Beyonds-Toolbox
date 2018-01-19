@@ -16,12 +16,24 @@
 				_this.sortable($manager.find('.tb-manager-content > ul'));
 			};
 
+			this.clear = function() {
+				$manager.find('.tb-manager-content').empty().append('<ul class="quick-menu quick-menu-tier-2"></ul>');
+				_this.sortable($manager.find('.tb-manager-content > ul'));
+			};
+
+			this.create = function(player) {
+				Toolbox.settings.initiative.push(player);
+				_this.build(player);
+			};
+
 			this.build = function(player) {
 				var template = $.grab('config', 'templates').quickMenuItem,
 					$item = $(template.format(player.url, player.name, player.player, 'View'));
 
 				$item.find('div.quick-menu-item-label > .limited-list-item-callout > a').attr('href', player.url);
 				$item.find('.remove').on('click', _this.remove);
+
+				console.log(player);
 
 				if (player.children.length > 0) {
 					$item.find('div.quick-menu-item-label > .limited-list-item-callout').remove();
@@ -40,8 +52,6 @@
 
 
 				$manager.find('.tb-manager-content > ul.quick-menu').append($item);
-
-				Toolbox.settings.initiative.push(player);
 			};
 
 			this.sortable = function($menu) {
@@ -63,6 +73,7 @@
 
 			this.save = function(evt) {
 				Toolbox.save('initiative', Toolbox.settings.initiative);
+				console.log(Toolbox.settings.initiative);
 			};
 
 			this.remove = function(evt) {

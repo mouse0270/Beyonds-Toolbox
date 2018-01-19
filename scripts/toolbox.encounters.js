@@ -284,7 +284,7 @@
 
 				player.player = "Monsters: {0} | XP: {1}".format(player.children.length, encounter.xp);
 
-				Toolbox.Initiative.build(player);
+				Toolbox.Initiative.create(player);
 			};
 
 			this.save = function() {
