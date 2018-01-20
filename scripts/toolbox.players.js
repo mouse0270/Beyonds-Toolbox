@@ -66,9 +66,11 @@
 		                            url: $item.find('.ddb-campaigns-character-card-footer-links-item-view').attr('href'),
 		                            name: $item.find('.ddb-campaigns-character-card-header-upper-character-info-primary').text(), 
 		                            player: $item.find('.ddb-campaigns-character-card-header-upper-character-info-secondary').eq(1).text()
-		                        };
-
-		                    $list.append(template.format(player.url, player.name, player.player, 'Add'));
+		                        },
+		                        $player = $(template.format(player.url, player.name, player.player, 'Add'));
+		                        
+							$player.find('.limited-list-item-callout > .character-button').on('click', _this.addToInitiative);
+		                    $list.append($player);
 		                });
 		            });
 		        }
@@ -126,7 +128,20 @@
 					$item = $(template.format(player.url, player.name, player.player, 'Add'));
 
 				$item.find('.remove').on('click', _this.remove);
+				$item.find('.limited-list-item-callout > .character-button').on('click', _this.addToInitiative);
 				$manager.find('.tb-manager-content > .collapsible:last-child > .collapsible-body > ul.quick-menu').append($item);
+			};
+
+			this.addToInitiative = function(evt) {
+				var $player = $(evt.target).closest('li.quick-menu-item'),
+					player = {
+						url: $player.find('.quick-menu-item-link').attr('data-href'),
+						name: $player.find('.quick-menu-item-link').clone().children().remove().end().text(),
+						player: $player.find('.quick-menu-item-link > span').text(),
+						children: []
+					};
+
+				Toolbox.Initiative.create(player);
 			};
 
 			this.save = function(player) {
