@@ -6,6 +6,18 @@
 			var _this = this,
 				$toolbox = null;
 
+			this.menus = function() {
+				var menus = {
+					tbContainer: $('body').hasClass('tb-shown'),
+					tbGroupNotes: $('#tbGroupNotes').hasClass('tb-manager-group-opened'),
+					tbGroupInitiative: $('#tbGroupInitiative').hasClass('tb-manager-group-opened'),
+					tbGroupPlayers: $('#tbGroupPlayers').hasClass('tb-manager-group-opened'),
+					tbGroupEncounters: $('#tbGroupEncounters').hasClass('tb-manager-group-opened')
+				}
+
+				Toolbox.save('menus', menus);
+			};
+
 			this.build = function () {
 				var container = $.grab('config', 'templates').toolbox;
 
@@ -36,6 +48,7 @@
 				$('a[href="#toolbox"]').off('click').on('click', function(evt) {
 				    evt.preventDefault();
 				    $('body').toggleClass('tb-shown');
+				    _this.menus();
 				});
 			};
 

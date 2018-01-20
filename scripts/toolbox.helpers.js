@@ -34,6 +34,8 @@
 		if (!$(evt.target).hasClass('character-button')) {
 			$(this).closest('.tb-manager-group').toggleClass('tb-manager-group-collapsed tb-manager-group-opened');
 		}
+
+		Toolbox.Container.menus();
 	});
 
 	$('body').on('click', '.tb-toolbox .quick-menu .quick-menu-item .quick-menu-item-trigger', function(evt) {

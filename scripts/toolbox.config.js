@@ -98,7 +98,13 @@
 	};
 
 	Toolbox.settings = {
-		menus: {},
+		menus: {
+			tbContainer: false,
+			tbGroupNotes: false,
+			tbGroupInitiative: false,
+			tbGroupPlayers: false,
+			tbGroupEncounters: false,
+		},
 		notes: [],
 		encounters: [],
 		players: [],
@@ -109,11 +115,15 @@
 		var obj = {};
 		obj[key] = data;
 
+		console.log(key, data);
+
 		Toolbox.config.storage.set(obj, function() {
 			if (chrome.runtime.error) {
 				$.log(chrome.runtime);
 			}
 		});
 	}
+
+	//Toolbox.save('menus', Toolbox.settings.menus);
 
 }(window.Toolbox = window.Toolbox || {}, jQuery));

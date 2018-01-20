@@ -15,6 +15,7 @@
             console.log('reload content');
             Toolbox.Loader.notes();
             Toolbox.Loader.initiative();
+            Toolbox.Loader.menus();
         }
 	});
 
