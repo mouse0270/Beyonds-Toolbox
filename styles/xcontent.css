@@ -122,6 +122,14 @@ span.tb-roller {
 	background-color: rgb(77, 77, 77);
     box-shadow: inset 0 0 3px 2px rgb(102, 102, 102);
 }
+.tb-disabled, .tb-disabled:hover {
+    background-color: rgba(0, 0, 0, 0) !important;
+    border-color: rgba(0, 0, 0, 0.5) !important;
+    box-shadow: none !important;
+    color: rgba(0, 0, 0, 0.5) !important;
+    font-weight: 600 !important;
+    pointer-events: none;
+}
 
 /* TOOLBOX
 =================================*/

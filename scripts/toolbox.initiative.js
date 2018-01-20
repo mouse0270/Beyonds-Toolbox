@@ -24,6 +24,7 @@
 			this.create = function(player) {
 				Toolbox.settings.initiative.push(player);
 				_this.build(player);
+				_this.save();
 			};
 
 			this.build = function(player) {
@@ -32,8 +33,6 @@
 
 				$item.find('div.quick-menu-item-label > .limited-list-item-callout > a').attr('href', player.url);
 				$item.find('.remove').on('click', _this.remove);
-
-				console.log(player);
 
 				if (player.children.length > 0) {
 					$item.find('div.quick-menu-item-label > .limited-list-item-callout').remove();
@@ -73,7 +72,6 @@
 
 			this.save = function(evt) {
 				Toolbox.save('initiative', Toolbox.settings.initiative);
-				console.log(Toolbox.settings.initiative);
 			};
 
 			this.remove = function(evt) {

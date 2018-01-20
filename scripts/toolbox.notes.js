@@ -44,7 +44,7 @@
 
 			this.build = function(note) {
 				var template = $.grab('config', 'templates').collapsible,
-					$note = $(template.format(note.title, '', 'Save'));
+					$note = $(template.format(note.title, '', 'Saved'));
 
 				$note.find('.collapsible-body').append('<div class="tb-form-field"><textarea class="tb-control"></textarea></div>');
 				//$note.find('.collapsible-body').append($.grab('config', 'templates').managerAction.format('Save'));
@@ -55,8 +55,19 @@
 				}
 				$note.find('.collapsible-body .tb-control').val(note.content);
 
-				$note.find('.collapsible-header .limited-list-item-callout > button').on('click', _this.save);
+				$note.find('.collapsible-header .limited-list-item-callout > button').addClass('tb-disabled').on('click', _this.save);
 				$note.find('.collapsible-body .tb-manager-item-actions > .tb-manager-item-remove').on('click', _this.remove);
+
+				var saveContent;
+				$note.find('.collapsible-body > .tb-form-field > textarea').on('input propertychange change', function() {
+					$note.find('.collapsible-header .limited-list-item-callout > button').removeClass('tb-disabled').text('Save');
+
+					clearTimeout(saveContent);
+					saveContent = setTimeout(function() {
+						$note.find('.collapsible-header .limited-list-item-callout > button').addClass('tb-disabled').text('Saved');
+						_this.save();
+					}, 1000);
+				});
 
 				$manager.find('.tb-manager-content').append($note);
 			};
