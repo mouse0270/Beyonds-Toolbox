@@ -12,10 +12,7 @@
     	} else if (msg.action == 'tb-scan-page') {
 			Toolbox.AsyncDiceRoller.scan();
 	    }else if (msg.action == 'tb-rebuild') {
-            console.log('reload content');
-            Toolbox.Loader.notes();
-            Toolbox.Loader.initiative();
-            Toolbox.Loader.menus();
+            Toolbox.Loader.build();
         }
 	});
 
@@ -38,7 +35,7 @@
                 Toolbox.Initiative.build(player);
             });
         }
-    });*/
+    });
 
 	// GET PLAYERS
     Toolbox.config.storage.get("players", function(items) {
@@ -53,11 +50,11 @@
 	// GET PLAYERS
     Toolbox.config.storage.get("encounters", function(items) {
         if (typeof items.encounters !== 'undefined') {
-        	Toolbox.settings.encounters = items.encounters;
-        	Toolbox.settings.encounters.forEach(function(player) {
-        		Toolbox.Encounters.build(player, -1);
-        	});
+            Toolbox.settings.encounters = items.encounters;
+            Toolbox.settings.encounters.forEach(function(player) {
+                Toolbox.Encounters.build(player, -1);
+            });
         }
-    });
+    });*/
 
 }(window.Toolbox = window.Toolbox || {}, jQuery));

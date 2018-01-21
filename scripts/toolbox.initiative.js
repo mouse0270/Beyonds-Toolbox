@@ -39,6 +39,18 @@
 					$item.find('div.quick-menu-item-label').append('<div class="quick-menu-item-trigger"></div>');
 					$item.append('<ul class="quick-menu quick-menu-tier-3"></ul>');
 
+					$item.find('div.quick-menu-item-label .quick-menu-item-trigger').on('click', function(evt) {
+						var $listItem = $(this).closest('li.quick-menu-item'),
+							index = $listItem.index();
+
+						Toolbox.settings.initiative[index]['open'] = !$listItem.hasClass('quick-menu-item-opened');
+						_this.save();
+					});
+
+					if (typeof player.open !== undefined && player.open) {
+						$item.removeClass('quick-menu-item-closed').addClass('quick-menu-item-opened');
+					}
+
 					$.each(player.children, function(imonster, monster) {
 						if (monster != null) { 
 							var percentage = ((monster.hp.current  * 1) / (monster.hp.max * 1)) * 100,

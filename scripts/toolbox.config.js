@@ -7,7 +7,7 @@
 
 	Toolbox.config = {
 		title: 'Toolbox',
-		debug: true,
+		debug: false,
 		storage: chrome.storage.sync,
 		templates: {
 			toolbox: ['<div class="subsection-group tb-toolbox">',

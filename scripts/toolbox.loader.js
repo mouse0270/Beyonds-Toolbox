@@ -6,6 +6,14 @@
 			var _this = this;
 			var $manager;
 
+			this.build = function() {
+				_this.notes();
+				_this.initiative();
+				_this.players();
+				_this.encounters();
+				_this.menus();
+			};
+
 			this.menus = function() {
 				Toolbox.config.storage.get("menus", function(items) {
 			        if (typeof items.menus !== 'undefined') {
@@ -57,10 +65,30 @@
 			    });
 			};
 
+			this.players = function() {
+				Toolbox.config.storage.get("players", function(items) {
+				if (typeof items.players !== 'undefined') {
+						Toolbox.settings.players = items.players;
+						Toolbox.settings.players.forEach(function(player) {
+							Toolbox.Players.build(player);
+						});
+					}
+				});
+			};
+
+			this.encounters = function() {
+				Toolbox.config.storage.get("encounters", function(items) {
+			        if (typeof items.encounters !== 'undefined') {
+			            Toolbox.settings.encounters = items.encounters;
+			            Toolbox.settings.encounters.forEach(function(player) {
+			                Toolbox.Encounters.build(player, -1);
+			            });
+			        }
+			    });
+			}
+
 			this.init = function () {
-				_this.notes();
-				_this.initiative();
-				_this.menus();
+				_this.build();
 				return this;
 			};
 
