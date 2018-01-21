@@ -536,6 +536,7 @@ body.modal-shown {
 #tbTooltip > .mon-stat-block::after {
     bottom: 0px;
 }
+.tb-modal:hover + .tb-toolbox > #tbTooltip,
 .tb-toolbox:hover #tbTooltip {
     display: block;
 }
