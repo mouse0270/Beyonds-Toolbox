@@ -192,7 +192,17 @@ body.tb-shown .builder-navigation-large-action-next {
 .tb-toolbox .subsection-group-inner .subsection-group-header {
 	background-image: linear-gradient(to bottom,rgb(241, 95, 95),rgb(157, 21, 21));
     border-top: 1px solid rgb(253, 148, 148);
-    box-shadow: 0 -3px 24px 0 #9D1515;	
+    box-shadow: 0 -3px 24px 0 #9D1515;
+    position: relative;	
+}
+.tb-toolbox .subsection-group-inner .subsection-group-header > a[href="#toolbox"] {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 15px;
+    color: rgb(255, 255, 255);
+    font-weight: 600;
+    font-size: 30px;
 }
 .tb-toolbox .subsection-group-inner .subsection-group-heading {
 	padding: 18.5px 15px;	
@@ -332,6 +342,7 @@ body.tb-shown .builder-navigation-large-action-next {
 }
 .tb-toolbox .quick-menu .quick-menu-item .quick-menu-item-label {
 	padding-left: 15px;
+    position: relative;
 }
 .tb-toolbox .quick-menu .quick-menu-item > .quick-menu-item-label:before {
     counter-increment: monsters;
@@ -341,7 +352,7 @@ body.tb-shown .builder-navigation-large-action-next {
     left: 0px;
     position: absolute;
     text-align: center;
-    top: 24px;
+    top: 50%;
     transform: translateY(-50%);
     width: 30px;
 }
@@ -350,6 +361,7 @@ body.tb-shown .builder-navigation-large-action-next {
     content: counter(monsters)"."counter(submonsters); 
     font-size: 12px;
     padding-left: 15px;
+    z-index: 5;
 }
 .tb-toolbox .quick-menu .quick-menu-item:hover > .quick-menu-item-label:before {
 	font-size: 0px;
@@ -461,7 +473,20 @@ body.modal-shown {
 .tb-modal .fullscreen-modal .fullscreen-modal-content .tb-manager-group > .tb-manager-content p {
     padding: 0px 10px;
 }
-
+.tb-modal .fullscreen-modal .fullscreen-modal-content .tb-form-field.tb-damage > label:after {
+    color: rgb(210, 64, 64);
+    content: ' (Damage)';
+}
+.tb-modal .fullscreen-modal .fullscreen-modal-content .tb-form-field.tb-damage > input {
+    border-color: rgb(210, 64, 64);
+}
+.tb-modal .fullscreen-modal .fullscreen-modal-content .tb-form-field.tb-heal > label:after {
+    color: rgb(64, 210, 80);
+    content: ' (Heal)';
+}
+.tb-modal .fullscreen-modal .fullscreen-modal-content .tb-form-field.tb-heal > input {
+    border-color: rgb(64, 210, 80);
+}
 /* MONSTER
 =================================*/
 .tb-processed .mon-stat-block__header {
@@ -526,4 +551,75 @@ body.modal-shown {
 }
 .tb-toolbox > #tbTooltip:hover > .remove {
 	display: inline-block;
+}
+
+.tb-example.quick-menu-item  {
+    margin-bottom: 5px;
+}
+.tb-example.quick-menu-item  .quick-menu-item-label {
+    padding-left: 0px !important;
+}
+
+.tb-example.quick-menu-item > .quick-menu-item-label > .remove,
+.tb-example.quick-menu-item > .quick-menu-item-label > .tb-health-bar {
+    z-index: 5;
+}
+.tb-example .quick-menu-item-link {
+    margin-left: 0px;
+    padding-left: 0px;
+    border: 3px solid rgb(229, 115, 115);
+    padding: 0px;
+    position: relative;
+    height: 37px;
+}
+
+.tb-example.quick-menu-item .quick-menu-item-label > .tb-health-bar {
+    content: '';
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    max-width: 100%;
+    height: 100%;
+    background-color: rgb(229, 115, 115);
+    transition: width 0.3s ease-in-out;
+    z-index: 0;
+}
+.tb-example.quick-menu-item .quick-menu-item-link:hover {
+    color: rgb(36, 37, 39);
+}
+
+.tb-example .quick-menu-item-link > span {
+    position: absolute;
+    font-weight: 600;
+    top: 3px;
+    left: 40px;
+}
+
+.tb-example .quick-menu-item-link > div.quick-menu-item-meta {
+    position: absolute;
+    bottom: 0px;
+    left: 40px;
+}
+
+.tb-example .quick-menu-item-link > .tb-monster-health {
+    cursor: pointer;
+    height: 37px;
+    margin-top: -3px;
+    width: 75px;
+}
+
+.tb-example .quick-menu-item-link > .tb-monster-health:before {
+    content: attr(data-hp-current) ' / ' attr(data-hp-max);
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: auto;
+    white-space: nowrap;
+    right: 10px;
+    font-weight: 600;
+}
+
+.tb-example .quick-menu-item-link > .tb-monster-health > input {
+    display: none;
 }

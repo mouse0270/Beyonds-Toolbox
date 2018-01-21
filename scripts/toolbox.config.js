@@ -14,6 +14,7 @@
 				'<div class="subsection-group-inner">',
 					'<div class="subsection-group-header">',
 						'<div class="subsection-group-heading">{0}</div>',
+						'<a href="#toolbox">&times;</a>',
 					'</div>',
 					'<div class="subsection-group-body">',
 						'<div class="subsection-group-body-inner"></div>',
@@ -67,13 +68,14 @@
 	                '</div>',
 	            '</div>',
 	        '</li>'].join(''),
-	        monster: ['<li class="quick-menu-item">',
+	        monster: ['<li class="quick-menu-item tb-example">',
 	            '<div class="quick-menu-item-label">',
+	            	'<div class="tb-health-bar" style="width: {6};"></div>',
 	                '<div class="remove">&times;</div>',
 	                '<div class="quick-menu-item-link" data-href="{0}" data-xp="{3}" data-ac="{2}"><span>{1}</span>',
 	                    '<div class="quick-menu-item-meta">AC: {2} | XP: {3}</div>',
 	                    '<a class="monster-page" href="{0}">&nbsp;</a>',
-	                    '<div class="tb-form-field tb-monster-health">',
+	                    '<div class="tb-form-field tb-monster-health" data-hp-current="{5}" data-hp-max="{4}" title="mousewheel or click to change health">',
 	                        '<input type="number" name="encounter-monster-max-health" class="tb-control" value="{5}" min="0" data-max="{4}" autocomplete="off" placeholder="Health">',
 	                    '</div>',
 	                '</div>',
@@ -114,8 +116,6 @@
 	Toolbox.save = function(key, data) {
 		var obj = {};
 		obj[key] = data;
-
-		console.log(key, data);
 
 		Toolbox.config.storage.set(obj, function() {
 			if (chrome.runtime.error) {

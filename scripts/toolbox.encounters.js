@@ -233,7 +233,13 @@
 				$list.find('li').remove();
 
 				encounter.monsters.forEach(function(monster) {
-					$list.append($(template.format(monster.url, monster.name, monster.ac, monster.xp, monster.hp.max, monster.hp.max)));
+					var $monster = $(template.format(monster.url, monster.name, monster.ac, monster.xp, monster.hp.max, monster.hp.max, '100%'));
+
+					$monster.removeClass('tb-example');
+					$monster.find('.tb-health-bar').remove();
+
+					_this.bind($monster.find('input[type="number"]'));
+					$list.append($monster);
 				});
 
 				if (index < 0) {
@@ -263,6 +269,26 @@
 						_this.save();
 			        }
 			    });
+			};
+
+			this.bind = function($input) {
+				var currentHP = 0;
+				$input.on('focus', function(evt) {
+				    currentHP = $(this).val() * 1;
+				})
+				$input.on('keypress', function(evt) {
+				    if (evt.which == 13) {
+				        $(this).blur();
+				    }
+				});
+				$input.on('blur', function(evt) {
+				    var newValue = $(this).val() * 1;
+				    if (newValue < 0) {
+				        $(this).val(currentHP + newValue);
+				        console.log(currentHP, newValue)
+				    }
+				    currentHP = 0;
+				});
 			};
 
 			this.addToInitiative = function(evt) {
