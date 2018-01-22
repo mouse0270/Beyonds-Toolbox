@@ -192,6 +192,7 @@
 				}
 
 				_this.build(encounter, index);
+				_this.save();
 			};
 
 			this.calc = function(hp) {
@@ -247,6 +248,10 @@
 					_this.sortable($list);
 				}
 			};
+
+			this.clear = function() {
+				$manager.find('.tb-manager-content > .collapsible').remove();
+			}
 
 			this.sortable = function($menu) {
 				var handle = '.collapsible-header';

@@ -123,6 +123,10 @@
 				_this.save(player);
 			};
 
+			this.clear = function() {
+				$manager.find('.tb-manager-content > .collapsible:last-child > .collapsible-body > ul.quick-menu > li').remove();
+			};
+
 			this.build = function(player) {
 				var template = $.grab('config', 'templates').quickMenuItem,
 					$item = $(template.format(player.url, player.name, player.player, 'Add'));
