@@ -7,14 +7,13 @@
 
 	Toolbox.config = {
 		title: 'Toolbox',
-		debug: false,
+		debug: true,
 		storage: chrome.storage.sync,
 		templates: {
 			toolbox: ['<div class="subsection-group tb-toolbox">',
 				'<div class="subsection-group-inner">',
 					'<div class="subsection-group-header">',
 						'<div class="subsection-group-heading">{0}</div>',
-						'<a href="#toolbox">&times;</a>',
 					'</div>',
 					'<div class="subsection-group-body">',
 						'<div class="subsection-group-body-inner"></div>',
@@ -59,7 +58,7 @@
 	            '</div>',
 	            '<div class="collapsible-body"></div>',
 	        '</div>'].join(''),
-	        quickMenuItem: ['<li class="quick-menu-item quick-menu-item-closed">',
+	        quickMenuItem: ['<li class="quick-menu-item quick-menu-item-players quick-menu-item-closed">',
 	            '<div class="quick-menu-item-label">',
 	                '<div class="remove">&times;</div>',
 	                '<p class="quick-menu-item-link" data-href="{0}">{1}<span>{2}</span></p>',
@@ -68,14 +67,13 @@
 	                '</div>',
 	            '</div>',
 	        '</li>'].join(''),
-	        monster: ['<li class="quick-menu-item tb-example">',
+	        monster: ['<li class="quick-menu-item">',
 	            '<div class="quick-menu-item-label">',
-	            	'<div class="tb-health-bar" style="width: {6};"></div>',
 	                '<div class="remove">&times;</div>',
 	                '<div class="quick-menu-item-link" data-href="{0}" data-xp="{3}" data-ac="{2}"><span>{1}</span>',
 	                    '<div class="quick-menu-item-meta">AC: {2} | XP: {3}</div>',
 	                    '<a class="monster-page" href="{0}">&nbsp;</a>',
-	                    '<div class="tb-form-field tb-monster-health" data-hp-current="{5}" data-hp-max="{4}" title="mousewheel or click to change health">',
+	                    '<div class="tb-form-field tb-monster-health">',
 	                        '<input type="number" name="encounter-monster-max-health" class="tb-control" value="{5}" min="0" data-max="{4}" autocomplete="off" placeholder="Health">',
 	                    '</div>',
 	                '</div>',
@@ -100,13 +98,7 @@
 	};
 
 	Toolbox.settings = {
-		menus: {
-			tbContainer: false,
-			tbGroupNotes: false,
-			tbGroupInitiative: false,
-			tbGroupPlayers: false,
-			tbGroupEncounters: false,
-		},
+		menus: {},
 		notes: [],
 		encounters: [],
 		players: [],
@@ -117,6 +109,8 @@
 		var obj = {};
 		obj[key] = data;
 
+		$.log(obj);
+
 		Toolbox.config.storage.set(obj, function() {
 			if (chrome.runtime.error) {
 				$.log(chrome.runtime);
@@ -124,9 +118,10 @@
 		});
 	}
 
-	//Toolbox.save('menus', Toolbox.settings.menus);
+}(window.Toolbox = window.Toolbox || {}, jQuery));
 
-
+(function(Toolbox, $, undefined) {
+	'use strict';
 
 	// Used for templating
 	String.prototype.format = function() {
@@ -154,26 +149,6 @@
 		if (!$(evt.target).hasClass('character-button')) {
 			$(this).closest('.collapsible').toggleClass('collapsible-collapsed collapsible-opened');
 		}
-	});
-
-	$('body').on('click', '.tb-manager-group > .tb-manager-header', function(evt) {
-		evt.preventDefault();
-		if (!$(evt.target).hasClass('character-button')) {
-			$(this).closest('.tb-manager-group').toggleClass('tb-manager-group-collapsed tb-manager-group-opened');
-		}
-
-		Toolbox.Container.menus();
-	});
-
-	$('body').on('click', '.tb-toolbox .quick-menu .quick-menu-item .quick-menu-item-trigger', function(evt) {
-	    evt.preventDefault();
-	    $(this).closest('li').toggleClass('quick-menu-item-closed quick-menu-item-opened');
-	});
-
-	
-	$('body').on('click', '.tb-toolbox > #tbTooltip > .remove', function(evt) {
-	    evt.preventDefault();
-	    $(this).closest('.tb-toolbox').find('#tbTooltip > div').remove();
 	});
 
 	// Logging function, for debugging mode
@@ -229,7 +204,7 @@
 		};
 
 		this.show = function($modal) {
-			$('.tb-toolbox').before($modal);
+			$('body').append($modal);
 		};
 
 		this.close = function() {
@@ -244,24 +219,10 @@
 		return this.init();
 	};
 
-
-
 	Toolbox.Container = (function() {
 		function _Container() {
 			var _this = this,
 				$toolbox = null;
-
-			this.menus = function() {
-				var menus = {
-					tbContainer: $('body').hasClass('tb-shown'),
-					tbGroupNotes: $('#tbGroupNotes').hasClass('tb-manager-group-opened'),
-					tbGroupInitiative: $('#tbGroupInitiative').hasClass('tb-manager-group-opened'),
-					tbGroupPlayers: $('#tbGroupPlayers').hasClass('tb-manager-group-opened'),
-					tbGroupEncounters: $('#tbGroupEncounters').hasClass('tb-manager-group-opened')
-				}
-
-				Toolbox.save('menus', menus);
-			};
 
 			this.build = function () {
 				var container = $.grab('config', 'templates').toolbox;
@@ -293,7 +254,13 @@
 				$('a[href="#toolbox"]').off('click').on('click', function(evt) {
 				    evt.preventDefault();
 				    $('body').toggleClass('tb-shown');
-				    _this.menus();
+				});
+
+				$('.tb-manager-group > .tb-manager-header').off('click').on('click', function(evt) {
+				    evt.preventDefault();
+				    if (!$(evt.target).hasClass('character-button')) {
+				        $(this).closest('.tb-manager-group').toggleClass('tb-manager-group-collapsed tb-manager-group-opened');
+				    }
 				});
 			};
 
@@ -309,8 +276,6 @@
 		};
 		return new _Container();
 	}());
-
-
 
 	Toolbox.Notes = (function() {
 		function _Notes() {
@@ -349,13 +314,9 @@
 				_this.save({ target: $manager.find('.tb-manager-content .collapsible:last-child')[0] });
 			};
 
-			this.clear = function() {
-				$manager.find('.tb-manager-content').empty();
-			};
-
 			this.build = function(note) {
 				var template = $.grab('config', 'templates').collapsible,
-					$note = $(template.format(note.title, '', 'Saved'));
+					$note = $(template.format(note.title, '', 'Save'));
 
 				$note.find('.collapsible-body').append('<div class="tb-form-field"><textarea class="tb-control"></textarea></div>');
 				//$note.find('.collapsible-body').append($.grab('config', 'templates').managerAction.format('Save'));
@@ -366,19 +327,8 @@
 				}
 				$note.find('.collapsible-body .tb-control').val(note.content);
 
-				$note.find('.collapsible-header .limited-list-item-callout > button').addClass('tb-disabled').on('click', _this.save);
+				$note.find('.collapsible-header .limited-list-item-callout > button').on('click', _this.save);
 				$note.find('.collapsible-body .tb-manager-item-actions > .tb-manager-item-remove').on('click', _this.remove);
-
-				var saveContent;
-				$note.find('.collapsible-body > .tb-form-field > textarea').on('input propertychange change', function() {
-					$note.find('.collapsible-header .limited-list-item-callout > button').removeClass('tb-disabled').text('Save');
-
-					clearTimeout(saveContent);
-					saveContent = setTimeout(function() {
-						$note.find('.collapsible-header .limited-list-item-callout > button').addClass('tb-disabled').text('Saved');
-						_this.save();
-					}, 1000);
-				});
 
 				$manager.find('.tb-manager-content').append($note);
 			};
@@ -442,444 +392,6 @@
 		};
 		return new _Notes();
 	}());
-
-
-
-	Toolbox.Monsters = (function() {
-		function _Monsters() {
-			var _this = this;
-			var $manager;
-
-			this.scan = function () {
-				// Basically used because people cant fucking hit enter. WHY MUST YOU HIT SHIFT+ENTER
-				if ($('.mon-stat-block__description-block-content:not(.tb-processed)').closest('li').find('.list-row-monster-homebrew').length >= 1) {
-					$('.mon-stat-block__description-block-content:not(.tb-processed)').each(function(index, item) {
-						$(item).html($(item).html().replace(/<br>\\*/g,"</p><p>"));
-						$(item).addClass('tb-processed')
-					});
-				}
-
-				$('.mon-stat-block__description-block-content > :not(.tb-processed)').each(function(index, item) {
-					var $item = $(item);
-
-					if ($item.find('.tb-roller').length >= 1) {
-						$item.find('strong:first-child').wrap('<span class="tb-roller-attack"></span>');
-						var $attack = $item.find('.tb-roller-attack');
-
-						$attack.attr('title', 'Roll Attack');
-
-						$attack.on('click', _this.attack);
-					} 
-
-					$item.addClass('tb-processed');
-				});
-			};
-
-			this.add = function() {
-
-			};
-
-			this.cleanup = function(text) {
-				text = text.replace(/\u00a0/g, " ");
-
-				return text;
-			};
-
-			this.attack = function() {
-				var $dice = $(this).closest('.tb-processed');
-				var inputstring = "/(\\w* or \\w* \\w* Attack)|(\\w* \\w* Attack)|(\\) or )|(, or )|(DC \\d+( \\w*)?)|(\\w* Damage)|([+−-]\\d+)|(([1-9]\\d*)?d([1-9]\\d*)\\s*([+-−]\\s*\\d+)?)/gi";
-				var flags = inputstring.replace(/.*\/([gimy]*)$/, '$1');
-				var pattern = inputstring.replace(new RegExp('^/(.*?)/' + flags + '$'), '$1');
-				var regex = new RegExp(pattern, flags);
-
-				var diceRolls = _this.cleanup($dice.text()).match(regex);
-
-				var attack = {
-					name: $(this).text(),
-					description: '<p>{0}</p>'.format($dice.text()),
-					type: '',
-					toHit: '',
-					dcSave: '',
-					rolls: []
-				};
-
-				diceRolls.forEach(function(roll, index) {
-	        		if (/\w* \w* Attack/.test(roll)) {
-	        			attack.type = roll;
-	        		}else if (/[+−-]\d+/.test(roll)) {
-	        			attack.toHit = "1d20{0}".format(roll);
-	        		}else if (/DC \d+( \w*)?/.test(roll)) {
-	        			attack.dcSave = roll;
-	        		}else{
-	        			attack.rolls.push(roll.replace(/\)/gi, ''));
-	        		}
-	        	});
-
-	        	_this.modal(attack, $(this).closest('.mon-stat-block').find('.mon-stat-block__name-link').text());
-			};
-
-			this.build = function(attack) {
-				var $content = $('<div><h4 class="tb-modal-attack-desc">{0}<small>{1}</small></h4></div>'.format(attack.name, attack.type)),
-					$list = $('<ul class="quick-menu quick-menu-tier-2"></ul>'),
-					isCritical = false;
-
-				if (attack.toHit.length >= 1) {
-					var template = $.grab('config', 'templates').quickMenuItem,
-						roll = _this.roll(attack.toHit, false),
-						$item = $(template.format('', "<strong>{0}</strong> to Hit".format(roll.total), 'Rolls: {0}'.format(roll.summary), 'Status'));
-
-					if (roll.rolls[0] == 1) {
-						$item.find('.limited-list-item-callout > a.character-button').toggleClass('character-button-outline tb-btn-fail').text('Fail');
-					}else if (roll.rolls[0] == 20) {
-						$item.find('.limited-list-item-callout > a.character-button').toggleClass('character-button-outline').text('Critical');
-						isCritical = true;
-					}else{
-						$item.find('.limited-list-item-callout').remove();
-					}
-
-					$item.find('.remove').remove();
-					$list.append($item);
-				}
-
-				if (attack.dcSave.length >= 1) {
-					var template = $.grab('config', 'templates').quickMenuItem,
-						$item = $(template.format('', attack.dcSave, 'Saving Throw', 'Status'));
-
-					$item.find('.limited-list-item-callout').remove();
-					$item.find('.remove').remove();
-					$list.append($item);
-				}
-
-
-				$list.find('.quick-menu-item:last-child > .quick-menu-item-label').after('<hr />');
-
-				if (attack.rolls.length >= 1) {
-					var attacks = false, totalDamage = 0;
-
-					attack.rolls.forEach(function(roll, index) {
-						var status = _this.roll(roll, isCritical),
-							template = $.grab('config', 'templates').quickMenuItem;
-							
-						if (status !== false) {
-							var damage = (typeof attack.rolls[index + 1] === 'undefined' ? '' : attack.rolls[index + 1])
-								$item = $(template.format('', '<strong>{0}</strong> {1}'.format(status.total, damage), 'Rolls: {0}'.format(status.summary), ''));
-
-							$item.find('.limited-list-item-callout').remove();
-							$item.find('.remove').remove();
-							$list.append($item);
-
-							attacks = true; totalDamage += status.total;
-						}else if (/ or /.test(roll) && attacks) {
-							if (typeof attack.rolls[index + 1] !== 'undefined') {
-								var $item = $(template.format('', '{0} Total Damage'.format(totalDamage), '', ''));
-
-								$item.find('.limited-list-item-callout').remove();
-								$item.find('.remove').remove();
-								$item.addClass('tb-quick-menu-total').find('.quick-menu-item-label').after('<hr />');
-								$list.append($item);
-
-								totalDamage = 0;
-							}
-						}
-					});
-
-					if (totalDamage >= 1) {
-						var template = $.grab('config', 'templates').quickMenuItem;
-							$item = $(template.format('', '{0} Total Damage'.format(totalDamage), '', ''));
-
-						$item.addClass('tb-quick-menu-total').find('.limited-list-item-callout').remove();
-						$item.find('.remove').remove();
-						$list.append($item);
-					}
-				}
-
-				$content.append($list);
-
-				var manager = $.grab('config', 'templates').manager,
-					$manager = $(manager.format('tbAttackDesc', '{0} Description'.format(attack.name)));
-
-				$manager.find('.tb-manager-content').append(attack.description);
-
-				$content.append($manager);
-
-				return $content[0].outerHTML;
-			}
-
-			this.modal = function(attack, monster) {
-				$.modal(_this.build(attack), monster, [{
-					label: "Reroll",
-					className: '',
-					callback: function() {
-						$('.tb-modal .fullscreen-modal-content').html(_this.build(attack));
-						return false;
-					}
-				},{ label: "Cancel" }]);
-
-				$('.tb-modal').addClass('tb-modal-small');
-			}
-
-			this.roll = function (dice, isCritical) {
-				var diceRolls = droll.parse(dice),
-					rolls = "";
-
-				if (diceRolls !== false) {
-					var formula = '{0}d{1}{2}{3}'.format(diceRolls.numDice, diceRolls.numSides, (diceRolls.modifier >= 0 ? '+' : ''), diceRolls.modifier)
-					if (isCritical) {
-						diceRolls.numDice = diceRolls.numDice * 2; 
-						formula = '{0}d{1}{2}{3}'.format(diceRolls.numDice, diceRolls.numSides, (diceRolls.modifier > 0 ? '+' : ''), (diceRolls.modifier > 0 ? diceRolls.modifier : ''));
-					}
-					diceRolls = droll.roll(formula);
-
-					for (var iRoll = 0; iRoll < diceRolls.rolls.length; iRoll++) {
-						rolls += "+ {0} ".format(diceRolls.rolls[iRoll]);
-					}
-					rolls = rolls.substring(2);
-
-					if (diceRolls.modifier != 0) {
-						rolls = "( {0}) + {1}".format(rolls, diceRolls.modifier);
-					}
-
-					var content = {
-							rolls: diceRolls.rolls,
-							summary: rolls,
-							total: diceRolls.total
-						};
-
-					return content;
-				}
-
-				return false
-			};
-
-			this.init = function () {
-				_this.add();
-				return this;
-			};
-
-			return this.init();
-		};
-		return new _Monsters();
-	}());
-
-
-
-	Toolbox.Initiative = (function() {
-		function _Initiative() {
-			var _this = this;
-			var $manager;
-
-			this.add = function() {
-				Toolbox.Container.append('tbGroupInitiative', 'Initiative Tracker', '');
-
-				$manager = $('#tbGroupInitiative');
-				$manager.find('.tb-manager-header > .limited-list-item-callout > button').remove();
-				$manager.find('.tb-manager-content').append('<ul class="quick-menu quick-menu-tier-2"></ul>');
-
-				_this.sortable($manager.find('.tb-manager-content > ul'));
-			};
-
-			this.clear = function() {
-				$manager.find('.tb-manager-content').empty().append('<ul class="quick-menu quick-menu-tier-2"></ul>');
-				_this.sortable($manager.find('.tb-manager-content > ul'));
-			};
-
-			this.create = function(player) {
-				Toolbox.settings.initiative.push(player);
-				_this.build(player);
-				_this.save();
-			};
-
-			this.build = function(player) {
-				var template = $.grab('config', 'templates').quickMenuItem,
-					$item = $(template.format(player.url, player.name, player.player, 'View'));
-
-				$item.find('div.quick-menu-item-label > .limited-list-item-callout > a').attr('href', player.url);
-				$item.find('.remove').on('click', _this.remove);
-
-				if (player.children.length > 0) {
-					$item.find('div.quick-menu-item-label > .limited-list-item-callout').remove();
-					$item.find('div.quick-menu-item-label').append('<div class="quick-menu-item-trigger"></div>');
-					$item.append('<ul class="quick-menu quick-menu-tier-3"></ul>');
-
-					$item.find('div.quick-menu-item-label .quick-menu-item-trigger').on('click', function(evt) {
-						var $listItem = $(this).closest('li.quick-menu-item'),
-							index = $listItem.index();
-
-						Toolbox.settings.initiative[index]['open'] = !$listItem.hasClass('quick-menu-item-opened');
-						_this.save();
-					});
-
-					if (typeof player.open !== undefined && player.open) {
-						$item.removeClass('quick-menu-item-closed').addClass('quick-menu-item-opened');
-					}
-
-					$.each(player.children, function(imonster, monster) {
-						if (monster != null) { 
-							var percentage = ((monster.hp.current  * 1) / (monster.hp.max * 1)) * 100,
-								$monster = $($.grab('config', 'templates').monster.format(monster.url, monster.name, monster.ac, monster.xp, monster.hp.max, monster.hp.current, '{0}%'.format(percentage)));
-							$monster.find('input').attr('max', monster.hp.max);
-							$monster.find('.remove').on('click', _this.remove);
-							_this.bind($monster);
-							_this.tooltip($monster);
-							$item.find('.quick-menu').append($monster);
-						}
-					});
-
-					_this.sortable($item.find('ul.quick-menu'));
-				}
-
-
-				$manager.find('.tb-manager-content > ul.quick-menu').append($item);
-			};
-
-			this.bind = function($monster) {
-				var saveContent;
-				$monster.find('.tb-monster-health').on('mousewheel DOMMouseScroll', function(evt) {
-					evt.preventDefault();
-					var $input = $(this).find('input[type="number"]'),
-						value = ($input.val() * 1) + evt.deltaY;
-
-					if (value > $input.attr('max') * 1) {
-						value = $input.attr('max');
-					}else if (value < 0) {
-						value = 0;
-					}
-
-					$input.val(value);
-					$(this).attr('data-hp-current', $input.val());
-					
-					_this.update($monster);
-
-					clearTimeout(saveContent);
-					saveContent = setTimeout(function() {
-						_this.save();
-					}, 1000);
-				}).on('click', function() {
-					var content = ['<div class="tb-form-field">',
-							'<label>Update Health</label>',
-							'<input type="number" name="monster-health" class="tb-control" autocomplete="off" placeholder="Monster Health" value="0">',
-						'</div>'].join('');
-
-					$.modal(content, 'Update Health', [{
-						label: "Update",
-						className: '',
-						callback: function() {
-							_this.update($monster, $('.tb-modal').find('input[name="monster-health"]').val());
-							_this.save();
-						}
-					},{ label: "Cancel" }]);
-					
-					$('.tb-modal').addClass('tb-modal-small');
-
-					$('.tb-modal').find('input[name="monster-health"]').on('input', function() {
-						var $input = $(this),
-							value = $input.val() * 1;
-
-						$input.closest('.tb-form-field').removeClass('tb-damage tb-heal');
-						if (value < 0) {
-							$input.closest('.tb-form-field').addClass('tb-damage');
-						}else if (value > 0) {
-							$input.closest('.tb-form-field').addClass('tb-heal');
-						}
-					});
-				});
-			};
-
-			this.tooltip = function($monster) {
-				$monster.find('a.monster-page').on('mouseover', function(evt) {
-					var $tooltip = $('.tb-toolbox > #tbTooltip'),
-						tooltipURL = $(this).attr('href');
-
-				    $tooltip.load('{0} .mon-stat-block'.format(tooltipURL), function() {
-				        $tooltip.append('<div class="remove">&times;</div>');
-				        $('.tb-toolbox').append($tooltip);
-				    });
-				});
-			};
-
-			this.update = function($monster, modalValue) {
-				var value = $monster.find('.tb-monster-health > input[name="encounter-monster-max-health"]').val() * 1,
-					maxHealth = $monster.find('.tb-monster-health > input[name="encounter-monster-max-health"]').attr('max') * 1,
-					percentage = ((value * 1) / maxHealth) * 100;
-
-				if (typeof modalValue !== 'undefined') {
-					value += (modalValue * 1);
-					percentage = ((value * 1) / maxHealth) * 100;
-				}
-
- 				$monster.find('.tb-monster-health > input[name="encounter-monster-max-health"]').val(value);
-				$monster.find('.tb-monster-health').attr('data-hp-current', value);
-				$monster.find('.tb-health-bar').css('width', '{0}%'.format(percentage));
-
-				var index = $monster.closest('ul.quick-menu-tier-3').closest('li.quick-menu-item').index(),
-					monster = $monster.closest('li.quick-menu-item').index();
-
-				Toolbox.settings.initiative[index].children[monster].hp.current = value;
-			}
-
-			this.sortable = function($menu) {
-				$menu.sortable({
-					animation: 100,
-					onUpdate: function (evt) {
-						if ($(evt.target).hasClass('quick-menu-tier-3')) {
-							var index = $(evt.target).closest('li.quick-menu-item').index();
-							Toolbox.settings.initiative[index].children.move(evt.oldIndex, evt.newIndex);
-						}else{
-							Toolbox.settings.initiative.move(evt.oldIndex, evt.newIndex);
-						}
-
-						_this.save();
-					}
-				});
-			};
-
-			this.save = function(evt) {
-				Toolbox.save('initiative', Toolbox.settings.initiative);
-			};
-
-			this.reCalcDesc = function($list, skip) {
-				var monsters = 0, xp = 0,
-					description = 'Monsters: {0} | XP: {1}'
-
-				$list.find('li').each(function(index, item) {
-					if (skip != index) {
-						monsters++;
-						xp += ($(item).find('.quick-menu-item-link').attr('data-xp') * 1);
-					}
-				});
-
-
-				$list.closest('.quick-menu-item').find('.quick-menu-item-link > span').text(description.format(monsters, xp));
-				return description.format(monsters, xp);
-			};
-
-			this.remove = function(evt) {
-				var index = $(evt.target).closest('li').index();
-				if ($(evt.target).closest('ul').hasClass('quick-menu-tier-3')) {
-					var monster = $(evt.target).closest('li').index();
-					index = $(evt.target).closest('ul').closest('li').index();
-
-					Toolbox.settings.initiative[index].player = _this.reCalcDesc($(evt.target).closest('ul'), monster);
-					Toolbox.settings.initiative[index].children.splice(monster, 1);
-				}else{
-					Toolbox.settings.initiative.splice(index, 1);
-				}
-
-				$(evt.target).closest('li').remove();
-				_this.save();
-			};
-
-			this.init = function () {
-				_this.add();
-				return this;
-			};
-
-			return this.init();
-		};
-		return new _Initiative();
-	}());
-
-
 
 	Toolbox.Players = (function() {
 		function _Players() {
@@ -946,11 +458,9 @@
 		                            url: $item.find('.ddb-campaigns-character-card-footer-links-item-view').attr('href'),
 		                            name: $item.find('.ddb-campaigns-character-card-header-upper-character-info-primary').text(), 
 		                            player: $item.find('.ddb-campaigns-character-card-header-upper-character-info-secondary').eq(1).text()
-		                        },
-		                        $player = $(template.format(player.url, player.name, player.player, 'Add'));
-		                        
-							$player.find('.limited-list-item-callout > .character-button').on('click', _this.addToInitiative);
-		                    $list.append($player);
+		                        };
+
+		                    $list.append(template.format(player.url, player.name, player.player, 'Add'));
 		                });
 		            });
 		        }
@@ -1003,29 +513,12 @@
 				_this.save(player);
 			};
 
-			this.clear = function() {
-				$manager.find('.tb-manager-content > .collapsible:last-child > .collapsible-body > ul.quick-menu > li').remove();
-			};
-
 			this.build = function(player) {
 				var template = $.grab('config', 'templates').quickMenuItem,
 					$item = $(template.format(player.url, player.name, player.player, 'Add'));
 
 				$item.find('.remove').on('click', _this.remove);
-				$item.find('.limited-list-item-callout > .character-button').on('click', _this.addToInitiative);
 				$manager.find('.tb-manager-content > .collapsible:last-child > .collapsible-body > ul.quick-menu').append($item);
-			};
-
-			this.addToInitiative = function(evt) {
-				var $player = $(evt.target).closest('li.quick-menu-item'),
-					player = {
-						url: $player.find('.quick-menu-item-link').attr('data-href'),
-						name: $player.find('.quick-menu-item-link').clone().children().remove().end().text(),
-						player: $player.find('.quick-menu-item-link > span').text(),
-						children: []
-					};
-
-				Toolbox.Initiative.create(player);
 			};
 
 			this.save = function(player) {
@@ -1053,8 +546,6 @@
 		return new _Players();
 	}());
 
-
-
 	Toolbox.Encounters = (function() {
 		function _Encounters() {
 			var _this = this;
@@ -1066,7 +557,7 @@
 				$manager = $('#tbGroupEncounters');
 				$manager.find('.tb-manager-header > .limited-list-item-callout').on('click', _this.modal);
 
-				_this.sortable($manager.find('.tb-manager-content'));
+				_this.sortable();
 			};
 
 			this.parse = function() {
@@ -1203,20 +694,15 @@
 						name: $modal.find('input[name="encounter-monster-name"]').val(),
 						ac: $modal.find('input[name="encounter-monster-ac"]').val(),
 						xp: $modal.find('input[name="encounter-monster-xp"]').val(),
-						hp: {
-							max: $modal.find('input[name="encounter-monster-max-health"]').val(),
-							current: $modal.find('input[name="encounter-monster-max-health"]').val()
-						}
+						hp: $modal.find('input[name="encounter-monster-max-health"]').val()
 					};
 
 				if (name.length <= 0) {
 					name = monster.name;
 				}
 
-				var index = Toolbox.settings.encounters.findIndex(function (array) {
-					console.log(array.name, name);
-					return array.name == name;
-				}, name);
+				var index = Toolbox.settings.encounters.findIndex(x => x.name == name);
+
 
 				for (var iMonsters = 1; iMonsters <= quanity; iMonsters++) {
 					monsters.push({
@@ -1224,10 +710,7 @@
 						name: monster.name,
 						ac: monster.ac,
 						xp: monster.xp,
-						hp: {
-							max: _this.calc(monster.hp.max),
-							current: _this.calc(monster.hp.max)
-						}
+						hp: _this.calc(monster.hp)
 					});
 				}
 
@@ -1248,7 +731,6 @@
 				}
 
 				_this.build(encounter, index);
-				_this.save();
 			};
 
 			this.calc = function(hp) {
@@ -1266,7 +748,6 @@
 					template = $.grab('config', 'templates').monster;
 
 				$encounter.find('.collapsible-body').append('<ul class="quick-menu quick-menu-tier-2"></ul>');
-				$encounter.find('.collapsible-header-el > .collapsible-heading-callout button').on('click', _this.addToInitiative);
 				$encounter.find('.collapsible-body').append($.grab('config', 'templates').managerRemove.format('Delete Encounter'));
 
 				if (index >= 0) {
@@ -1275,10 +756,8 @@
 					$encounter.find('.collapsible-body .tb-manager-item-actions > .tb-manager-item-remove').on('click', _this.remove);
 					$encounter.on('click', '.collapsible-header', function(evt) {
 						var index = $(this).closest('.collapsible').index();
-						if (!$(evt.target).hasClass('character-button')) {
-							Toolbox.settings.encounters[index].open = !Toolbox.settings.encounters[index].open;
-							_this.save();
-						}
+						Toolbox.settings.encounters[index].open = !Toolbox.settings.encounters[index].open;
+						_this.save();
 					});
 				}
 
@@ -1287,95 +766,26 @@
 				}
 
 				var $list = $encounter.find('.collapsible-body > ul.quick-menu');
-				$list.find('li').remove();
+				$list.html('');
 
 				encounter.monsters.forEach(function(monster) {
-					var $monster = $(template.format(monster.url, monster.name, monster.ac, monster.xp, monster.hp.max, monster.hp.max, '100%'));
-
-					$monster.removeClass('tb-example');
-					$monster.find('.tb-health-bar').remove();
-
-					_this.bind($monster.find('input[type="number"]'));
-					$list.append($monster);
+					$list.append($(template.format(monster.url, monster.name, monster.ac, monster.xp, monster.hp, monster.hp)));
 				});
 
 				if (index < 0) {
 					$manager.find('.tb-manager-content').append($encounter);
-					_this.sortable($list);
 				}
 			};
 
-			this.clear = function() {
-				$manager.find('.tb-manager-content > .collapsible').remove();
-			}
-
-			this.sortable = function($menu) {
-				var handle = '.collapsible-header';
-
-				if ($menu.hasClass('quick-menu')) {
-					handle = '.quick-menu-item';
-				}
-
-			    $menu.sortable({
+			this.sortable = function() {
+			    $manager.find('.tb-manager-content').sortable({
 			        animation: 100,
-			        handle: handle,
+			        handle: ".collapsible-header",
 			        onUpdate: function (evt) {
-			        	if ($(evt.target).hasClass('tb-manager-content')) {
-			        		Toolbox.settings.encounters.move(evt.oldIndex, evt.newIndex);
-			        	}else{
-			        		var index = $(evt.target).closest('.collapsible').index();
-			        		Toolbox.settings.encounters[0].monsters.move(evt.oldIndex, evt.newIndex);
-			        	}
-
-						_this.save();
+			        	Toolbox.settings.encounters.move(evt.oldIndex, evt.newIndex);
+			        	_this.save();
 			        }
 			    });
-			};
-
-			this.bind = function($input) {
-				var currentHP = 0;
-				$input.on('focus', function(evt) {
-				    currentHP = $(this).val() * 1;
-				})
-				$input.on('keypress', function(evt) {
-				    if (evt.which == 13) {
-				        $(this).blur();
-				    }
-				});
-				$input.on('blur', function(evt) {
-				    var newValue = $(this).val() * 1;
-				    if (newValue < 0) {
-				        $(this).val(currentHP + newValue);
-				        console.log(currentHP, newValue)
-				    }
-				    currentHP = 0;
-				});
-			};
-
-			this.addToInitiative = function(evt) {
-				var $encounter = $(evt.target).closest('.collapsible'),
-					encounter = Toolbox.settings.encounters[$encounter.index()],
-					player = {
-						url: '#{0}'.format(encounter.name),
-						name: encounter.name, 
-						player: '',
-						children: encounter.monsters
-					};
-
-				encounter['xp'] = 0;
-
-				player.children.forEach(function(monster) {
-					encounter['xp'] += (monster.xp * 1);
-					monster.hp.current = monster.hp.max;
-				});
-
-				player.player = "Monsters: {0} | XP: {1}".format(player.children.length, encounter.xp);
-
-				Toolbox.Initiative.create(player);
-			};
-
-			this.save = function() {
-				Toolbox.save('encounters', Toolbox.settings.encounters);
 			};
 
 			this.remove = function(evt) {
@@ -1387,6 +797,11 @@
 
 				_this.save();
 			};
+
+			this.save = function() {
+				Toolbox.save('encounters', Toolbox.settings.encounters);
+			};
+
 			this.init = function () {
 				_this.add();
 				return this;
@@ -1397,21 +812,17 @@
 		return new _Encounters();
 	}());
 
-
-
 	Toolbox.AsyncDiceRoller = (function() {
 		function _AsyncDiceRoller() {
 			var _this = this;
 
 			this.scan = function () {
-				//var inputstring = "/([1-9]\\d*)?d([1-9]\\d*)\\s*([+-−]\\s*\\d+)?/i";
-				var inputstring = "/([+−-]\\d+)|(([1-9]\\d*)?d([1-9]\\d*)\\s*([+-−]\\s*\\d+)?)/i";
+				var inputstring = "/([1-9]\\d*)?d([1-9]\\d*)\\s*([+-−]\\s*\\d+)?/i";
 				var flags = inputstring.replace(/.*\/([gimy]*)$/, '$1');
 				var pattern = inputstring.replace(new RegExp('^/(.*?)/' + flags + '$'), '$1');
 				var regex = new RegExp(pattern, flags);
 
 				$('body').unmark({
-					className: 'tb-roller',
 					done: function() {
 						$('body').markRegExp(regex, {
 							element: 'span',
@@ -1421,18 +832,16 @@
 								'div.tb-modal *'
 							],
 							each: function(item) {
-								$(item).attr('title', 'Roll {0}'.format($(item).text()));
-								//_this.bind($(item));
+								_this.bind($(item));
 							}
 						});
 					}
 				});
-
-				Toolbox.Monsters.scan();
 			};
 
-			this.bind = function () {
-				$('body').on('click', '.tb-roller', function() {
+			this.bind = function ($item) {
+				$item.attr('title', 'Roll {0}'.format($item.text()));
+				$item.on('click', function() {
 					var dice = $(this).text().replace(/ /g,''),
 				        title = 'Dice Roller';
 
@@ -1450,11 +859,6 @@
 			this.roll = function (dice, title) {
 				var diceRolls = droll.roll(dice.replace('−', '-')),
 					rolls = "";
-
-				if (diceRolls == false) {
-					dice = "1d20{0}".format(dice);
-					diceRolls = droll.roll(dice);
-				}
 
 				if (diceRolls !== false) {
 					for (var iRoll = 0; iRoll < diceRolls.rolls.length; iRoll++) {
@@ -1475,7 +879,6 @@
 			};
 
 			this.init = function () {
-				_this.bind();
 				return this;
 			};
 
@@ -1484,112 +887,7 @@
 		return new _AsyncDiceRoller();
 	}());
 
-
-
-	Toolbox.Loader = (function() {
-		function _Loader() {
-			var _this = this;
-			var $manager;
-
-			this.build = function() {
-				_this.notes();
-				_this.initiative();
-				_this.players();
-				_this.encounters();
-				_this.menus();
-			};
-
-			this.menus = function() {
-				Toolbox.config.storage.get("menus", function(items) {
-			        if (typeof items.menus !== 'undefined') {
-			        	Toolbox.settings.menus = items.menus;
-
-			        	$('body').removeClass('tb-shown');
-						$('#tbGroupNotes').addClass('tb-manager-group-collapsed');
-						$('#tbGroupInitiative').addClass('tb-manager-group-collapsed');
-						$('#tbGroupPlayers').addClass('tb-manager-group-collapsed');
-						$('#tbGroupEncounters').addClass('tb-manager-group-collapsed');
-
-						for (const [key, open] of Object.entries(Toolbox.settings.menus)) {
-							$('#{0}'.format(key)).addClass('tb-manager-group-collapsed').removeClass('tb-manager-group-opened');
-							if (open) {
-								$('#{0}'.format(key)).toggleClass('tb-manager-group-collapsed tb-manager-group-opened');
-							}
-						}
-
-						if (Toolbox.settings.menus.tbContainer) {
-							$('body').addClass('tb-shown');
-						}
-			        }
-			    });
-			};
-
-			this.notes = function() {
-				Toolbox.config.storage.get("notes", function(items) {
-			        if (typeof items.notes !== 'undefined') {
-			        	Toolbox.Notes.clear();
-
-			        	Toolbox.settings.notes = items.notes;
-			        	Toolbox.settings.notes.forEach(function(note) {
-			        		Toolbox.Notes.build(note);
-			        	});
-			        }
-			    });
-			};
-
-			this.initiative = function() {
-			    Toolbox.config.storage.get("initiative", function(items) {
-			        if (typeof items.initiative !== 'undefined') {
-			        	Toolbox.Initiative.clear();
-
-			        	Toolbox.settings.initiative = items.initiative;
-			            Toolbox.settings.initiative.forEach(function(player) {
-			                Toolbox.Initiative.build(player);
-			            });
-			        }
-			    });
-			};
-
-			this.players = function() {
-				Toolbox.config.storage.get("players", function(items) {
-				if (typeof items.players !== 'undefined') {
-						Toolbox.Players.clear();
-
-						Toolbox.settings.players = items.players;
-						Toolbox.settings.players.forEach(function(player) {
-							Toolbox.Players.build(player);
-						});
-					}
-				});
-			};
-
-			this.encounters = function() {
-				Toolbox.config.storage.get("encounters", function(items) {
-			        if (typeof items.encounters !== 'undefined') {
-						Toolbox.Encounters.clear();
-						
-			            Toolbox.settings.encounters = items.encounters;
-			            Toolbox.settings.encounters.forEach(function(encounter) {
-			                Toolbox.Encounters.build(encounter, -1);
-			            });
-			        }
-			    });
-			}
-
-			this.init = function () {
-				_this.build();
-				return this;
-			};
-
-			return this.init();
-		};
-		return new _Loader();
-	}());
-
-
-    $.log(Toolbox);
-    Toolbox.Encounters.parse();
-    Toolbox.AsyncDiceRoller.scan();
+	$.log(Toolbox);
 
 	// Chrome Extension Event Listener
 	chrome.extension.onMessage.addListener(function(msg, sender, sendResponse) {
@@ -1597,9 +895,39 @@
         	Toolbox.Encounters.parse();
     	} else if (msg.action == 'tb-scan-page') {
 			Toolbox.AsyncDiceRoller.scan();
-	    }else if (msg.action == 'tb-rebuild') {
-            Toolbox.Loader.build();
-        }
+	    }
 	});
+
+	//Toolbox.config.storage.clear();
+
+	// GET NOTES
+    Toolbox.config.storage.get("notes", function(items) {
+        if (typeof items.notes !== 'undefined') {
+        	Toolbox.settings.notes = items.notes;
+        	Toolbox.settings.notes.forEach(function(note) {
+        		Toolbox.Notes.build(note);
+        	});
+        }
+    });
+
+	// GET PLAYERS
+    Toolbox.config.storage.get("players", function(items) {
+        if (typeof items.players !== 'undefined') {
+        	Toolbox.settings.players = items.players;
+        	Toolbox.settings.players.forEach(function(player) {
+        		Toolbox.Players.build(player);
+        	});
+        }
+    });
+
+	// GET PLAYERS
+    Toolbox.config.storage.get("encounters", function(items) {
+        if (typeof items.encounters !== 'undefined') {
+        	Toolbox.settings.encounters = items.encounters;
+        	Toolbox.settings.encounters.forEach(function(player) {
+        		Toolbox.Encounters.build(player, -1);
+        	});
+        }
+    });
 
 }(window.Toolbox = window.Toolbox || {}, jQuery));

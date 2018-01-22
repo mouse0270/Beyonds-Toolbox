@@ -159,7 +159,10 @@
 					name = monster.name;
 				}
 
-				var index = Toolbox.settings.encounters.findIndex(x => x.name == name);
+				var index = Toolbox.settings.encounters.findIndex(function (array) {
+					console.log(array.name, name);
+					return array.name == name;
+				}, name);
 
 
 				for (var iMonsters = 1; iMonsters <= quanity; iMonsters++) {
