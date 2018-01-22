@@ -69,6 +69,7 @@
 				Toolbox.config.storage.get("players", function(items) {
 				if (typeof items.players !== 'undefined') {
 						Toolbox.settings.players = items.players;
+						Toolbox.settings.players.clear();
 						Toolbox.settings.players.forEach(function(player) {
 							Toolbox.Players.build(player);
 						});
@@ -80,8 +81,8 @@
 				Toolbox.config.storage.get("encounters", function(items) {
 			        if (typeof items.encounters !== 'undefined') {
 			            Toolbox.settings.encounters = items.encounters;
-			            Toolbox.settings.encounters.forEach(function(player) {
-			                Toolbox.Encounters.build(player, -1);
+			            Toolbox.settings.encounters.forEach(function(encounter) {
+			                Toolbox.Encounters.build(encounter, -1);
 			            });
 			        }
 			    });

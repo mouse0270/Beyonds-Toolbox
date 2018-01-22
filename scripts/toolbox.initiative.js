@@ -175,12 +175,29 @@
 				Toolbox.save('initiative', Toolbox.settings.initiative);
 			};
 
+			this.reCalcDesc = function($list, skip) {
+				var monsters = 0, xp = 0,
+					description = 'Monsters: {0} | XP: {1}'
+
+				$list.find('li').each(function(index, item) {
+					if (skip != index) {
+						monsters++;
+						xp += ($(item).find('.quick-menu-item-link').attr('data-xp') * 1);
+					}
+				});
+
+
+				$list.closest('.quick-menu-item').find('.quick-menu-item-link > span').text(description.format(monsters, xp));
+				return description.format(monsters, xp);
+			};
+
 			this.remove = function(evt) {
 				var index = $(evt.target).closest('li').index();
 				if ($(evt.target).closest('ul').hasClass('quick-menu-tier-3')) {
 					var monster = $(evt.target).closest('li').index();
 					index = $(evt.target).closest('ul').closest('li').index();
 
+					Toolbox.settings.initiative[index].player = _this.reCalcDesc($(evt.target).closest('ul'), monster);
 					Toolbox.settings.initiative[index].children.splice(monster, 1);
 				}else{
 					Toolbox.settings.initiative.splice(index, 1);
