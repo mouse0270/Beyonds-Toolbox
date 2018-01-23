@@ -58,7 +58,6 @@
 							$monster.find('input').attr('max', monster.hp.max);
 							$monster.find('.remove').on('click', _this.remove);
 							_this.bind($monster);
-							_this.tooltip($monster);
 							$item.find('.quick-menu').append($monster);
 						}
 					});
@@ -120,18 +119,6 @@
 							$input.closest('.tb-form-field').addClass('tb-heal');
 						}
 					});
-				});
-			};
-
-			this.tooltip = function($monster) {
-				$monster.find('a.monster-page').on('mouseover', function(evt) {
-					var $tooltip = $('.tb-toolbox > #tbTooltip'),
-						tooltipURL = $(this).attr('href');
-
-				    $tooltip.load('{0} .mon-stat-block'.format(tooltipURL), function() {
-				        $tooltip.append('<div class="remove">&times;</div>');
-				        $('.tb-toolbox').append($tooltip);
-				    });
 				});
 			};
 

@@ -43,12 +43,6 @@
 	    $(this).closest('li').toggleClass('quick-menu-item-closed quick-menu-item-opened');
 	});
 
-	
-	$('body').on('click', '.tb-toolbox > #tbTooltip > .remove', function(evt) {
-	    evt.preventDefault();
-	    $(this).closest('.tb-toolbox').find('#tbTooltip > div').remove();
-	});
-
 	// Logging function, for debugging mode
 	$.log = function(message) {
 		if (Toolbox.config.debug && (typeof window.console !== 'undefined' && typeof window.console.log !== 'undefined') && console.debug) {

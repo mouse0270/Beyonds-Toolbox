@@ -43,6 +43,28 @@ span.tb-roller {
     font-weight: 600;
 }
 
+span.tb-creator {
+    color: var(--main-color);
+    cursor: pointer; 
+    font-weight: 600;
+    padding-left: 16px;
+    position: relative;
+}
+span.tb-creator:before {
+    background-color: var(--main-color);
+    background-image: none;
+    content: '';
+    height: 14px;
+    display: inline-block;
+    left: 8px;
+    -webkit-mask: url('chrome-extension://__MSG_@@extension_id__/webaccessible/images/icons/logo.svg');
+    -webkit-mask-size: cover;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    width: 14px;
+}
+
 /* INPUTS
 =================================*/
 .tb-form-field {
@@ -161,7 +183,7 @@ span.tb-roller {
 @media (min-width: 1024px) {
     body.tb-shown nav.main .b-list>li#nav-toolbox,
     nav.main .b-list>li#nav-toolbox:hover {
-        background-image: linear-gradient(to bottom,rgb(241, 95, 95),rgb(157, 21, 21));
+        background-image: linear-gradient(to bottom, #fa8ea1, #d8445e);
         border-top: 1px solid rgb(253, 148, 148);
         box-shadow: 0 -3px 24px 0 #9D1515;
     }
@@ -195,6 +217,7 @@ body.tb-shown .builder-navigation-large-action-next {
 }
 .tb-toolbox .subsection-group-inner .subsection-group-header {
 	background-image: linear-gradient(to bottom,rgb(241, 95, 95),rgb(157, 21, 21));
+    background-image: linear-gradient(to bottom, #fa8ea1, #d8445e);
     border-top: 1px solid rgb(253, 148, 148);
     box-shadow: 0 -3px 24px 0 #9D1515;
     position: relative;	
@@ -286,7 +309,7 @@ body.tb-shown .builder-navigation-large-action-next {
 .tb-manager-group .tb-manager-content ul.quick-menu .quick-menu-item {
 	position: relative;
 }
-.tb-manager-group .tb-manager-content ul.quick-menu .quick-menu-item .quick-menu-item-link {
+.tb-manager-group .tb-manager-content ul.quick-menu.quick-menu-tier-3 .quick-menu-item .quick-menu-item-link {
 	padding-right: 70px;
 }
 .tb-manager-group .tb-manager-content ul.quick-menu .quick-menu-item .quick-menu-item-link .quick-menu-item-meta {
@@ -386,7 +409,7 @@ body.tb-shown .builder-navigation-large-action-next {
 .tb-toolbox .quick-menu .quick-menu .quick-menu-item:hover > .quick-menu-item-label > .remove {
     padding-left: 15px;
 }
-.tb-toolbox .quick-menu .quick-menu-item:hover > .quick-menu-item-label > .quick-menu-item-link {
+.tb-toolbox .quick-menu.quick-menu-tier-3 .quick-menu-item:hover > .quick-menu-item-label > .quick-menu-item-link {
 	padding-right: 110px;
 }
 .tb-toolbox .quick-menu .quick-menu-item .quick-menu-item-label .quick-menu-item-link > a.monster-page {

@@ -207,8 +207,26 @@
 				return false
 			};
 
+			this.tooltip = function() {
+				$('body').on('mouseover', 'a.monster-page', function(evt) {
+					var $tooltip = $('.tb-toolbox > #tbTooltip'),
+						tooltipURL = $(this).attr('href');
+
+				    $tooltip.load('{0} .mon-stat-block'.format(tooltipURL), function() {
+				        $tooltip.append('<div class="remove">&times;</div>');
+				        $('.tb-toolbox').append($tooltip);
+				    });
+				}).on('mouseleave', '.tb-toolbox', function(evt) {
+					$('.tb-toolbox > #tbTooltip').html('');
+				}).on('click', '.tb-toolbox > #tbTooltip > .remove', function(evt) {
+	   				 evt.preventDefault();
+	    			$(this).closest('.tb-toolbox').find('#tbTooltip > div').remove();
+				});
+			};
+
 			this.init = function () {
 				_this.add();
+				_this.tooltip();
 				return this;
 			};
 
