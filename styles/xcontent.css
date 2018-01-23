@@ -1,9 +1,13 @@
+:root {
+  --main-color: #E91E63;
+}
+
 body .fullscreen-modal-overlay {
 	z-index: 1032;
 }
 
 body .ddb-pronunciation-clip.tb-audio {
-    background-color: rgb(130, 32, 0);
+    background-color: var(--main-color);
     background-image: none;
     -webkit-mask: url(chrome-extension://__MSG_@@extension_id__/webaccessible/images/icons/sound-icon.svg);
     -webkit-mask-size: cover;
@@ -34,7 +38,7 @@ span.skill-item-modifier,
 div.attack-item-callout-tohit-value,*/
 span.tb-roller-attack,
 span.tb-roller {
-    color: rgb(188, 15, 15);
+    color: var(--main-color);
     cursor: pointer; 
     font-weight: 600;
 }
