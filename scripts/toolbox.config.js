@@ -14,7 +14,7 @@
 				'<div class="subsection-group">',
 					'<div class="subsection-group-inner">',
 						'<div class="subsection-group-header">',
-							'<div class="subsection-group-heading">{0}</div>',
+							'<div class="subsection-group-heading">{0}<span class="tb-dm-screen"></span></div>',
 							'<a href="#toolbox">&times;</a>',
 						'</div>',
 						'<div class="subsection-group-body">',

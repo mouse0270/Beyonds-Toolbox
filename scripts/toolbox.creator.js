@@ -24,7 +24,12 @@
 								'.user-interactions-profile-nickname'
 							],
 							each: function(item) {
-								//$(item).attr('title', 'Roll {0}'.format($(item).text()));
+								var $item = $(item);
+
+								if ($item.closest('.j-comment.comment.comment-normal').length >= 1) {
+									$item.closest('.j-comment.comment.comment-normal').addClass('user-role-tb-creator');
+									$item.closest('.j-comment.comment.comment-normal').find('.p-comment-statitem.forum-title').text('D&D Toolbox Creator')
+								}
 								//_this.bind($(item));
 							}
 						});

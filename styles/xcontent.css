@@ -30,6 +30,22 @@ body .ddb-pronunciation-clip.tb-audio.playing {
     -webkit-mask-size: cover;
 }
 
+.tb-dm-screen {
+    display: inline-block;
+    width: 42px;
+    height: 42px;
+    background-size: cover;
+    background-color: white;
+    margin-left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    position: absolute;
+    cursor: pointer;
+
+    -webkit-mask: url('chrome-extension://__MSG_@@extension_id__/webaccessible/images/icons/screen-close.svg');
+    -webkit-mask-size: cover;
+}
+
 /* DICE ROLLER
 =================================*/
 /*td.character-ability-modifier,
@@ -47,7 +63,7 @@ span.tb-creator {
     color: var(--main-color);
     cursor: pointer; 
     font-weight: 600;
-    padding-left: 16px;
+    padding-left: 20px;
     position: relative;
 }
 span.tb-creator:before {
@@ -56,13 +72,28 @@ span.tb-creator:before {
     content: '';
     height: 14px;
     display: inline-block;
-    left: 8px;
+    left: 10px;
     -webkit-mask: url('chrome-extension://__MSG_@@extension_id__/webaccessible/images/icons/logo.svg');
     -webkit-mask-size: cover;
     position: absolute;
     top: 50%;
     transform: translate(-50%,-50%);
     width: 14px;
+}
+.comment.user-role-tb-creator {
+    border: 2px solid var(--main-color);
+}
+.comment.user-role-tb-creator .p-comment-header {
+    background: var(--main-color) !important;
+}
+.comment.user-role-tb-creator .p-comment-statitem.forum-title {
+    text-shadow: rgba(0, 0, 0,0.3) 1px 1px 2px;
+    color: var(--main-color);
+    word-spacing: 2pt;
+    font-size: 14px;
+    text-align: center;
+    line-height: 1;
+    padding-bottom: 10px;
 }
 
 /* INPUTS
