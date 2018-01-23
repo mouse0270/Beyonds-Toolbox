@@ -13,12 +13,12 @@
 				$manager.find('.tb-manager-header > .limited-list-item-callout > button').remove();
 				$manager.find('.tb-manager-content').append('<ul class="quick-menu quick-menu-tier-2"></ul>');
 
-				_this.sortable($manager.find('.tb-manager-content > ul'));
+				_this.sortable($manager.find('.tb-manager-content > ul'), 'main');
 			};
 
 			this.clear = function() {
 				$manager.find('.tb-manager-content').empty().append('<ul class="quick-menu quick-menu-tier-2"></ul>');
-				_this.sortable($manager.find('.tb-manager-content > ul'));
+				_this.sortable($manager.find('.tb-manager-content > ul'), 'main');
 			};
 
 			this.create = function(player) {
@@ -63,7 +63,7 @@
 						}
 					});
 
-					_this.sortable($item.find('ul.quick-menu'));
+					_this.sortable($item.find('ul.quick-menu'), 'monster');
 				}
 
 
@@ -155,7 +155,7 @@
 				Toolbox.settings.initiative[index].children[monster].hp.current = value;
 			}
 
-			this.sortable = function($menu) {
+			this.sortable = function($menu, name) {
 				$menu.sortable({
 					animation: 100,
 					onUpdate: function (evt) {
@@ -187,7 +187,7 @@
 				});
 
 
-				$list.closest('.quick-menu-item').find('.quick-menu-item-link > span').text(description.format(monsters, xp));
+				$list.closest('.quick-menu-item').find('.quick-menu-item-link > span').eq(0).text(description.format(monsters, xp));
 				return description.format(monsters, xp);
 			};
 

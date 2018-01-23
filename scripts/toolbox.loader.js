@@ -6,6 +6,22 @@
 			var _this = this;
 			var $manager;
 
+			this.version = function() {
+				var manifestData = chrome.runtime.getManifest();
+				Toolbox.config.storage.get("version", function(items) {
+			        if (typeof items.menus !== 'undefined') {
+			        	Toolbox.settings.version = items.version;
+						if (manifestData.version != Toolbox.settings.version) {
+							Toolbox.config.storage.clear();
+							Toolbox.settings.version = manifestData.version;
+
+							Toolbox.save('version', Toolbox.settings.version);
+						}
+			        }
+					_this.build();
+			    });
+			}
+
 			this.build = function() {
 				_this.notes();
 				_this.initiative();
@@ -92,7 +108,7 @@
 			}
 
 			this.init = function () {
-				_this.build();
+				_this.version();
 				return this;
 			};
 

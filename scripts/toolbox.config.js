@@ -7,7 +7,7 @@
 
 	Toolbox.config = {
 		title: 'Toolbox',
-		debug: false,
+		debug: true,
 		storage: chrome.storage.sync,
 		templates: {
 			toolbox: ['<div class="subsection-group tb-toolbox">',
@@ -100,6 +100,7 @@
 	};
 
 	Toolbox.settings = {
+		version: '0.6.0',
 		menus: {
 			tbContainer: false,
 			tbGroupNotes: false,
@@ -118,6 +119,7 @@
 		obj[key] = data;
 
 		Toolbox.config.storage.set(obj, function() {
+			$.log(obj);
 			if (chrome.runtime.error) {
 				$.log(chrome.runtime);
 			}
