@@ -30,7 +30,7 @@ body .ddb-pronunciation-clip.tb-audio.playing {
     -webkit-mask-size: cover;
 }
 
-.tb-dm-screen {
+/*.tb-dm-screen {
     display: inline-block;
     width: 42px;
     height: 42px;
@@ -44,7 +44,7 @@ body .ddb-pronunciation-clip.tb-audio.playing {
 
     -webkit-mask: url('chrome-extension://__MSG_@@extension_id__/webaccessible/images/icons/screen-close.svg');
     -webkit-mask-size: cover;
-}
+}*/
 
 /* DICE ROLLER
 =================================*/

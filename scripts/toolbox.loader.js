@@ -12,7 +12,7 @@
 			        if (typeof items.menus !== 'undefined') {
 			        	Toolbox.settings.version = items.version;
 						if (manifestData.version != Toolbox.settings.version) {
-							Toolbox.config.storage.clear();
+							//Toolbox.config.storage.clear();
 							Toolbox.settings.version = manifestData.version;
 
 							Toolbox.save('version', Toolbox.settings.version);

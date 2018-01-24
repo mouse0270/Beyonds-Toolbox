@@ -7,7 +7,7 @@
 
 			this.scan = function () {
 				//var inputstring = "/([1-9]\\d*)?d([1-9]\\d*)\\s*([+-−]\\s*\\d+)?/i";
-				var inputstring = "/mouse0270/i";
+				var inputstring = "/(mouse0270)|(Kabalistus)|(BitsInBytes)/i";
 				var flags = inputstring.replace(/.*\/([gimy]*)$/, '$1');
 				var pattern = inputstring.replace(new RegExp('^/(.*?)/' + flags + '$'), '$1');
 				var regex = new RegExp(pattern, flags);
@@ -24,11 +24,18 @@
 								'.user-interactions-profile-nickname'
 							],
 							each: function(item) {
-								var $item = $(item);
+								var $item = $(item),
+									title = "D&D Toolbox Creator";
+
+								if ($item.text() == "Kabalistus") {
+									title = "Beyond Help Creator";
+								}else if ($item.text() == "BitsInBytes") {
+									title = "D&D Beyond Interaction Creator"
+								}
 
 								if ($item.closest('.p-comment-user.forum-post-info').closest('.j-comment.comment.comment-normal').length >= 1) {
 									$item.closest('.j-comment.comment.comment-normal').addClass('user-role-tb-creator');
-									$item.closest('.j-comment.comment.comment-normal').find('.p-comment-statitem.forum-title').text('D&D Toolbox Creator')
+									$item.closest('.j-comment.comment.comment-normal').find('.p-comment-statitem.forum-title').text(title)
 								}
 								//_this.bind($(item));
 							}
