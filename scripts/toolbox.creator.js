@@ -26,7 +26,7 @@
 							each: function(item) {
 								var $item = $(item);
 
-								if ($item.closest('.j-comment.comment.comment-normal').length >= 1) {
+								if ($item.closest('.p-comment-user.forum-post-info').closest('.j-comment.comment.comment-normal').length >= 1) {
 									$item.closest('.j-comment.comment.comment-normal').addClass('user-role-tb-creator');
 									$item.closest('.j-comment.comment.comment-normal').find('.p-comment-statitem.forum-title').text('D&D Toolbox Creator')
 								}
