@@ -26,16 +26,12 @@
         		});
 			};
 
-			this.modal = function(evt) {
+			this.modal = function(evt, monster) {
 				evt.preventDefault();
 			    var $monsterStats = $(evt.currentTarget).closest('.mon-stat-block'),
-			        monster = {
-			            url: '#CustomMonster',
-			            name: 'Example Monster',
-			            ac: '10',
-			            xp: '100',
-			            hp: { fixed: '10', rolled: '0d0+10' }
-			        };
+			    	customMonster = false;
+
+			    console.log(evt, monster);
 
 			    if ($monsterStats.length > 0) {
 			        monster = {
@@ -49,6 +45,18 @@
 			            }
 			        };
 			    }
+
+			    if (typeof monster == 'undefined') {
+			        monster = {
+			            url: '#CustomMonster',
+			            name: 'Example Monster',
+			            ac: '10',
+			            xp: '100',
+			            hp: { fixed: '10', rolled: '0d0+10' }
+			        };
+			        customMonster = true;
+			    }
+
 			    var content = ['<div class="tb-form-field">',
 			            '<div class="tb-form-field">',
 			                '<label>Encounter</label>',
@@ -109,7 +117,7 @@
 				},{ label: "Cancel" }]);
 
 				// HIDE STUFF WHEN DOING CUSTOM MONSTER
-				if ($monsterStats.length == 0) {
+				if (customMonster) {
         			$('.fullscreen-modal-content .tb-btn').css('display', 'none');
         			$('.fullscreen-modal-content .tb-select').css('display', 'none');
         			$('.fullscreen-modal-content input[name="encounter-monster-max-health"]').prop('readonly', false);

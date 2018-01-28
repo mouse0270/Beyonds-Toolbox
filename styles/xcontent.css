@@ -640,7 +640,7 @@ body.modal-shown {
 	padding-left: 43px;
 	position: relative;
 }
-.tb-processed .mon-stat-block__header .tb-btn {
+.tb-processed .tb-btn {
     background: rgba(0, 0, 0, 0);
     border-width: 0px;
     left: 0px;
@@ -651,11 +651,29 @@ body.modal-shown {
     position: absolute;
     top: 0px;
 }
-.tb-processed .mon-stat-block__header .tb-btn > .tb-icon {
+.tb-processed .tb-btn > .tb-icon {
     background-color: rgb(130, 32, 0);
     display: block;
 	height: 38px;
     width: 38px;
+}
+
+span.tb-processed {
+    position: relative;
+    padding-right: 30px;
+}
+span.tb-processed .tb-btn {
+    position: absolute;
+    right: 0px;
+    min-height: 20px;
+    min-width: 30px;
+    left: auto;
+    padding: 5px;
+    top: -7px;
+}
+span.tb-processed .tb-btn > .tb-icon {
+    width: 20px;
+    height: 20px;
 }
 
 /* TOOLTIP

@@ -31,8 +31,33 @@
 				});
 			};
 
-			this.add = function() {
+			this.monsterEncounters = function() {
+				$('body span:not(.tb-processed) > a.monster-tooltip').each(function(index, item) {
+					var $item = $(item).closest('span'),
+						$btn = $('<button class="tb-btn"><i class="tb-icon tb-swords-and-shield"></i></button>');
 
+					$btn.on('click', function(evt) {
+						evt.preventDefault();
+						var $monsterStats = $('<div></div>'),
+							monsterURL = $(this).closest('.tb-processed').find('a').attr('href');
+
+						$monsterStats.load('{0} .mon-stat-block'.format(monsterURL), function() {
+							var monster = {
+						            url: $monsterStats.find('.mon-stat-block__name-link').attr('href'),
+						            name: $monsterStats.find('.mon-stat-block__name-link').text(),
+						            ac: $.trim($monsterStats.find('.mon-stat-block__attributes .mon-stat-block__attribute:nth-child(1) .mon-stat-block__attribute-data-value').text()),
+						            xp: $.trim($monsterStats.find('.mon-stat-block__tidbits .mon-stat-block__tidbit:last-child .mon-stat-block__tidbit-data').text()).match(/\(([^)]+)\)/gi, '')[0].replace(/[.,]|\(|\)|\sXP/gi, ''),
+						            hp: { 
+						                fixed: $.trim($monsterStats.find('.mon-stat-block__attributes .mon-stat-block__attribute:nth-child(2) .mon-stat-block__attribute-data-value').text()), 
+						                rolled: $.trim($monsterStats.find('.mon-stat-block__attributes .mon-stat-block__attribute:nth-child(2) .mon-stat-block__attribute-data-extra').text()).replace(/\(|\)|\s/g,'')
+						            }
+						        };
+					        console.log(monster);
+					        Toolbox.Encounters.modal(evt, monster);
+					    });
+					});
+					$item.addClass('tb-processed').append($btn);
+				});
 			};
 
 			this.cleanup = function(text) {
@@ -225,8 +250,8 @@
 			};
 
 			this.init = function () {
-				_this.add();
 				_this.tooltip();
+				_this.monsterEncounters();
 				return this;
 			};
 
