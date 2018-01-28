@@ -9,16 +9,16 @@
 			this.version = function() {
 				var manifestData = chrome.runtime.getManifest();
 				Toolbox.config.storage.get("version", function(items) {
-			        if (typeof items.menus !== 'undefined') {
-			        	Toolbox.settings.version = items.version;
+			        if (typeof items.version == 'undefined' || items.version != manifestData.version) {
 						if (manifestData.version != Toolbox.settings.version) {
-							//Toolbox.config.storage.clear();
 							Toolbox.settings.version = manifestData.version;
-
 							Toolbox.save('version', Toolbox.settings.version);
+							
+							Toolbox.Notification.add('success', 'Updated', 'Thanks for updating D&D Toolbox. Hope you enjoy the changes!');
 						}
 			        }
 					_this.build();
+					//Toolbox.Notification.add('danger', 'Error', 'Sorry, there appears to be an error in D&D Toolbox, please report the issue to this Github');
 			    });
 			}
 

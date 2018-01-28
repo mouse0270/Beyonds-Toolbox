@@ -22,6 +22,7 @@
 						'</div>',
 					'</div>',
 					'<div id="tbTooltip"></div>',
+					'<div class="tb-notifications"></div>',
 				'</div>',
 			'</div>'].join(''),
 	        manager: ['<div id="{0}" class="tb-manager-group tb-manager-group-collapsed">',
@@ -83,6 +84,10 @@
 	                '</div>',
 	            '</div>',
 	        '</li>'].join(''),
+	        notification: ['<div class="tb-notification tb-notification-{0} animated fadeInUp">',
+	        	'<h4 class="tb-notification-title">{1}</h4>',
+	        	'<span class="tb-notification-message">{2}</span>',
+	        '</div>'].join(''),
 			modal: {
 				dialog: ['<div class="tb-modal fullscreen-modal-overlay">',
 					'<div class="fullscreen-modal" tabindex="-1">',
@@ -121,8 +126,9 @@
 		obj[key] = data;
 
 		Toolbox.config.storage.set(obj, function() {
-			$.log(obj);
-			if (chrome.runtime.error) {
+			$.log(chrome.runtime);
+			if (chrome.runtime.lastError) {
+				Toolbox.Notification.add('danger', 'Error Saving', chrome.runtime.lastError.message);
 				$.log(chrome.runtime);
 			}
 		});
