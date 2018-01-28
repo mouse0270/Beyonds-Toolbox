@@ -13,12 +13,11 @@
 						if (manifestData.version != Toolbox.settings.version) {
 							Toolbox.settings.version = manifestData.version;
 							Toolbox.save('version', Toolbox.settings.version);
-							
+
 							Toolbox.Notification.add('success', 'Updated', 'Thanks for updating D&D Toolbox. Hope you enjoy the changes!');
 						}
 			        }
 					_this.build();
-					//Toolbox.Notification.add('danger', 'Error', 'Sorry, there appears to be an error in D&D Toolbox, please report the issue to this Github');
 			    });
 			}
 

@@ -76,7 +76,7 @@
 					var $input = $(this).find('input[type="number"]'),
 						value = ($input.val() * 1) + evt.deltaY;
 
-					if (value > $input.attr('max') * 1) {
+					if (value > $input.attr('max') * 1 && evt.deltaY >= 0) {
 						value = $input.attr('max');
 					}else if (value < 0) {
 						value = 0;

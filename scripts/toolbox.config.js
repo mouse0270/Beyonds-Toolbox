@@ -124,14 +124,15 @@
 	Toolbox.save = function(key, data) {
 		var obj = {};
 		obj[key] = data;
-
-		Toolbox.config.storage.set(obj, function() {
-			$.log(chrome.runtime);
-			if (chrome.runtime.lastError) {
-				Toolbox.Notification.add('danger', 'Error Saving', chrome.runtime.lastError.message);
-				$.log(chrome.runtime);
-			}
-		});
+		try {
+			Toolbox.config.storage.set(obj, function() {
+				if (chrome.runtime.lastError) {
+					Toolbox.Notification.add('danger', 'Chrome Runtime Error', chrome.runtime.lastError.message);
+				}
+			});
+		} catch(err) {
+			Toolbox.Notification.add('danger', 'Chrome Sync Set Error', err.message);
+		}
 	}
 
 	//Toolbox.save('menus', Toolbox.settings.menus);

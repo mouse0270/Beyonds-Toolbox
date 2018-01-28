@@ -9,7 +9,7 @@
 				var $item = $($.grab('config', 'templates').notification.format(type, title, success));
 
 				_this.bind($item);
-				$('.tb-toolbox .tb-notifications').prepend($item);
+				$('.tb-toolbox .tb-notifications').append($item);
 			};
 
 			this.bind = function($item) {
