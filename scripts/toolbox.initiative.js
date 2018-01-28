@@ -74,9 +74,14 @@
 				$monster.find('.tb-monster-health').on('mousewheel DOMMouseScroll', function(evt) {
 					evt.preventDefault();
 					var $input = $(this).find('input[type="number"]'),
-						value = ($input.val() * 1) + evt.deltaY;
+						currentValue = ($input.val() * 1),
+						maxValue = ($input.attr('max') * 1),
+						value = currentValue + evt.deltaY;
 
-					if (value > $input.attr('max') * 1 && evt.deltaY >= 0) {
+					if (currentValue >= maxValue && evt.deltaY >= 0) {
+						//Prevent mousewheel healing over max
+						value = currentValue;
+					}else if (value > maxValue && currentValue <= maxValue && evt.deltaY >= 0) {
 						value = $input.attr('max');
 					}else if (value < 0) {
 						value = 0;
