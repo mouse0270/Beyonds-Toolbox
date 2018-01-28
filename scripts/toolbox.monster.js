@@ -32,14 +32,14 @@
 			};
 
 			this.monsterEncounters = function() {
-				$('body span:not(.tb-processed) > a.monster-tooltip').each(function(index, item) {
-					var $item = $(item).closest('span'),
+				$('body a.monster-tooltip').each(function(index, item) {
+					var $item = $(item),
 						$btn = $('<button class="tb-btn"><i class="tb-icon tb-swords-and-shield"></i></button>');
 
 					$btn.on('click', function(evt) {
 						evt.preventDefault();
 						var $monsterStats = $('<div></div>'),
-							monsterURL = $(this).closest('.tb-processed').find('a').attr('href');
+							monsterURL = $(this).closest('a.tb-processed').attr('href');
 
 						$monsterStats.load('{0} .mon-stat-block'.format(monsterURL), function() {
 							var monster = {
@@ -56,7 +56,7 @@
 					        Toolbox.Encounters.modal(evt, monster);
 					    });
 					});
-					$item.addClass('tb-processed').append($btn);
+					$item.addClass('tb-processed tb-monster-tooltip').append($btn);
 				});
 			};
 

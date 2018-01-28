@@ -658,11 +658,11 @@ body.modal-shown {
     width: 38px;
 }
 
-span.tb-processed {
+.tb-monster-tooltip.tb-processed {
     position: relative;
     padding-right: 30px;
 }
-span.tb-processed .tb-btn {
+.tb-monster-tooltip.tb-processed .tb-btn {
     position: absolute;
     right: 0px;
     min-height: 20px;
@@ -671,9 +671,18 @@ span.tb-processed .tb-btn {
     padding: 5px;
     top: -7px;
 }
-span.tb-processed .tb-btn > .tb-icon {
+.tb-monster-tooltip.tb-processed .tb-btn > .tb-icon {
     width: 20px;
     height: 20px;
+}
+.plural-monster-tooltip {
+    font-size: 0px;
+}
+.plural-monster-tooltip > a.tb-monster-tooltip {
+    font-size: 14px;
+}
+.plural-monster-tooltip > a.tb-monster-tooltip.tb-processed:after {
+    content: 's';
 }
 
 /* TOOLTIP
