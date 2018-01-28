@@ -208,8 +208,8 @@
 			};
 
 			this.tooltip = function() {
-				$('body').on('mouseover', 'a.monster-page', function(evt) {
-					var $tooltip = $('.tb-toolbox > #tbTooltip'),
+				$('body').on('mouseover', '.tb-toolbox a.monster-page', function(evt) {
+					var $tooltip = $('.tb-toolbox #tbTooltip'),
 						tooltipURL = $(this).attr('href');
 
 				    $tooltip.load('{0} .mon-stat-block'.format(tooltipURL), function() {
