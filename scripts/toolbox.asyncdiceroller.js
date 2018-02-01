@@ -20,7 +20,8 @@
 							className: 'tb-roller',
 							exclude: [
 								'a.view-rules *',
-								'div.tb-modal *'
+								'div.tb-modal *',
+								'.ddb-homebrew-create-form-fields-item-input *'
 							],
 							each: function(item) {
 								$(item).attr('title', 'Roll {0}'.format($(item).text()));

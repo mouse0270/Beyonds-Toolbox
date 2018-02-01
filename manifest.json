@@ -1,7 +1,7 @@
 {
 	"name": "D&D Toolbox",
 	"short_name": "D&D Toolbox",
-	"version": "0.6.5",
+	"version": "0.6.6",
 	"manifest_version": 2,
 	"description": "Adds a toolbox and expands on features provided by D&D Beyond, such as Dice Rollders and Intiative Tracker.",
 	"homepage_url": "http://www.dndbeyond.com/forums/d-d-beyond-general/general-discussion/10544-d-d-toolbox-chrome-extension",
