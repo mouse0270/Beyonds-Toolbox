@@ -249,6 +249,7 @@
 
 					$monster.removeClass('tb-example');
 					$monster.find('.tb-health-bar').remove();
+					$monster.find('div.remove').on('click', _this.removeMonster);
 
 					_this.bind($monster.find('input[type="number"]'));
 					$list.append($monster);
@@ -342,6 +343,19 @@
 
 				_this.save();
 			};
+
+			this.removeMonster = function(evt) {
+				var $target = $(evt.target),
+					$monster = $target.closest('.quick-menu-item'),
+					encounterIndex = $target.closest('.collapsible').index(),
+					index = $monster.index();
+
+				Toolbox.settings.encounters[encounterIndex].monsters.splice(index, 1);
+				$monster.remove();
+
+				_this.save();
+			};
+
 			this.init = function () {
 				_this.add();
 				return this;
