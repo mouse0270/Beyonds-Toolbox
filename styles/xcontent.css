@@ -660,14 +660,14 @@ body.modal-shown {
 
 .tb-monster-tooltip.tb-processed {
     position: relative;
-    padding-right: 30px;
+    padding-left: 30px;
 }
 .tb-monster-tooltip.tb-processed .tb-btn {
     position: absolute;
-    right: 0px;
+    left: 0px;
     min-height: 20px;
     min-width: 30px;
-    left: auto;
+    right: auto;
     padding: 5px;
     top: -7px;
 }
@@ -675,14 +675,8 @@ body.modal-shown {
     width: 20px;
     height: 20px;
 }
-.plural-monster-tooltip {
-    font-size: 0px;
-}
 .plural-monster-tooltip > a.tb-monster-tooltip {
     font-size: 14px;
-}
-.plural-monster-tooltip > a.tb-monster-tooltip.tb-processed:after {
-    content: 's';
 }
 
 /* TOOLTIP
