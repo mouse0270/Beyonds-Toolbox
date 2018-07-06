@@ -52,7 +52,7 @@
 						                rolled: $.trim($monsterStats.find('.mon-stat-block__attributes .mon-stat-block__attribute:nth-child(2) .mon-stat-block__attribute-data-extra').text()).replace(/\(|\)|\s/g,'')
 						            }
 						        };
-					        console.log(monster);
+						        
 					        Toolbox.Encounters.modal(evt, monster);
 					    });
 					});

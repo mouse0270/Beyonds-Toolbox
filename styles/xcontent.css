@@ -191,8 +191,8 @@ span.tb-creator:before {
 /* TOOLBOX
 =================================*/
 .tb-shown #site,
-.tb-shown #site .site-interactions,
-.tb-shown #site-main header.main {
+.tb-shown #site .site-bar,
+.tb-shown #site .site-interactions {
 	max-width: calc(100% - 350px) !important;
 }
 
@@ -200,10 +200,6 @@ span.tb-creator:before {
     .tb-shown #site,
     .tb-shown #site .site-interactions {
         max-width: calc(100% - 350px) !important;
-    }
-
-    .tb-shown #site-main header.main {
-        max-width: 1200px !important;
     }
 }
 @media (max-width: 1024px) {
@@ -469,6 +465,26 @@ body.tb-shown .builder-navigation-large-action-next {
 	width: calc(100% + 20px);
 }
 
+.tb-toolbox #tbGroupInitiative .tb-manager-content > .tb-round-tracker {
+    padding-left: 15px;
+}
+.tb-toolbox #tbGroupInitiative .tb-manager-content > .tb-round-tracker .limited-list-item-callout {
+    float: right;
+}
+.tb-toolbox #tbGroupInitiative .tb-manager-content > .tb-round-tracker .limited-list-item-callout > .character-button {
+    border-radius: 0px;
+    padding: 5px 10px;
+}
+.tb-toolbox #tbGroupInitiative .tb-manager-content > .tb-round-tracker .limited-list-item-callout:first-of-type > .character-button {
+    border-bottom-right-radius: 3px;
+    border-top-right-radius: 3px;
+}
+.tb-toolbox #tbGroupInitiative .tb-manager-content > .tb-round-tracker .limited-list-item-callout:last-child > .character-button {
+    border-bottom-left-radius: 3px;
+    border-top-left-radius: 3px;
+    margin-right: -1px;
+}
+
 .tb-toolbox #tbGroupPlayers .collapsible .tb-form-field ~ .quick-menu .quick-menu-item .quick-menu-item-label .remove {
 	display: none!important;
 }
@@ -660,14 +676,14 @@ body.modal-shown {
 
 .tb-monster-tooltip.tb-processed {
     position: relative;
-    padding-right: 30px;
+    padding-left: 30px;
 }
 .tb-monster-tooltip.tb-processed .tb-btn {
     position: absolute;
-    right: 0px;
+    left: 0px;
     min-height: 20px;
     min-width: 30px;
-    left: auto;
+    right: auto;
     padding: 5px;
     top: -7px;
 }
@@ -675,14 +691,8 @@ body.modal-shown {
     width: 20px;
     height: 20px;
 }
-.plural-monster-tooltip {
-    font-size: 0px;
-}
 .plural-monster-tooltip > a.tb-monster-tooltip {
     font-size: 14px;
-}
-.plural-monster-tooltip > a.tb-monster-tooltip.tb-processed:after {
-    content: 's';
 }
 
 /* TOOLTIP

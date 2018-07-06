@@ -107,7 +107,7 @@
 	};
 
 	Toolbox.settings = {
-		version: '0.6.0',
+		version: '0.7.0',
 		menus: {
 			tbContainer: false,
 			tbGroupNotes: false,
@@ -118,12 +118,22 @@
 		notes: [],
 		encounters: [],
 		players: [],
-		initiative: []
+		initiative: [],
+		initiativeRound: 1,
+		options: {
+			AsyncDiceRoller: true,
+			Notes: true,
+			InitiativeTracker: true,
+			Players: true,
+			Encounters: true,
+			Creators: true,
+		}
 	}
 
 	Toolbox.save = function(key, data) {
 		var obj = {};
 		obj[key] = data;
+		console.log(obj);
 		try {
 			Toolbox.config.storage.set(obj, function() {
 				if (chrome.runtime.lastError) {

@@ -11,13 +11,16 @@
 
 				$manager = $('#tbGroupInitiative');
 				$manager.find('.tb-manager-header > .limited-list-item-callout > button').remove();
+				$manager.find('.tb-manager-content').append('<div class="tb-round-tracker"></div>');
 				$manager.find('.tb-manager-content').append('<ul class="quick-menu quick-menu-tier-2"></ul>');
+
+				_this.roundTracker();
 
 				_this.sortable($manager.find('.tb-manager-content > ul'), 'main');
 			};
 
 			this.clear = function() {
-				$manager.find('.tb-manager-content').empty().append('<ul class="quick-menu quick-menu-tier-2"></ul>');
+				$manager.find('.tb-manager-content > ul.quick-menu').empty();
 				_this.sortable($manager.find('.tb-manager-content > ul'), 'main');
 			};
 
@@ -67,6 +70,40 @@
 
 
 				$manager.find('.tb-manager-content > ul.quick-menu').append($item);
+			};
+
+			this.roundTracker = function() {
+				var _self = this;
+				var $roundTracker = $manager.find('.tb-manager-content > .tb-round-tracker');
+
+				$roundTracker.empty();
+
+				$roundTracker.append('<h5><span>Round {0} | {1}</span></h5>'.format(Toolbox.settings.initiativeRound, _self.elapsedTime()));
+				$roundTracker.find('h5').append($.grab('config', 'templates').calloutButton.format('Reset'));
+				$roundTracker.find('h5').append($.grab('config', 'templates').calloutButton.format('Next'));
+
+				$roundTracker.find('h5 > .limited-list-item-callout:last-child > .character-button').on('click', function(evt) {
+					Toolbox.settings.initiativeRound++;
+					Toolbox.save('initiativeRound', Toolbox.settings.initiativeRound);
+					$roundTracker.find('h5 > span').text("Round {0} | {1}".format(Toolbox.settings.initiativeRound, _self.elapsedTime()));
+				});
+
+				$roundTracker.find('h5 > .limited-list-item-callout:first-of-type > .character-button').on('click', function(evt) {
+					Toolbox.settings.initiativeRound = 1;
+					Toolbox.save('initiativeRound', Toolbox.settings.initiativeRound);
+					$roundTracker.find('h5 > span').text("Round {0} | {1}".format(Toolbox.settings.initiativeRound, _self.elapsedTime()));
+				});
+			};
+
+			this.elapsedTime = function() {
+				var time = Toolbox.settings.initiativeRound * 6;
+				var mins = ~~((time % 3600) / 60);
+				var secs = time % 60;
+				var output = "";
+
+				output += "" + mins + "m" + (secs < 10 ? "0" : "");
+			    output += "" + secs + "s";
+			    return output;
 			};
 
 			this.bind = function($monster) {
@@ -200,7 +237,6 @@
 			};
 
 			this.init = function () {
-				_this.add();
 				return this;
 			};
 

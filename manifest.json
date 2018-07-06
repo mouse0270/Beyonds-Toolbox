@@ -1,12 +1,16 @@
 {
 	"name": "D&D Toolbox",
 	"short_name": "D&D Toolbox",
-	"version": "0.6.6",
+	"version": "0.7.0",
 	"manifest_version": 2,
 	"description": "Adds a toolbox and expands on features provided by D&D Beyond, such as Dice Rollders and Intiative Tracker.",
 	"homepage_url": "http://www.dndbeyond.com/forums/d-d-beyond-general/general-discussion/10544-d-d-toolbox-chrome-extension",
 	"permissions": [ "activeTab", "commands", "cookies", "notifications", "storage", "tabs", "webRequest", "*://*.dndbeyond.com/*" ],
 	"web_accessible_resources": [ "webaccessible/*" ],
+	"options_ui": {
+		"page": "options.html",
+		"open_in_tab": false
+  	},
 	"icons": { 
 		"16": "webaccessible/images/icon16.png",
 		"32": "webaccessible/images/icon32.png",
@@ -29,6 +33,7 @@
 			"scripts/xplugins.js",
 			"scripts/toolbox.config.js",
 			"scripts/toolbox.helpers.js",
+			"scripts/toolbox.drive.js",
 			"scripts/toolbox.container.js",
 			"scripts/toolbox.notes.js",
 			"scripts/toolbox.monster.js",

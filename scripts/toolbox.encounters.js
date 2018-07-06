@@ -221,7 +221,12 @@
 					template = $.grab('config', 'templates').monster;
 
 				$encounter.find('.collapsible-body').append('<ul class="quick-menu quick-menu-tier-2"></ul>');
-				$encounter.find('.collapsible-header-el > .collapsible-heading-callout button').on('click', _this.addToInitiative);
+
+				if (Toolbox.settings.options.InitiativeTracker)
+					$encounter.find('.collapsible-header-el > .collapsible-heading-callout button').on('click', _this.addToInitiative);
+				else
+					$encounter.find('.collapsible-header-el > .collapsible-heading-callout button').remove();
+
 				$encounter.find('.collapsible-body').append($.grab('config', 'templates').managerRemove.format('Delete Encounter'));
 
 				if (index >= 0) {
@@ -249,6 +254,7 @@
 
 					$monster.removeClass('tb-example');
 					$monster.find('.tb-health-bar').remove();
+					$monster.find('div.remove').on('click', _this.removeMonster);
 
 					_this.bind($monster.find('input[type="number"]'));
 					$list.append($monster);
@@ -342,8 +348,20 @@
 
 				_this.save();
 			};
+
+			this.removeMonster = function(evt) {
+				var $target = $(evt.target),
+					$monster = $target.closest('.quick-menu-item'),
+					encounterIndex = $target.closest('.collapsible').index(),
+					index = $monster.index();
+
+				Toolbox.settings.encounters[encounterIndex].monsters.splice(index, 1);
+				$monster.remove();
+
+				_this.save();
+			};
+
 			this.init = function () {
-				_this.add();
 				return this;
 			};
 

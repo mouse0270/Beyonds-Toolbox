@@ -15,19 +15,20 @@
 				$('body').unmark({
 					className: 'tb-roller',
 					done: function() {
-						$('body').markRegExp(regex, {
-							element: 'span',
-							className: 'tb-roller',
-							exclude: [
-								'a.view-rules *',
-								'div.tb-modal *',
-								'.ddb-homebrew-create-form-fields-item-input *'
-							],
-							each: function(item) {
-								$(item).attr('title', 'Roll {0}'.format($(item).text()));
-								//_this.bind($(item));
-							}
-						});
+						if (Toolbox.settings.options.AsyncDiceRoller) {
+							$('body').markRegExp(regex, {
+								element: 'span',
+								className: 'tb-roller',
+								exclude: [
+									'a.view-rules *',
+									'div.tb-modal *',
+									'.ddb-homebrew-create-form-fields-item-input *'
+								],
+								each: function(item) {
+									$(item).attr('title', 'Roll {0}'.format($(item).text()));
+								}
+							});
+						}
 					}
 				});
 
@@ -78,7 +79,6 @@
 			};
 
 			this.init = function () {
-				_this.bind();
 				return this;
 			};
 

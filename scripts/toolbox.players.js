@@ -69,7 +69,11 @@
 		                        },
 		                        $player = $(template.format(player.url, player.name, player.player, 'Add'));
 		                        
-							$player.find('.limited-list-item-callout > .character-button').on('click', _this.addToInitiative);
+							if (Toolbox.settings.options.InitiativeTracker)
+								$player.find('.limited-list-item-callout > .character-button').on('click', _this.addToInitiative);
+							else
+								$player.find('.limited-list-item-callout > .character-button').remove();
+
 		                    $list.append($player);
 		                });
 		            });
@@ -132,7 +136,12 @@
 					$item = $(template.format(player.url, player.name, player.player, 'Add'));
 
 				$item.find('.remove').on('click', _this.remove);
-				$item.find('.limited-list-item-callout > .character-button').on('click', _this.addToInitiative);
+
+				if (Toolbox.settings.options.InitiativeTracker)
+					$item.find('.limited-list-item-callout > .character-button').on('click', _this.addToInitiative);
+				else
+					$item.find('.limited-list-item-callout > .character-button').remove();
+
 				$manager.find('.tb-manager-content > .collapsible:last-child > .collapsible-body > ul.quick-menu').append($item);
 			};
 
@@ -164,7 +173,6 @@
 			}
 
 			this.init = function () {
-				_this.add();
 				return this;
 			};
 

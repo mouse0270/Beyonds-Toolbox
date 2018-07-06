@@ -123,7 +123,6 @@
 			};
 
 			this.init = function () {
-				_this.add();
 				return this;
 			};
 

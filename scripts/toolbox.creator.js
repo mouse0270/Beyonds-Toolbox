@@ -47,7 +47,6 @@
 			};
 
 			this.init = function () {
-				_this.scan();
 				return this;
 			};
 

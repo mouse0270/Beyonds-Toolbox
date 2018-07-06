@@ -17,16 +17,53 @@
 							Toolbox.Notification.add('success', 'Updated', 'Thanks for updating D&D Toolbox. Hope you enjoy the changes!');
 						}
 			        }
-					_this.build();
+					_this.settings();
 			    });
 			}
 
 			this.build = function() {
-				_this.notes();
-				_this.initiative();
-				_this.players();
-				_this.encounters();
+				if (Toolbox.settings.options.Notes)
+					_this.notes();
+
+				if (Toolbox.settings.options.InitiativeTracker)
+					_this.initiative();
+
+				if (Toolbox.settings.options.Players)
+					_this.players();
+
+				if (Toolbox.settings.options.Encounters)
+					_this.encounters();
+
 				_this.menus();
+			};
+
+			this.settings = function() {
+				Toolbox.config.storage.get("settings", function(items) {
+			        if (typeof items.settings !== 'undefined') {
+			        	Toolbox.settings.options = items.settings;
+
+				        if (Toolbox.settings.options.Notes)
+							 Toolbox.Notes.add();
+
+						if (Toolbox.settings.options.InitiativeTracker)
+				    		Toolbox.Initiative.add();
+
+						if (Toolbox.settings.options.Players)
+				    		Toolbox.Players.add();
+
+						if (Toolbox.settings.options.Encounters)
+				    		Toolbox.Encounters.add();
+
+				        if (Toolbox.settings.options.Creators)
+							Toolbox.Creator.scan();
+
+			        	_this.build();
+			        }
+			    });
+			};
+
+			this.drive = function() {
+				
 			};
 
 			this.menus = function() {
@@ -68,6 +105,14 @@
 			};
 
 			this.initiative = function() {
+				 Toolbox.config.storage.get("initiativeRound", function(items) {
+			        if (typeof items.initiativeRound !== 'undefined') {
+						Toolbox.settings.initiativeRound = items.initiativeRound;
+
+						Toolbox.Initiative.roundTracker();
+					}
+				});
+
 			    Toolbox.config.storage.get("initiative", function(items) {
 			        if (typeof items.initiative !== 'undefined') {
 			        	Toolbox.Initiative.clear();
