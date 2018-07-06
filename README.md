@@ -11,11 +11,17 @@ The toolbox includes a custom area that allows you to create and track individua
 ### Initiative Builder
 Probably the reason you are here, The initiative tracker allows you to track players and monsters initiative during combat. You can add players either from a campaign or create custom players and add them. Monsters are added by first building encounters. These encounters can be added to the initiative tracker. You can add more than one encounter at a time to the initiative.
 
+### Initiative Round Tracker
+Add the ability to track rounds showing a round number and the estimated time elasped based off the round.
+
 ### Campaign / Custom Player Selection
 This area of the toolbox allows you to select players from any of your campaigns and add them to the initiative order. You are also able to create custom characters for players or NPC's that may not exist inside on D&D Beyond's system. Custom Players include a link, incase your characters are on another system and you would like to quickly view that page by clicking on the "View" button in the initiative order.
 
 ### Async Dice Roller
 Previously referred to as the ***Predictive Dice Roller***, and was renamed, well because it is my plugin and I liked the sound of ***Async Dice Roller*** more. This feature scans the page for anything that looks like a dice roll and makes it a clickable link, once you click on the link you will get a popup that will show you the roll with each individual rolls and a total value for all rolles. The popup even includes an option to reroll the dice so that you can easily reroll the results.
+
+### Options Page
+You should now be able to turn on or off each individual portion of the extension. Don't like the notes section, flip it off. Don't like the async dice roller, turn it off. Don't like the creators being highlighted in the forums, turn it off.
 
 ### Content Sync **
 This is currently a feature in testing and may be removed at a later time. This feature causes the toolbox to update with changes made on other tabs when you change tabs. Meaning if you have multiple tabs open and change something in the toolbox on one tab and then switch to another page, the toolbox well have the updated information. So if you modify the health of a monster on one page, it will be updated on the other page when you switch tabs. Cool feature right? Well it comes with an annoying setback, currently it basically rebuilds the entire toolbox, meaning besides the main collapsible's will save their stat but everything else will default to closed. Test it out and let me know what you think.
