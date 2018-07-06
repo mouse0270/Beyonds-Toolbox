@@ -41,24 +41,26 @@
 				Toolbox.config.storage.get("settings", function(items) {
 			        if (typeof items.settings !== 'undefined') {
 			        	Toolbox.settings.options = items.settings;
-
-				        if (Toolbox.settings.options.Notes)
-							 Toolbox.Notes.add();
-
-						if (Toolbox.settings.options.InitiativeTracker)
-				    		Toolbox.Initiative.add();
-
-						if (Toolbox.settings.options.Players)
-				    		Toolbox.Players.add();
-
-						if (Toolbox.settings.options.Encounters)
-				    		Toolbox.Encounters.add();
-
-				        if (Toolbox.settings.options.Creators)
-							Toolbox.Creator.scan();
-
-			        	_this.build();
+			        }else{
+			        	Toolbox.save('settings', Toolbox.settings.options);
 			        }
+
+				    if (Toolbox.settings.options.Notes)
+						 Toolbox.Notes.add();
+
+					if (Toolbox.settings.options.InitiativeTracker)
+				    	Toolbox.Initiative.add();
+
+					if (Toolbox.settings.options.Players)
+				    	Toolbox.Players.add();
+
+					if (Toolbox.settings.options.Encounters)
+				    	Toolbox.Encounters.add();
+
+				    if (Toolbox.settings.options.Creators)
+						Toolbox.Creator.scan();
+
+			        _this.build();
 			    });
 			};
 
