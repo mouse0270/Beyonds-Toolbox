@@ -167,7 +167,7 @@
 					name = monster.name;
 				}
 
-				var index = Toolbox.settings.encounters.findIndex(function (array) {
+				var index = Toolbox.settings.encounters.findIndex(function(array) {
 					console.log(array.name, name);
 					return array.name == name;
 				}, name);

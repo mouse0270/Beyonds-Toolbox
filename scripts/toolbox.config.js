@@ -133,7 +133,6 @@
 	Toolbox.save = function(key, data) {
 		var obj = {};
 		obj[key] = data;
-		console.log(obj);
 		try {
 			Toolbox.config.storage.set(obj, function() {
 				if (chrome.runtime.lastError) {
