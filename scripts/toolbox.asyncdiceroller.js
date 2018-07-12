@@ -48,6 +48,8 @@
 							return false;
 						}
 					},{ label: "Cancel" }]);
+
+					$('.tb-modal').addClass('tb-modal-small');
 				});
 			}
 

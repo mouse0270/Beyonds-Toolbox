@@ -45,6 +45,9 @@
 			        	Toolbox.save('settings', Toolbox.settings.options);
 			        }
 
+			        if (Toolbox.settings.options.AsyncDiceRoller) 
+			        	Toolbox.AsyncDiceRoller.bind();
+
 				    if (Toolbox.settings.options.Notes)
 						 Toolbox.Notes.add();
 
