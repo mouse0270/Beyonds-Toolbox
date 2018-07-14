@@ -36,28 +36,34 @@
 	}
 
 function save_settings() {
-	var obj = {};
-	var settings = {
-		DiceRoller: document.getElementById('optionDiceRoller').checked,
-		AsyncDiceRoller: document.getElementById('optionAsyncDiceRoller').checked,
-		Notes: document.getElementById('optionNotes').checked,
-		InitiativeTracker: document.getElementById('optionInitiativeTracker').checked,
-		Players: document.getElementById('optionPlayers').checked,
-		Encounters: document.getElementById('optionEncounters').checked,
-		Creators: document.getElementById('optionCreators').checked,
-		Storage: document.querySelector('#input').innerText
-	}
-	obj['settings'] = settings;
-
-	chrome.storage.sync.set(obj, function() {
-		if (chrome.runtime.lastError) {
-			console.log('Chrome Runtime Error', chrome.runtime.lastError.message);
-		}else{
-			document.querySelector('.success').classList.toggle('show');
-			setTimeout(function() {
+	var options = {
+			settings: {
+				DiceRoller: document.getElementById('optionDiceRoller').checked,
+				AsyncDiceRoller: document.getElementById('optionAsyncDiceRoller').checked,
+				Notes: document.getElementById('optionNotes').checked,
+				InitiativeTracker: document.getElementById('optionInitiativeTracker').checked,
+				Players: document.getElementById('optionPlayers').checked,
+				Encounters: document.getElementById('optionEncounters').checked,
+				Creators: document.getElementById('optionCreators').checked,
+				Storage: document.querySelector('#input').innerText,
+				GitHubToken: document.getElementById('optionGitHubToken').value,
+				GistID: null
+			}
+		};
+	chrome.storage.sync.get(options, function(items) {
+		options.settings.GistID = items.settings.GistID;
+		console.log(options);
+		console.log(items);
+		chrome.storage.sync.set(options, function() {
+			if (chrome.runtime.lastError) {
+				console.log('Chrome Runtime Error', chrome.runtime.lastError.message);
+			}else{
 				document.querySelector('.success').classList.toggle('show');
-			}, 3000);
-		}
+				setTimeout(function() {
+					document.querySelector('.success').classList.toggle('show');
+				}, 3000);
+			}
+		});
 	});
 }
 function restore_settings() {
@@ -70,19 +76,24 @@ function restore_settings() {
 			Players: true,
 			Encounters: true,
 			Creators: true,
-			Storage: 'Sync'
+			Storage: 'Sync',
+			GitHubToken: '',
+			GistID: null
 		}
 	}
 
-	chrome.storage.sync.get(options, function(item) {
-		document.getElementById('input').innerText = item.settings.Storage;
-		document.getElementById('optionDiceRoller').checked = item.settings.AsyncDiceRoller;
-		document.getElementById('optionAsyncDiceRoller').checked = item.settings.AsyncDiceRoller;
-		document.getElementById('optionNotes').checked = item.settings.Notes;
-		document.getElementById('optionInitiativeTracker').checked = item.settings.InitiativeTracker;
-		document.getElementById('optionPlayers').checked = item.settings.Players;
-		document.getElementById('optionEncounters').checked = item.settings.Encounters;
-		document.getElementById('optionCreators').checked = item.settings.Creators;
+	chrome.storage.sync.get(options, function(items) {
+		document.getElementById('input').innerText = items.settings.Storage;
+		document.getElementById('optionGitHubToken').value = items.settings.GitHubToken;
+		document.getElementById('optionDiceRoller').checked = items.settings.DiceRoller;
+		document.getElementById('optionAsyncDiceRoller').checked = items.settings.AsyncDiceRoller;
+		document.getElementById('optionNotes').checked = items.settings.Notes;
+		document.getElementById('optionInitiativeTracker').checked = items.settings.InitiativeTracker;
+		document.getElementById('optionPlayers').checked = items.settings.Players;
+		document.getElementById('optionEncounters').checked = items.settings.Encounters;
+		document.getElementById('optionCreators').checked = items.settings.Creators;
+
+		console.log(items)
 	});
 }
 

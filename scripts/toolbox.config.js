@@ -130,15 +130,16 @@
 			Players: true,
 			Encounters: true,
 			Creators: true,
-			Storage: 'sync'
+			Storage: 'sync',
+			GistID: null
 		}
 	}
 
 	Toolbox.save = function(key, data) {
 		var obj = {};
 		obj[key] = data;
-		try {
-
+		Toolbox.Storage.save(obj);
+		/*try {
 			Toolbox.Storage().set(obj, function() {
 				if (chrome.runtime.lastError) {
 					Toolbox.Notification.add('danger', 'Chrome Runtime Error', chrome.runtime.lastError.message);
@@ -150,15 +151,15 @@
 			console.log(Toolbox.settings.options.Storage);
 			console.log(Toolbox.config.storage);
 			console.log(Toolbox.Storage);
-		}
+		}*/
 	}
 
-	Toolbox.Storage = function() {
+	/*Toolbox.Storage = function() {
 		var storage = chrome.storage.sync;
 
 		if (Toolbox.settings.options.Storage == 'local')
 			storage = chrome.storage.local;
 
 		return storage;
-	}
+	}*/
 }(window.Toolbox = window.Toolbox || {}, jQuery));

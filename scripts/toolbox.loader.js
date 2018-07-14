@@ -8,7 +8,7 @@
 
 			this.version = function() {
 				var manifestData = chrome.runtime.getManifest();
-				Toolbox.Storage().get("version", function(items) {
+				Toolbox.Storage.get("version", function(items) {
 			        if (typeof items.version == 'undefined' || items.version != manifestData.version) {
 						if (manifestData.version != Toolbox.settings.version) {
 							Toolbox.settings.version = manifestData.version;
@@ -48,6 +48,17 @@
 			        	Toolbox.save('settings', Toolbox.settings.options);
 			        }
 
+			        if (Toolbox.settings.options.Storage == 'github') {
+			        	Toolbox.GitHub.auth(Toolbox.settings.options.GitHubToken);
+			        }
+			        //Toolbox.GitHub.read("71f9958dcfe46b7b4a66e2156f220b52");
+			        //Toolbox.GitHub.create('diceRoller', obj)
+			        /*var obj = {};
+			        obj['diceRoller'] = [{ quantity: "1", sides: "6", modifier: "0"}];
+			        Toolbox.GitHub.set(obj, function (ID) {
+			        	console.log(ID);
+			        })*/
+
 			        if (Toolbox.settings.options.DiceRoller) 
 			        	Toolbox.DiceRoller.add();
 
@@ -74,7 +85,7 @@
 			};
 
 			this.menus = function() {
-				Toolbox.Storage().get("menus", function(items) {
+				Toolbox.Storage.get("menus", function(items) {
 			        if (typeof items.menus !== 'undefined') {
 			        	Toolbox.settings.menus = items.menus;
 
@@ -100,7 +111,7 @@
 			};
 
 			this.diceRoller = function() {
-				Toolbox.Storage().get("diceRoller", function(items) {
+				Toolbox.Storage.get("diceRoller", function(items) {
 			        if (typeof items.diceRoller !== 'undefined') {
 			        	Toolbox.settings.diceRoller = items.diceRoller;			        		
 			        }else{
@@ -115,7 +126,7 @@
 			};
 
 			this.notes = function() {
-				Toolbox.Storage().get("notes", function(items) {
+				Toolbox.Storage.get("notes", function(items) {
 			        if (typeof items.notes !== 'undefined') {
 			        	Toolbox.Notes.clear();
 
@@ -128,7 +139,7 @@
 			};
 
 			this.initiative = function() {
-				Toolbox.Storage().get("initiativeRound", function(items) {
+				Toolbox.Storage.get("initiativeRound", function(items) {
 			        if (typeof items.initiativeRound !== 'undefined') {
 						Toolbox.settings.initiativeRound = items.initiativeRound;
 
@@ -136,7 +147,7 @@
 					}
 				});
 
-			    Toolbox.Storage().get("initiative", function(items) {
+			    Toolbox.Storage.get("initiative", function(items) {
 			        if (typeof items.initiative !== 'undefined') {
 			        	Toolbox.Initiative.clear();
 
@@ -149,7 +160,7 @@
 			};
 
 			this.players = function() {
-				Toolbox.Storage().get("players", function(items) {
+				Toolbox.Storage.get("players", function(items) {
 					if (typeof items.players !== 'undefined') {
 						Toolbox.Players.clear();
 
@@ -162,7 +173,7 @@
 			};
 
 			this.encounters = function() {
-				Toolbox.Storage().get("encounters", function(items) {
+				Toolbox.Storage.get("encounters", function(items) {
 			        if (typeof items.encounters !== 'undefined') {
 						Toolbox.Encounters.clear();
 						
