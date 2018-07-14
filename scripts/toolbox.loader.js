@@ -8,7 +8,7 @@
 
 			this.version = function() {
 				var manifestData = chrome.runtime.getManifest();
-				Toolbox.config.storage.get("version", function(items) {
+				Toolbox.Storage().get("version", function(items) {
 			        if (typeof items.version == 'undefined' || items.version != manifestData.version) {
 						if (manifestData.version != Toolbox.settings.version) {
 							Toolbox.settings.version = manifestData.version;
@@ -22,6 +22,9 @@
 			}
 
 			this.build = function() {
+				if (Toolbox.settings.options.DiceRoller)
+					_this.diceRoller();
+
 				if (Toolbox.settings.options.Notes)
 					_this.notes();
 
@@ -38,12 +41,15 @@
 			};
 
 			this.settings = function() {
-				Toolbox.config.storage.get("settings", function(items) {
+				chrome.storage.sync.get("settings", function(items) {
 			        if (typeof items.settings !== 'undefined') {
 			        	Toolbox.settings.options = items.settings;
 			        }else{
 			        	Toolbox.save('settings', Toolbox.settings.options);
 			        }
+
+			        if (Toolbox.settings.options.DiceRoller) 
+			        	Toolbox.DiceRoller.add();
 
 			        if (Toolbox.settings.options.AsyncDiceRoller) 
 			        	Toolbox.AsyncDiceRoller.bind();
@@ -67,16 +73,13 @@
 			    });
 			};
 
-			this.drive = function() {
-				
-			};
-
 			this.menus = function() {
-				Toolbox.config.storage.get("menus", function(items) {
+				Toolbox.Storage().get("menus", function(items) {
 			        if (typeof items.menus !== 'undefined') {
 			        	Toolbox.settings.menus = items.menus;
 
 			        	$('body').removeClass('tb-shown');
+						$('#tbGroupDiceRoller').addClass('tb-manager-group-collapsed');
 						$('#tbGroupNotes').addClass('tb-manager-group-collapsed');
 						$('#tbGroupInitiative').addClass('tb-manager-group-collapsed');
 						$('#tbGroupPlayers').addClass('tb-manager-group-collapsed');
@@ -96,8 +99,23 @@
 			    });
 			};
 
+			this.diceRoller = function() {
+				Toolbox.Storage().get("diceRoller", function(items) {
+			        if (typeof items.diceRoller !== 'undefined') {
+			        	Toolbox.settings.diceRoller = items.diceRoller;			        		
+			        }else{
+			        	Toolbox.settings.diceRoller = [{modifier: "0", quantity: "1", sides: "6"}];
+			        }
+
+			        Toolbox.DiceRoller.clear();
+			        Toolbox.settings.diceRoller.forEach(function(dice) {
+			        	Toolbox.DiceRoller.build(dice);
+			        });
+			    });
+			};
+
 			this.notes = function() {
-				Toolbox.config.storage.get("notes", function(items) {
+				Toolbox.Storage().get("notes", function(items) {
 			        if (typeof items.notes !== 'undefined') {
 			        	Toolbox.Notes.clear();
 
@@ -110,7 +128,7 @@
 			};
 
 			this.initiative = function() {
-				 Toolbox.config.storage.get("initiativeRound", function(items) {
+				Toolbox.Storage().get("initiativeRound", function(items) {
 			        if (typeof items.initiativeRound !== 'undefined') {
 						Toolbox.settings.initiativeRound = items.initiativeRound;
 
@@ -118,7 +136,7 @@
 					}
 				});
 
-			    Toolbox.config.storage.get("initiative", function(items) {
+			    Toolbox.Storage().get("initiative", function(items) {
 			        if (typeof items.initiative !== 'undefined') {
 			        	Toolbox.Initiative.clear();
 
@@ -131,8 +149,8 @@
 			};
 
 			this.players = function() {
-				Toolbox.config.storage.get("players", function(items) {
-				if (typeof items.players !== 'undefined') {
+				Toolbox.Storage().get("players", function(items) {
+					if (typeof items.players !== 'undefined') {
 						Toolbox.Players.clear();
 
 						Toolbox.settings.players = items.players;
@@ -144,7 +162,7 @@
 			};
 
 			this.encounters = function() {
-				Toolbox.config.storage.get("encounters", function(items) {
+				Toolbox.Storage().get("encounters", function(items) {
 			        if (typeof items.encounters !== 'undefined') {
 						Toolbox.Encounters.clear();
 						

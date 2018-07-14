@@ -107,14 +107,16 @@
 	};
 
 	Toolbox.settings = {
-		version: '0.7.0',
+		version: '0.7.5',
 		menus: {
 			tbContainer: false,
+			tbGroupDiceRoller: false,
 			tbGroupNotes: false,
 			tbGroupInitiative: false,
 			tbGroupPlayers: false,
 			tbGroupEncounters: false,
 		},
+		diceRoller: [{ quantity: "1", sides: "6", modifier: "0"}],
 		notes: [],
 		encounters: [],
 		players: [],
@@ -122,11 +124,13 @@
 		initiativeRound: 1,
 		options: {
 			AsyncDiceRoller: true,
+			DiceRoller: true,
 			Notes: true,
 			InitiativeTracker: true,
 			Players: true,
 			Encounters: true,
 			Creators: true,
+			Storage: 'sync'
 		}
 	}
 
@@ -134,16 +138,27 @@
 		var obj = {};
 		obj[key] = data;
 		try {
-			Toolbox.config.storage.set(obj, function() {
+
+			Toolbox.Storage().set(obj, function() {
 				if (chrome.runtime.lastError) {
 					Toolbox.Notification.add('danger', 'Chrome Runtime Error', chrome.runtime.lastError.message);
+					console.log(Toolbox.settings.options);
 				}
 			});
 		} catch(err) {
 			Toolbox.Notification.add('danger', 'Chrome Sync Set Error', err.message);
+			console.log(Toolbox.settings.options.Storage);
+			console.log(Toolbox.config.storage);
+			console.log(Toolbox.Storage);
 		}
 	}
 
-	//Toolbox.save('menus', Toolbox.settings.menus);
+	Toolbox.Storage = function() {
+		var storage = chrome.storage.local;
 
+		if (Toolbox.settings.options.Storage == 'sync')
+			storage = chrome.storage.sync;
+
+		return storage;
+	}
 }(window.Toolbox = window.Toolbox || {}, jQuery));

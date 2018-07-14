@@ -23,14 +23,15 @@ Previously referred to as the ***Predictive Dice Roller***, and was renamed, wel
 ### Options Page
 You should now be able to turn on or off each individual portion of the extension. Don't like the notes section, flip it off. Don't like the async dice roller, turn it off. Don't like the creators being highlighted in the forums, turn it off.
 
+### Dice Roller
+This is a very simple dice roller built into the toolbox. It allows you to choose the number of dice you would like, the number of sides and a modifier. If you want to roll multiple dice at a time, you simple hit the add dice option in the bar and it will add more dice. When you have multiple dice avaiable you will get a new button that says roll all. I personally use this feature to roll for (dis)advantage by adding two dice rolls that are both 1d20 plus my modifer and hit "Roll All". It will give me the result for both rolls and I can choose which one to use.
+
 ### Content Sync **
 This is currently a feature in testing and may be removed at a later time. This feature causes the toolbox to update with changes made on other tabs when you change tabs. Meaning if you have multiple tabs open and change something in the toolbox on one tab and then switch to another page, the toolbox well have the updated information. So if you modify the health of a monster on one page, it will be updated on the other page when you switch tabs. Cool feature right? Well it comes with an annoying setback, currently it basically rebuilds the entire toolbox, meaning besides the main collapsible's will save their stat but everything else will default to closed. Test it out and let me know what you think.
 
 ### Character Sheet Roller **
 This is probably one of the simplest dice rollers that could it exist. it uses the form of **XdX+X** . Meaning you can roll a 2d6 with a +3 modifier or you can roll 1d9 with a -5 modifier. It does no checking to verify the sides of dice you choose is an actual die, it just lets you have free range on anything you want.
 
-### Dice Roller **
-So this dice roller is a little cooler because it doesn't require the user to do anything if you click on the **1d8+4** and it will roll that damage for you. If you click on the modifier for your dexterity, it will roll **1d20** plus your dex modifier and give you a result and give you a base ability check. This same functionality applies to abilities saves, skill checks and To Hit for your weapons.
 
 > Please note that features with a double astricks are not currently implemented, they are either planned features or features that have not made the conversion to open source code yet. These features are still being worked on.
 

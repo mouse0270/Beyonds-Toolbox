@@ -11,23 +11,24 @@
 
 				$('body').append($content);
 				var playerLoaded;
-				$.getScript("https://static-waterdeep.cursecdn.com/1-0-6595-25715/React/CharacterTools/dist/characterSheet.bundle.min.js", function() {
+				$.getScript("https://www.dndbeyond.com/Content/1-0-399-0/React/CharacterTools/dist/characterSheet.bundle.min.js", function() {
 					console.log($content);
 
-					clearTimeout(saveContent);
 					var playerLoaded = setInterval(function() {
-						$note.find('.collapsible-header .limited-list-item-callout > button').addClass('tb-disabled').text('Saved');
-						_this.save();
+						//$note.find('.collapsible-header .limited-list-item-callout > button').addClass('tb-disabled').text('Saved');
+						//_this.save();
 					}, 1000);
 
 					setInterval(function() {
-						console.log($content.find('.quick-info-item.quick-info-initiative .quick-info-item-value').text());
+						console.log($content.find('.ct-initiative-box__value').text());
 					}, 1000);
 				});
 			}
 
 			this.init = function () {
-				_this.load('1177534', 'mouse0270');
+				console.log("Loading Character");
+				_this.load('1339683', 'mouse0270');
+				_this.load('960245', 'mouse0270');
 				return this;
 			};
 

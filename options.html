@@ -2,118 +2,36 @@
 <html>
 <head>
 	<title>D&D Beyonds Toolbox</title>
-	<style>
-	html, body {
-		margin: 0px;
-		padding: 0px;
-	}
-	.list-group {
-		list-style: none;
-		margin: 0px;
-		padding: 0px;
-		width: 100%;
-	}
-	.list-group > .list-group-item {
-		border-top: 1px solid rgba(0, 0, 0, 0.1);
-	}
-	.list-group > .list-group-item:last-child {
-		border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-	}
-	.list-group > .list-group-item > .list-content {
-		display: block;
-		padding: 10px 15px;
-		padding-right: 70px;
-		position: relative;
-	}
-	.list-group > .list-group-item > .list-content > h4 {
-		margin: 0px;
-		margin-bottom: 5px;
-	}
-	.list-group > .list-group-item > .list-content > p {
-		margin: 0px;
-	}
-	.list-group > .list-group-item > .list-content > .material-switch {
-		position: absolute;
-	    right: 55px;
-	    top: 50%;
-	    transform: translateY(-50%);
-	}
-	.material-switch > input[type="checkbox"] {
-	    display: none;   
-	}
-	.material-switch > label {
-	    cursor: pointer;
-	    height: 0px;
-	    position: relative; 
-	    width: 40px;  
-	}
-	.material-switch > label::before {
-	    background: rgb(0, 0, 0);
-	    box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.5);
-	    border-radius: 8px;
-	    content: '';
-	    height: 16px;
-	    margin-top: -8px;
-	    position:absolute;
-	    opacity: 0.3;
-	    transition: all 0.4s ease-in-out;
-	    width: 40px;
-	}
-	.material-switch > label::after {
-	    background: rgb(255, 255, 255);
-	    border-radius: 16px;
-	    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
-	    content: '';
-	    height: 24px;
-	    left: -4px;
-	    margin-top: -8px;
-	    position: absolute;
-	    top: -4px;
-	    transition: all 0.3s ease-in-out;
-	    width: 24px;
-	}
-	.material-switch > input[type="checkbox"]:checked + label::before {
-	    background: inherit;
-	    opacity: 0.5;
-	}
-	.material-switch > input[type="checkbox"]:checked + label::after {
-	    background: inherit;
-	    left: 20px;
-	}
-	.label-default {
-		background-color: rgb(66, 133, 244);
-	}
+	<link rel="stylesheet" href="options.css" />
 
-	.save {
-		padding: 10px 15px;
-		text-align: center;
-	}
-	.save .btn {
-		background-color: rgb(66, 133, 244);
-		box-shadow: 0 2px 5px 0 rgba(0,0,0,.16), 0 2px 10px 0 rgba(0,0,0,.12);
-		border-radius: 2px;
-		border-width: 0px;
-		color: rgb(255, 255, 255);
-		cursor: pointer;
-		font-size: 13px;
-		margin: 5px;
-		padding: 10px 30px;
-    	text-transform: uppercase;
-		transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out,-webkit-box-shadow .15s ease-in-out;
-    	white-space: normal;
-    	word-wrap: break-word;
-	}
-	.save .btn:hover {
-    	background-color: rgb(90, 149, 245);
-	}
-	.save .btn:active, .save .btn:focus {
-    	background-color: rgb(11, 81, 197);
-	}
-	</style>
 </head>
 <body>
 	<main>
 		<ul class="list-group">
+			<li class="list-group-item">
+				<label class="list-content" for="optionStorage" style="padding-right: 90px;">
+					<h4>Storage</h4>
+					<p>Select how you would like to store the extensions data.</p>
+					<div class="button-group">
+						<a id="input" class="select" href="">sync</a>
+						<ul id="dropdown-menu">
+							<li><a href="#">sync</a></li>
+							<li><a href="#">local</a></li>
+						</ul>
+						<i id="icon" class="select"></i>
+					</div>
+				</label>
+			</li>
+			<li class="list-group-item">
+				<label class="list-content" for="optionDiceRoller">
+					<h4>Dice Roller</h4>
+					<p>Adds a simple Dice Roller within the Toolbox</p>
+					<div class="material-switch pull-right">
+						<input id="optionDiceRoller" name="optionDiceRoller" type="checkbox"/>
+						<label for="optionDiceRoller" class="label-default"></label>
+					</div>
+				</label>
+			</li>
 			<li class="list-group-item">
 				<label class="list-content" for="optionAsyncDiceRoller">
 					<h4>Async Dice Roller</h4>
@@ -177,6 +95,9 @@
 		</ul>
 		<div class="save">
 			<button id="save" class="btn">Save</button>
+		</div>
+		<div class="success">
+			<p>Saved</p>
 		</div>
 	</main>
 

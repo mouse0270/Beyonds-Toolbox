@@ -9,6 +9,7 @@
 			this.menus = function() {
 				var menus = {
 					tbContainer: $('body').hasClass('tb-shown'),
+					tbGroupDiceRoller: $('#tbGroupDiceRoller').hasClass('tb-manager-group-opened'),
 					tbGroupNotes: $('#tbGroupNotes').hasClass('tb-manager-group-opened'),
 					tbGroupInitiative: $('#tbGroupInitiative').hasClass('tb-manager-group-opened'),
 					tbGroupPlayers: $('#tbGroupPlayers').hasClass('tb-manager-group-opened'),

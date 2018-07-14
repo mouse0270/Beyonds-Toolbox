@@ -96,10 +96,17 @@ span.tb-creator:before {
     padding-bottom: 10px;
 }
 
+.comment.user-role-tb-creator .p-comment-header .tb-creator {
+    color: rgb(255, 255, 255); 
+}
+
 /* INPUTS
 =================================*/
 .tb-form-field {
 	margin: 10px;
+}
+.tb-input-group > .tb-form-field {
+    margin: 0px;
 }
 .tb-form-field > label {
 	cursor: default;
@@ -658,6 +665,20 @@ body.modal-shown {
 .tb-modal .fullscreen-modal .fullscreen-modal-content .tb-form-field.tb-heal > input {
     border-color: rgb(64, 210, 80);
 }
+
+/* DICE ROLLER
+=================================*/
+.tb-dice-roller {
+    text-align: center;
+}
+.tb-dice-roller .tb-control {
+    text-align: center;
+}
+.tb-dice-roller-all.character-button {
+    font-size: 0.8rem;
+    margin-top: 10px;
+}
+
 /* MONSTER
 =================================*/
 .tb-processed .mon-stat-block__header {
