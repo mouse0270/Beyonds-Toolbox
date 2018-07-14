@@ -154,10 +154,10 @@
 	}
 
 	Toolbox.Storage = function() {
-		var storage = chrome.storage.local;
+		var storage = chrome.storage.sync;
 
-		if (Toolbox.settings.options.Storage == 'sync')
-			storage = chrome.storage.sync;
+		if (Toolbox.settings.options.Storage == 'local')
+			storage = chrome.storage.local;
 
 		return storage;
 	}
