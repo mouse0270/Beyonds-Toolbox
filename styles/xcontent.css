@@ -1,5 +1,7 @@
 :root {
   --main-color: #E91E63;
+  --character-theme-background-color: #E91E63;
+  --character-theme-color: #DDD;
 }
 
 body .fullscreen-modal-overlay {
@@ -836,4 +838,91 @@ body.modal-shown {
 
 .tb-example .quick-menu-item-link > .tb-monster-health > input {
     display: none;
+}
+
+
+/* CUSTOM CHARACTER THEME
+=================================*/
+.ct-theme-pane svg.tb-custom-theme {
+    height: 95px;
+    position: absolute;
+    width: 81px;    
+}
+i.tb-custom-theme,
+div.tb-custom-theme {
+    background-image: none !important;
+}
+
+div.tb-custom-theme svg.tb-custom-theme {
+    left: 0px;
+    position: absolute;
+    top: 0px;
+    z-index: -1;
+}
+div.ct-armor-class-box.tb-custom-theme {
+    position: relative;
+}
+svg.tb-custom-theme {
+    max-width: 100%;
+    max-height: 100%;
+}
+i.tb-custom-theme svg.tb-custom-theme path,
+svg.tb-custom-theme.tb-inspiration path,
+svg.tb-custom-theme path:last-child {
+    fill: var(--character-theme-background-color) !important;
+}
+svg.tb-custom-theme .cls-1 {
+    stroke: none !important;
+}
+.i-menu-longrest.tb-custom-theme svg.tb-custom-theme ellipse.cls-1 {
+    fill: none;
+}
+svg.tb-custom-theme.tb-inspiration {
+    position: relative !important;
+    z-index: 0 !important;
+}
+.tb-custom-theme .ct-inspiration__status {
+    background-image: none !important;
+}
+.tb-custom-theme .ct-inspiration__status--active svg.tb-custom-theme {
+    display: block;
+}
+.tb-custom-theme .ct-inspiration__status--inactive svg.tb-custom-theme {
+    display: none;
+}
+
+body.tb-custom-theme.body-rpgcharacter-sheet .site-bar,
+body.tb-custom-theme .ct-character-tidbits__avatar,
+body.tb-custom-theme .ct-character-header-desktop__button,
+body.tb-custom-theme .ct-campaign-summary,
+body.tb-custom-theme .ct-tab-list__nav-item--active,
+body.tb-custom-theme .ct-sidebar__pane-content,
+body.tb-custom-theme .ct-sidebar__pane-gap,
+body.tb-custom-theme .ct-combat-tablet__cta-button,
+body.tb-custom-theme .ct-character-header-tablet__button,
+body.tb-custom-theme .ct-status-summary-mobile__health,
+body.tb-custom-theme .ct-status-summary-mobile__button {
+    border-color: var(--character-theme-background-color);
+}
+body.tb-custom-theme .ct-character-tidbits__menu-status--closed::before, .ct-character-tidbits__menu-status--opened::before {
+    border-top-color: var(--character-theme-background-color) !important;
+}
+body.tb-custom-theme .ct-popout-menu::before {
+    border-bottom-color: var(--character-theme-background-color) !important;
+}
+body.tb-custom-theme .ct-tab-options--layout-pill .ct-tab-options__header-heading--active,
+body.tb-custom-theme .ct-status-summary-mobile__button--active {
+    background-color: var(--character-theme-background-color);
+    color: var(--character-theme-color);
+}
+body.tb-custom-theme .ct-xp-bar__progress-inner {
+    background-color: var(--character-theme-background-color);
+}
+body.tb-custom-theme .ct-actions-list__heading,
+body.tb-custom-theme.site .ct-theme-link {
+    color: var(--character-theme-background-color);
+}
+
+.cp-color-picker {
+    z-index: 1032;
 }

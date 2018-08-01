@@ -13,10 +13,43 @@
 				return this;
 			};
 
-			this.auth = function(token) {
+			this.auth = function(token, callback) {
 				githubAPI = new GitHub({
-					token: token //'ef3f650fd3a2f70410c6efde0fb6daf52e3eefaf'
+					token: token
 				});
+
+				if (Toolbox.settings.options.GistID == null) {
+					var gist = githubAPI.getGist(); // No ID means Creating
+					var data = {
+						public: false,
+						description: "D&D Beyond Toolbox",
+						files: {
+							"D&D Beyond Toolbox" : {
+								content: 'CREATED SAVE GIST'
+							}
+						}
+					};
+
+					gist.create(data).then(function(httpResponse) {
+						var gistJson = httpResponse.data;
+						gist.read(function (err, gist, xhr) {
+							Toolbox.settings.options.GistID = gist.id;
+							var options = { settings: Toolbox.settings.options }
+						    try {
+								chrome.storage.sync.set(options, function(items) {
+									callback(items.settings);
+									if (chrome.runtime.lastError) {
+										Toolbox.Notification.add('danger', 'Chrome Runtime Error', chrome.runtime.lastError.message);
+									}
+								});
+							} catch(err) {
+								Toolbox.Notification.add('danger', 'Chrome Sync Set Error', err.message);
+							}
+						});
+					});
+				}else{
+					callback(Toolbox.settings.options);
+				}
 			};
 
 			this.save = function(GistID) {

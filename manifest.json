@@ -28,12 +28,14 @@
 	},
 	"content_scripts": [{
 		"matches": [ "*://*.dndbeyond.com/*" ],
+		"exclude_matches": [ "*://*.dndbeyond.com/api/character/svg/download*" ],
 		"css": [ "styles/xcontent.css" ],
 		"js": [
 			"scripts/xplugins.js",
 			"scripts/toolbox.config.js",
 			"scripts/toolbox.helpers.js",
 			"scripts/toolbox.container.js",
+			"scripts/toolbox.character.js",
 			"scripts/toolbox.diceroller.js",
 			"scripts/toolbox.notes.js",
 			"scripts/toolbox.monster.js",

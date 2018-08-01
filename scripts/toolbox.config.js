@@ -122,8 +122,10 @@
 		players: [],
 		initiative: [],
 		initiativeRound: 1,
+		characters: {},
 		options: {
 			AsyncDiceRoller: true,
+			CharacterSheet: true,
 			DiceRoller: true,
 			Notes: true,
 			InitiativeTracker: true,

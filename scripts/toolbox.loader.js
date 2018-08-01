@@ -9,19 +9,24 @@
 			this.version = function() {
 				var manifestData = chrome.runtime.getManifest();
 				Toolbox.Storage.get("version", function(items) {
-			        if (typeof items.version == 'undefined' || items.version != manifestData.version) {
+					if (typeof items.version == 'undefined' || items.version != manifestData.version) {
 						if (manifestData.version != Toolbox.settings.version) {
 							Toolbox.settings.version = manifestData.version;
 							Toolbox.save('version', Toolbox.settings.version);
 
 							Toolbox.Notification.add('success', 'Updated', 'Thanks for updating D&D Toolbox. Hope you enjoy the changes!');
 						}
-			        }
+					}
 					_this.settings();
-			    });
+				});
 			}
 
 			this.build = function() {
+				console.log(Toolbox.settings.options.CharacterSheet)
+
+				if (Toolbox.settings.options.CharacterSheet)
+					_this.CharacterSheet();
+
 				if (Toolbox.settings.options.DiceRoller)
 					_this.diceRoller();
 
@@ -42,54 +47,54 @@
 
 			this.settings = function() {
 				chrome.storage.sync.get("settings", function(items) {
-			        if (typeof items.settings !== 'undefined') {
-			        	Toolbox.settings.options = items.settings;
-			        }else{
-			        	Toolbox.save('settings', Toolbox.settings.options);
-			        }
+					if (typeof items.settings !== 'undefined') {
+						$.extend(true, Toolbox.settings.options, items.settings);
+					}else{
+						Toolbox.save('settings', Toolbox.settings.options);
+					}
 
-			        if (Toolbox.settings.options.Storage == 'github') {
-			        	Toolbox.GitHub.auth(Toolbox.settings.options.GitHubToken);
-			        }
-			        //Toolbox.GitHub.read("71f9958dcfe46b7b4a66e2156f220b52");
-			        //Toolbox.GitHub.create('diceRoller', obj)
-			        /*var obj = {};
-			        obj['diceRoller'] = [{ quantity: "1", sides: "6", modifier: "0"}];
-			        Toolbox.GitHub.set(obj, function (ID) {
-			        	console.log(ID);
-			        })*/
-
-			        if (Toolbox.settings.options.DiceRoller) 
-			        	Toolbox.DiceRoller.add();
-
-			        if (Toolbox.settings.options.AsyncDiceRoller) 
-			        	Toolbox.AsyncDiceRoller.bind();
-
-				    if (Toolbox.settings.options.Notes)
-						 Toolbox.Notes.add();
-
-					if (Toolbox.settings.options.InitiativeTracker)
-				    	Toolbox.Initiative.add();
-
-					if (Toolbox.settings.options.Players)
-				    	Toolbox.Players.add();
-
-					if (Toolbox.settings.options.Encounters)
-				    	Toolbox.Encounters.add();
-
-				    if (Toolbox.settings.options.Creators)
-						Toolbox.Creator.scan();
-
-			        _this.build();
-			    });
+					if (Toolbox.settings.options.Storage == 'github') {
+						Toolbox.GitHub.auth(Toolbox.settings.options.GitHubToken, function(settings) {
+							console.log(settings);
+							_this.load();
+						});
+					}else{
+						_this.load();
+					}
+				});
 			};
+
+			this.load = function() {
+				if (Toolbox.settings.options.DiceRoller) 
+					Toolbox.DiceRoller.add();
+
+				if (Toolbox.settings.options.AsyncDiceRoller) 
+					Toolbox.AsyncDiceRoller.bind();
+
+				if (Toolbox.settings.options.Notes)
+					 Toolbox.Notes.add();
+
+				if (Toolbox.settings.options.InitiativeTracker)
+					Toolbox.Initiative.add();
+
+				if (Toolbox.settings.options.Players)
+					Toolbox.Players.add();
+
+				if (Toolbox.settings.options.Encounters)
+					Toolbox.Encounters.add();
+
+				if (Toolbox.settings.options.Creators)
+					Toolbox.Creator.scan();
+
+				_this.build();
+			}
 
 			this.menus = function() {
 				Toolbox.Storage.get("menus", function(items) {
-			        if (typeof items.menus !== 'undefined') {
-			        	Toolbox.settings.menus = items.menus;
+					if (typeof items.menus !== 'undefined') {
+						Toolbox.settings.menus = items.menus;
 
-			        	$('body').removeClass('tb-shown');
+						$('body').removeClass('tb-shown');
 						$('#tbGroupDiceRoller').addClass('tb-manager-group-collapsed');
 						$('#tbGroupNotes').addClass('tb-manager-group-collapsed');
 						$('#tbGroupInitiative').addClass('tb-manager-group-collapsed');
@@ -106,57 +111,70 @@
 						if (Toolbox.settings.menus.tbContainer) {
 							$('body').addClass('tb-shown');
 						}
-			        }
-			    });
+					}
+				});
 			};
+
+			this.CharacterSheet = function() {
+				Toolbox.Storage.get("characters", function(items) {
+					if (typeof items.characters !== 'undefined') {
+						Toolbox.settings.characters = items.characters;			        		
+					}else{
+						Toolbox.settings.characters = {};
+					}
+					console.log(Toolbox.settings.characters)
+
+					Toolbox.CharacterSheet.enable();
+				});
+			}
 
 			this.diceRoller = function() {
 				Toolbox.Storage.get("diceRoller", function(items) {
-			        if (typeof items.diceRoller !== 'undefined') {
-			        	Toolbox.settings.diceRoller = items.diceRoller;			        		
-			        }else{
-			        	Toolbox.settings.diceRoller = [{modifier: "0", quantity: "1", sides: "6"}];
-			        }
+					if (typeof items.diceRoller !== 'undefined') {
+						Toolbox.settings.diceRoller = items.diceRoller;			        		
+					}else{
+						Toolbox.settings.diceRoller = [{modifier: "0", quantity: "1", sides: "6"}];
+					}
 
-			        Toolbox.DiceRoller.clear();
-			        Toolbox.settings.diceRoller.forEach(function(dice) {
-			        	Toolbox.DiceRoller.build(dice);
-			        });
-			    });
+					Toolbox.DiceRoller.clear();
+					Toolbox.settings.diceRoller.forEach(function(dice) {
+						Toolbox.DiceRoller.build(dice);
+					});
+				});
 			};
 
 			this.notes = function() {
 				Toolbox.Storage.get("notes", function(items) {
-			        if (typeof items.notes !== 'undefined') {
-			        	Toolbox.Notes.clear();
+					if (typeof items.notes !== 'undefined') {
+						Toolbox.Notes.clear();
 
-			        	Toolbox.settings.notes = items.notes;
-			        	Toolbox.settings.notes.forEach(function(note) {
-			        		Toolbox.Notes.build(note);
-			        	});
-			        }
-			    });
+						Toolbox.settings.notes = items.notes;
+						Toolbox.settings.notes.forEach(function(note) {
+							Toolbox.Notes.build(note);
+						});
+					}
+				});
 			};
 
 			this.initiative = function() {
 				Toolbox.Storage.get("initiativeRound", function(items) {
-			        if (typeof items.initiativeRound !== 'undefined') {
+					if (typeof items.initiativeRound !== 'undefined') {
 						Toolbox.settings.initiativeRound = items.initiativeRound;
 
 						Toolbox.Initiative.roundTracker();
 					}
 				});
 
-			    Toolbox.Storage.get("initiative", function(items) {
-			        if (typeof items.initiative !== 'undefined') {
-			        	Toolbox.Initiative.clear();
+				Toolbox.Storage.get("initiative", function(items) {
+					if (typeof items.initiative !== 'undefined') {
+						Toolbox.Initiative.clear();
 
-			        	Toolbox.settings.initiative = items.initiative;
-			            Toolbox.settings.initiative.forEach(function(player) {
-			                Toolbox.Initiative.build(player);
-			            });
-			        }
-			    });
+						Toolbox.settings.initiative = items.initiative;
+						Toolbox.settings.initiative.forEach(function(player) {
+							Toolbox.Initiative.build(player);
+						});
+					}
+				});
 			};
 
 			this.players = function() {
@@ -174,15 +192,15 @@
 
 			this.encounters = function() {
 				Toolbox.Storage.get("encounters", function(items) {
-			        if (typeof items.encounters !== 'undefined') {
+					if (typeof items.encounters !== 'undefined') {
 						Toolbox.Encounters.clear();
 						
-			            Toolbox.settings.encounters = items.encounters;
-			            Toolbox.settings.encounters.forEach(function(encounter) {
-			                Toolbox.Encounters.build(encounter, -1);
-			            });
-			        }
-			    });
+						Toolbox.settings.encounters = items.encounters;
+						Toolbox.settings.encounters.forEach(function(encounter) {
+							Toolbox.Encounters.build(encounter, -1);
+						});
+					}
+				});
 			}
 
 			this.init = function () {

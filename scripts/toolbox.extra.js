@@ -13,6 +13,8 @@
 			Toolbox.AsyncDiceRoller.scan();
 	    }else if (msg.action == 'tb-rebuild') {
             Toolbox.Loader.build();
+        }else if (msg.action == 'tb-custom-theme') {
+        	//Toolbox.CustomTheme.setColor();
         }
 	});
 
