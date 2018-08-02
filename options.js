@@ -27,17 +27,26 @@
 	for (var iLoop = 0; iLoop < triggerClose.length; iLoop++) {	
 		triggerClose[iLoop].addEventListener("click", function(event) {
 			event.preventDefault();
-			console.log(this.innerText);
 			document.querySelector('#input').innerText = this.innerText;
 
 			document.querySelector('#dropdown-menu').classList.toggle('open');
 			m.set('triangle').size(10);
+
+			document.querySelector('[for="optionGitHubToken"]').parentNode.classList.add("hide");
+			document.querySelector('[for="optionGitHubGistID"]').parentNode.classList.add("hide");
+			if (this.innerText == 'github') {
+				document.querySelector('[for="optionGitHubToken"]').parentNode.classList.remove("hide");
+				document.querySelector('[for="optionGitHubGistID"]').parentNode.classList.remove("hide");
+			}
 		});
 	}
 
 function save_settings() {
 	var options = {
 			settings: {
+				CharacterSheetDiceRoller:document.getElementById('optionCharacterSheetDiceRoller').checked,
+				CharacterSheetSkillSorter:document.getElementById('optionCharacterSheetSkillSorter').checked,
+				CharacterSheetCustomThemeColor: document.getElementById('optionCharacterSheetCustomThemeColor').checked,
 				DiceRoller: document.getElementById('optionDiceRoller').checked,
 				AsyncDiceRoller: document.getElementById('optionAsyncDiceRoller').checked,
 				Notes: document.getElementById('optionNotes').checked,
@@ -47,9 +56,12 @@ function save_settings() {
 				Creators: document.getElementById('optionCreators').checked,
 				Storage: document.querySelector('#input').innerText,
 				GitHubToken: document.getElementById('optionGitHubToken').value,
-				GistID: null
+				GistID: document.getElementById('optionGitHubGistID').value
 			}
 		};
+
+	if (options.settings.GistID.length <= 0) options.settings.GistID = null;
+
 	chrome.storage.sync.get(options, function(items) {
 		options.settings.GistID = items.settings.GistID;
 		console.log(options);
@@ -69,6 +81,9 @@ function save_settings() {
 function restore_settings() {
 	var options = {
 		settings: {
+			CharacterSheetDiceRoller: true,
+			CharacterSheetSkillSorter: true,
+			CharacterSheetCustomThemeColor: true,
 			DiceRoller: true,
 			AsyncDiceRoller: true,
 			Notes: true,
@@ -83,8 +98,14 @@ function restore_settings() {
 	}
 
 	chrome.storage.sync.get(options, function(items) {
+		console.log(items)
+
 		document.getElementById('input').innerText = items.settings.Storage;
 		document.getElementById('optionGitHubToken').value = items.settings.GitHubToken;
+		document.getElementById('optionGitHubGistID').value = items.settings.GistID;
+		document.getElementById('optionCharacterSheetDiceRoller').checked = items.settings.CharacterSheetDiceRoller;
+		document.getElementById('optionCharacterSheetSkillSorter').checked = items.settings.CharacterSheetSkillSorter;
+		document.getElementById('optionCharacterSheetCustomThemeColor').checked = items.settings.CharacterSheetCustomThemeColor;
 		document.getElementById('optionDiceRoller').checked = items.settings.DiceRoller;
 		document.getElementById('optionAsyncDiceRoller').checked = items.settings.AsyncDiceRoller;
 		document.getElementById('optionNotes').checked = items.settings.Notes;
@@ -92,8 +113,13 @@ function restore_settings() {
 		document.getElementById('optionPlayers').checked = items.settings.Players;
 		document.getElementById('optionEncounters').checked = items.settings.Encounters;
 		document.getElementById('optionCreators').checked = items.settings.Creators;
-
-		console.log(items)
+			
+		document.querySelector('[for="optionGitHubToken"]').parentNode.classList.add("hide");
+		document.querySelector('[for="optionGitHubGistID"]').parentNode.classList.add("hide");
+		if (items.settings.Storage == 'github') {
+			document.querySelector('[for="optionGitHubToken"]').parentNode.classList.remove("hide");
+			document.querySelector('[for="optionGitHubGistID"]').parentNode.classList.remove("hide");
+		}
 	});
 }
 

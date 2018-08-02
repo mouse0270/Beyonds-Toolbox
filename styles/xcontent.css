@@ -843,6 +843,9 @@ body.modal-shown {
 
 /* CUSTOM CHARACTER THEME
 =================================*/
+body.tb-custom-theme .ct-sidebar {
+    z-index: 1032;
+}
 .ct-theme-pane svg.tb-custom-theme {
     height: 95px;
     position: absolute;

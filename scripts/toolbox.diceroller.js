@@ -13,6 +13,7 @@
 				$manager.find('.tb-manager-content').append('<div class="tb-dice-roller"></div>');
 				$manager.find('.tb-manager-header > .limited-list-item-callout > button').on('click', function() {
 					_this.build({modifier: "0", quantity: "1", sides: "6"});
+					_this.save();
 				});
 
 				_this.update();
@@ -52,7 +53,6 @@
 							$manager.find('.tb-btn').prop("disabled", false);
 							$content.find('.tb-dice-roller-all').remove();
 						}
-
 						_this.save();
 					});
 
@@ -62,7 +62,6 @@
 				}else{
 					$dice.find('.tb-btn').on('click', _this.bind);
 				}
-				_this.save();
 			};
 
 			this.update = function() {
@@ -164,7 +163,7 @@
 				return false
 			};
 
-			this.modal = function(attack, monster) {
+			/*this.modal = function(attack, monster) {
 				$.modal(_this.build(attack), monster, [{
 					label: "Reroll",
 					className: '',
@@ -175,12 +174,12 @@
 				},{ label: "Cancel" }]);
 
 				$('.tb-modal').addClass('tb-modal-small');
-			};
+			};*/
 
 			this.clear = function() {
 				var $content = $manager.find('.tb-manager-content > .tb-dice-roller');
 				$content.empty();
-			}
+			};
 
 			this.save = function() {
 				var $content = $manager.find('.tb-manager-content > .tb-dice-roller > .tb-input-group'),

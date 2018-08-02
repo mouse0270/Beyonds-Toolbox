@@ -7,7 +7,7 @@
 
 			this.scan = function () {
 				//var inputstring = "/([1-9]\\d*)?d([1-9]\\d*)\\s*([+-−]\\s*\\d+)?/i";
-				var inputstring = "/([+−-]\\d+)|(([1-9]\\d*)?d([1-9]\\d*)\\s*([+-−]\\s*\\d+)?)/i";
+				var inputstring = "/([+−-]\\d+)|(([1-9]\\d*)?d([1-9]\\d*)\\s*([+-−]\\s*\\d+)?([,]\\s*\\d+)?)/i";
 				var flags = inputstring.replace(/.*\/([gimy]*)$/, '$1');
 				var pattern = inputstring.replace(new RegExp('^/(.*?)/' + flags + '$'), '$1');
 				var regex = new RegExp(pattern, flags);
@@ -24,6 +24,7 @@
 									'div.tb-modal *',
 									'.ddb-homebrew-create-form-fields-item-input *'
 								],
+								ignorePunctuation: [","],
 								each: function(item) {
 									$(item).attr('title', 'Roll {0}'.format($(item).text()));
 								}
@@ -69,7 +70,11 @@
 					rolls = rolls.substring(2);
 					if (diceRolls.modifier != 0) {
 						rolls += ")";
-						rolls += " + {0}".format(diceRolls.modifier);
+						if (diceRolls.type == 'multiplication') {
+							rolls += " × {0}".format(diceRolls.modifier);
+						}else{
+							rolls += " + {0}".format(diceRolls.modifier);
+						}
 						rolls = "( " + rolls;
 					}
 					rolls += " = {0}".format(diceRolls.total);

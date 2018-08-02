@@ -60,17 +60,27 @@
     var pieces = null;
     var result = new DrollFormula();
 
-    formula = formula.replace(/ /g, '').replace(/−/g, '-');
-    pieces = formula.match(/^([1-9]\d*)?d([1-9]\d*)([+-]\d+)?$/i);
+    formula = formula.replace(/ /g, '').replace(/−/g, '-').replace(/,/g, '');
+    pieces = formula.match(/^([1-9]\d*)?d([1-9]\d*)([+-×]\d+)?$/i);
     if (!pieces) { return false; }
 
     result.numDice  = (pieces[1] - 0) || 1;
     result.numSides = (pieces[2] - 0);
     result.modifier = (pieces[3] - 0) || 0;
+    result.type = "addition";
 
-    result.minResult = Math.floor((result.numDice * 1) + result.modifier);
-    result.maxResult = Math.floor((result.numDice * result.numSides) + result.modifier);
-    result.avgResult = Math.floor((result.maxResult + result.minResult) / 2);
+    if (!(typeof(pieces[3]) == 'undefined') && pieces[3].indexOf('×') > -1) {
+      result.modifier = (pieces[3].replace(/×/g, '') - 0) || 0;
+      result.type = "multiplication";
+      result.minResult = Math.floor((result.numDice * 1) * result.modifier);
+      result.maxResult = Math.floor((result.numDice * result.numSides) * result.modifier);
+      result.avgResult = Math.floor((result.maxResult + result.minResult) / 2);
+    }else{
+      result.minResult = Math.floor((result.numDice * 1) + result.modifier);
+      result.maxResult = Math.floor((result.numDice * result.numSides) + result.modifier);
+      result.avgResult = Math.floor((result.maxResult + result.minResult) / 2);
+    }
+
 
     return result;
   };
@@ -98,12 +108,17 @@
       result.rolls[a] = (1 + Math.floor(Math.random() * pieces.numSides));
     }
 
+    result.type = pieces.type;
     result.modifier = pieces.modifier;
 
     for (var b=0; b<result.rolls.length; b++) {
       result.total += result.rolls[b];
     }
-    result.total += result.modifier;
+    if (result.type == 'multiplication') {
+      result.total *= result.modifier;
+    }else{
+      result.total += result.modifier;
+    }
     result.pieces = pieces;
 
     return result;

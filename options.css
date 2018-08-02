@@ -4,6 +4,9 @@
 		margin: 0px;
 		padding: 0px;
 	}
+	.hide {
+		display: none !important;
+	}
 	.list-group {
 		list-style: none;
 		margin: 0px;
@@ -28,6 +31,22 @@
 	}
 	.list-group > .list-group-item > .list-content > p {
 		margin: 0px;
+	}
+	.list-group > .list-group-item > .list-content > input[type="text"] {
+		background-color: rgb(255, 255, 255);
+	    border: solid 1px rgb(216, 221, 227);
+	    border-radius: 0;
+	    box-sizing: border-box;
+	    color: rgb(0, 0, 0);
+	    font-size: 15px!important;
+	    height: 40px;
+	    padding: 0 10px;
+	    margin: 0 auto;
+	    margin-top: 10px;
+	    -webkit-transition: .2s linear border,0.2s linear box-shadow;
+	    -moz-transition: .2s linear border,0.2s linear box-shadow;
+	    transition: .2s linear border,0.2s linear box-shadow;
+	    width: 100%;
 	}
 	.list-group > .list-group-item > .list-content > .material-switch {
 		position: absolute;
@@ -77,6 +96,8 @@
 	    background: inherit;
 	    left: 20px;
 	}
+
+
 
 /* INPUT
    ================================== */

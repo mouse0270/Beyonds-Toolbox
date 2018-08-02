@@ -7,6 +7,11 @@
 			var _this = this;
 			var $manager;
 			var githubAPI = null;
+			var saveGIST;
+			var updateGist = {
+					"description": "D&D Beyond Toolbox",
+					"files": { }
+				};
 
 
 			this.init = function() {
@@ -52,7 +57,7 @@
 				}
 			};
 
-			this.save = function(GistID) {
+			/*this.save = function(GistID) {
 				Toolbox.settings.options.GistID = GistID;
 				var options = { settings: Toolbox.settings.options }
 			    try {
@@ -64,21 +69,21 @@
 				} catch(err) {
 					Toolbox.Notification.add('danger', 'Chrome Sync Set Error', err.message);
 				}
-			};
+			};*/
 
 			this.set = function(obj, callback) {
 				var key = null;
 				for (var tempKey in obj) { key = tempKey };
-				if (Toolbox.settings.options.GistID == null) {
+				/*if (Toolbox.settings.options.GistID == null) {
 					this.create(key, obj, function (ID) {
 						_this.save(ID);
 						callback(ID);
 					});
-				}else{
+				}else{*/
 					this.update(key, Toolbox.settings.options.GistID, obj, function (ID) {
 						callback(ID);
 					});
-				}
+				//}
 			}
 
 			this.get = function(key, callback) {
@@ -91,44 +96,30 @@
 				}
 			}
 
-			this.create = function(setting, obj, callback) {
-				var gist = githubAPI.getGist(); // No ID means Creating
-				var data = {
-					public: false,
-					description: "D&D Beyond Toolbox",
-					files: {
-						["{0}".format(setting)] : {
-							content: JSON.stringify(obj)
-						}
-					}
-				};
-
-				gist.create(data).then(function(httpResponse) {
-					var gistJson = httpResponse.data;
-					gist.read(function (err, gist, xhr) {
-						callback(gist.id);
-					});
-				});
-			};
-
 			this.update = function(setting, ID, obj, callback) {
 				var gist = githubAPI.getGist(ID),
 					data = {
 						"description": "D&D Beyond Toolbox",
 						"files": {
-							["{0}".format(setting)]: null,
 							["{0}".format(setting)] : {
 								content: JSON.stringify(obj)
 							}
 						}
 					}
 
-				gist.update(data).then(function(httpResponse) {
-					var gistJson = httpResponse.data;
-					gist.read(function (err, gist, xhr) {
-						callback(gist.id);
+				updateGist.files["{0}".format(setting)] = { content: JSON.stringify(obj) };
+				clearInterval(saveGIST);
+				saveGIST = setTimeout(function() {
+					$.log(updateGist);
+					gist.update(updateGist).then(function(httpResponse) {
+						var gistJson = httpResponse.data;
+						gist.read(function (err, gist, xhr) {
+							callback(gist.id);
+						});
 					});
-				});
+				}, 2000);
+
+				
 			}
 
 			this.read = function(ID, key, callback) {
@@ -153,6 +144,9 @@
 							callback(content);
 						}
 					}
+				}
+				if (content == null) {
+					callback({[key]: undefined});
 				}
 			};
 

@@ -8,7 +8,7 @@
 
 			this.waitForCharacterSheet = function() {
 				var loadingCharacterSheet = setInterval(function() {
-					var CharacterSheetLoaded = ($('#character-sheet-target > .ct-character-sheet').length >= 1 ? true : false);
+					var CharacterSheetLoaded = ($('#character-sheet-target > .ct-character-sheet .ct-quick-info__ability').length >= 1 ? true : false);
 					if (CharacterSheetLoaded) {
 						$('body').trigger('character:loaded');
 						clearInterval(loadingCharacterSheet);
@@ -17,7 +17,133 @@
 
 				$('body').on('character:loaded', function( event ) {
 					_this.loadCustomTheme();
+
+					if (Toolbox.settings.options.AsyncDiceRoller) 
+						_this.CharacterSheetRoller();
 				});
+			};
+
+			this.CharacterSheetRoller = function() {
+				var abilityNameConversion = { 'str': 'Strength', 'dex': 'Dexterity', 'con': 'Constitution', 'int': 'Intelligence', 'wis': 'Wisdom', 'cha': 'Charisma' };
+
+				// ABILITY SCORES
+				$('body').on('click', '.ct-quick-info__ability', function(event) {
+					var stats = {
+						heading: $(this).find('.ct-ability-summary__label').text(),
+						roll: [ 
+							'1d20'+$(this).find('.ct-ability-summary__primary').text(),
+							'1d20'+$(this).find('.ct-ability-summary__primary').text()
+						]
+					};
+
+					_this.rollModal(stats, 'Pure {0} Check'.format(stats.heading));
+				});
+
+				// SAVING THROWS
+				$('body').on('click', '.ct-saving-throws-summary__ability', function(event) {
+					var stats = {
+						heading: abilityNameConversion[$(this).find('.ct-saving-throws-summary__ability-name').text()],
+						roll: [ 
+							'1d20'+$(this).find('.ct-saving-throws-summary__ability-modifier').text(),
+							'1d20'+$(this).find('.ct-saving-throws-summary__ability-modifier').text()
+						]
+					};	
+
+					_this.rollModal(stats, '{0} Saving Throw'.format(stats.heading));
+				});
+
+				// SKILLS
+				$('body').on('click', '.ct-skills__item .ct-skills__col--modifier', function(event) {
+					var stats = {
+						heading: $(this).closest('.ct-skills__item').find('.ct-skills__col--skill').text(),
+						roll: [ 
+							'1d20'+$(this).text(),
+							'1d20'+$(this).text()
+						]
+					};
+
+					_this.rollModal(stats, '{0} Skill Check'.format(stats.heading));
+				});	
+			};
+
+			this.rollModal = function (stats, heading) {
+				$.modal(_this.roll(stats.roll), heading, [{
+					label: "Reroll",
+					className: '',
+					callback: function() {
+						$('.tb-modal .fullscreen-modal-content').html(_this.roll(stats.roll, heading));
+						$('.tb-modal .fullscreen-modal-content .tb-quick-menu-total').remove();
+						return false;
+					}
+				},{ label: "Cancel" }]);
+				$('.tb-modal .fullscreen-modal-content .tb-quick-menu-total').remove();
+				$('.tb-modal').addClass('tb-modal-small');
+			}
+
+			this.roll = function (diceRolls) {
+				var $content = $('<div></div>'),
+					$list = $('<ul class="quick-menu quick-menu-tier-2"></ul>'),
+					isCritical = false;
+
+				if (diceRolls.length >= 1) {
+					var attacks = false, totalDamage = 0;
+
+					diceRolls.forEach(function(roll, index) {
+						var status = _this.rollDice(roll.replace('−', '-'))
+							template = $.grab('config', 'templates').quickMenuItem;
+							
+						var $item = $(template.format('', 'Total: <strong>{0}</strong>'.format(status.total), 'Details: {0}'.format(status.summary), ''));
+
+						$item.find('.limited-list-item-callout').remove();
+						$item.find('.remove').remove();
+						$item.find('.quick-menu-item-link').prepend('<strong>Rolling {0}</strong><br/>'.format(roll));
+						$list.append($item);
+
+						attacks = true; totalDamage += status.total;
+					});
+
+					if (totalDamage >= 1) {
+						var template = $.grab('config', 'templates').quickMenuItem,
+							$item = $(template.format('', '{0} Total Value'.format(totalDamage), '', ''));
+
+						$item.addClass('tb-quick-menu-total').find('.limited-list-item-callout').remove();
+						$item.find('.remove').remove();
+						$list.append($item);
+					}
+
+					$content.append($list);
+				}
+
+				return $content[0].outerHTML;
+			};
+
+			this.rollDice = function (dice) {
+				var diceRolls = droll.parse(dice),
+					rolls = "";
+
+				if (diceRolls !== false) {
+					var formula = '{0}d{1}{2}{3}'.format(diceRolls.numDice, diceRolls.numSides, (diceRolls.modifier >= 0 ? '+' : ''), diceRolls.modifier)
+					diceRolls = droll.roll(formula);
+
+					for (var iRoll = 0; iRoll < diceRolls.rolls.length; iRoll++) {
+						rolls += "+ {0} ".format(diceRolls.rolls[iRoll]);
+					}
+					rolls = rolls.substring(2);
+
+					if (diceRolls.modifier != 0) {
+						rolls = "( {0}) + {1}".format(rolls, diceRolls.modifier);
+					}
+
+					var content = {
+							rolls: diceRolls.rolls,
+							summary: rolls,
+							total: diceRolls.total
+						};
+
+					return content;
+				}
+
+				return false
 			};
 
 			this.bind = function() {
@@ -208,6 +334,7 @@
 								$('.tb-custom-theme').removeClass('tb-custom-theme');
 							}
 						},{ label: "Cancel" }]);
+						$('.tinyColorPicker').focus();
 
 						var currentColor = document.documentElement.style.getPropertyValue('--character-theme-background-color');
 						if (currentColor.length < 1) currentColor = '#E91E63';
@@ -276,7 +403,6 @@
 					}
 				});
 
-				console.log(inspirationSVG);
 				$('.ct-inspiration__status').addClass('tb-custom-theme').append(inspirationSVG);
 			};
 

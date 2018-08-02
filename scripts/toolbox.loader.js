@@ -22,8 +22,6 @@
 			}
 
 			this.build = function() {
-				console.log(Toolbox.settings.options.CharacterSheet)
-
 				if (Toolbox.settings.options.CharacterSheet)
 					_this.CharacterSheet();
 
@@ -55,7 +53,6 @@
 
 					if (Toolbox.settings.options.Storage == 'github') {
 						Toolbox.GitHub.auth(Toolbox.settings.options.GitHubToken, function(settings) {
-							console.log(settings);
 							_this.load();
 						});
 					}else{
@@ -122,7 +119,6 @@
 					}else{
 						Toolbox.settings.characters = {};
 					}
-					console.log(Toolbox.settings.characters)
 
 					Toolbox.CharacterSheet.enable();
 				});

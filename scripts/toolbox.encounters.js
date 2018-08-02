@@ -31,8 +31,6 @@
 			    var $monsterStats = $(evt.currentTarget).closest('.mon-stat-block'),
 			    	customMonster = false;
 
-			    console.log(evt, monster);
-
 			    if ($monsterStats.length > 0) {
 			        monster = {
 			            url: $monsterStats.find('.mon-stat-block__name-link').attr('href'),
@@ -168,7 +166,6 @@
 				}
 
 				var index = Toolbox.settings.encounters.findIndex(function(array) {
-					console.log(array.name, name);
 					return array.name == name;
 				}, name);
 
@@ -307,7 +304,6 @@
 				    var newValue = $(this).val() * 1;
 				    if (newValue < 0) {
 				        $(this).val(currentHP + newValue);
-				        console.log(currentHP, newValue)
 				    }
 				    currentHP = 0;
 				});
