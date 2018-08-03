@@ -16,9 +16,10 @@
 				}, 100);
 
 				$('body').on('character:loaded', function( event ) {
-					_this.loadCustomTheme();
+					if (Toolbox.settings.options.CharacterSheetCustomThemeColor)
+						_this.loadCustomTheme();
 
-					if (Toolbox.settings.options.AsyncDiceRoller) 
+					if (Toolbox.settings.options.CharacterSheetDiceRoller) 
 						_this.CharacterSheetRoller();
 				});
 			};
@@ -147,63 +148,68 @@
 			};
 
 			this.bind = function() {
-				$(window).resize(function() {
-					var characterID = $('div[data-character-id]').attr('data-character-id');
-					if (characterID in Toolbox.settings.characters) {
-						if ($('svg.tb-custom-theme').length == 0) {
-							_this.loadCustomTheme();
+				if (Toolbox.settings.options.CharacterSheetCustomThemeColor) {
+					$(window).resize(function() {
+						var characterID = $('div[data-character-id]').attr('data-character-id');
+						if (characterID in Toolbox.settings.characters) {
+							if ($('svg.tb-custom-theme').length == 0) {
+								_this.loadCustomTheme();
+							}
 						}
-					}
-				});
+					});
 
-				$('body').on('click', '.ct-popout-menu .ct-popout-menu__item', function() {
-					var isChangeTheme = ($(this).find('.i-menu-theme').length > 0 ? true : false);
-					if (isChangeTheme) {
-						_this.addCustomColor();
-					}
-				});
-				$('body').on('click', '.ct-skills__heading', function(event) {
-					var $heading = $(this).closest('.ct-skills__header');
-					var heading = $(this).text().toLowerCase();
-					var skillList;
+					$('body').on('click', '.ct-popout-menu .ct-popout-menu__item', function() {
+						var isChangeTheme = ($(this).find('.i-menu-theme').length > 0 ? true : false);
+						if (isChangeTheme) {
+							_this.addCustomColor();
+						}
+					});
+				}
 
-					// Complicated Way to Solve Sorting
-					if (typeof $heading.data('sort') == 'undefined' || heading != $heading.data('sortBy')) {
-						$heading.data('sort', 'asc');
-						$heading.data('sortBy', heading);
-					}else{
-						if ($heading.data('sort') == "asc") {
-							$heading.data('sort', 'desc')
+				if (Toolbox.settings.options.CharacterSheetSkillSorter) {
+					$('body').on('click', '.ct-skills__heading', function(event) {
+						var $heading = $(this).closest('.ct-skills__header');
+						var heading = $(this).text().toLowerCase();
+						var skillList;
+
+						// Complicated Way to Solve Sorting
+						if (typeof $heading.data('sort') == 'undefined' || heading != $heading.data('sortBy')) {
+							$heading.data('sort', 'asc');
+							$heading.data('sortBy', heading);
 						}else{
-							$heading.data('sort', 'asc')
+							if ($heading.data('sort') == "asc") {
+								$heading.data('sort', 'desc')
+							}else{
+								$heading.data('sort', 'asc')
+							}
 						}
-					}
 
-					// Build Sort Data
-					_this.skills();
+						// Build Sort Data
+						_this.skills();
 
-					// Check Sort Type
-					if (heading == 'skill') {
-						skillList = $('.ct-skills .ct-skills__list .ct-skills__item').sort(function(a, b) {
-							if ($heading.data('sort') == 'asc') {
-								return String.prototype.localeCompare.call($(a).data(heading).toLowerCase(), $(b).data(heading).toLowerCase());
-							}else{
-								return String.prototype.localeCompare.call($(b).data(heading).toLowerCase(), $(a).data(heading).toLowerCase());
-							}
-						});
-					}else{
-						skillList = $('.ct-skills .ct-skills__list .ct-skills__item').sort(function(a, b) {
-							if ($heading.data('sort') == 'asc') {
-								return $(a).data(heading) - $(b).data(heading) || String.prototype.localeCompare.call($(a).data('skill').toLowerCase(), $(b).data('skill').toLowerCase());
-							}else{
-								return $(b).data(heading) - $(a).data(heading) || String.prototype.localeCompare.call($(a).data('skill').toLowerCase(), $(b).data('skill').toLowerCase());
-							}
-						});
-					}
+						// Check Sort Type
+						if (heading == 'skill') {
+							skillList = $('.ct-skills .ct-skills__list .ct-skills__item').sort(function(a, b) {
+								if ($heading.data('sort') == 'asc') {
+									return String.prototype.localeCompare.call($(a).data(heading).toLowerCase(), $(b).data(heading).toLowerCase());
+								}else{
+									return String.prototype.localeCompare.call($(b).data(heading).toLowerCase(), $(a).data(heading).toLowerCase());
+								}
+							});
+						}else{
+							skillList = $('.ct-skills .ct-skills__list .ct-skills__item').sort(function(a, b) {
+								if ($heading.data('sort') == 'asc') {
+									return $(a).data(heading) - $(b).data(heading) || String.prototype.localeCompare.call($(a).data('skill').toLowerCase(), $(b).data('skill').toLowerCase());
+								}else{
+									return $(b).data(heading) - $(a).data(heading) || String.prototype.localeCompare.call($(a).data('skill').toLowerCase(), $(b).data('skill').toLowerCase());
+								}
+							});
+						}
 
-					// Display Sort Results
-					$('.ct-skills .ct-skills__list').prepend(skillList);
-				})
+						// Display Sort Results
+						$('.ct-skills .ct-skills__list').prepend(skillList);
+					});
+				}
 			};
 
 			this.skills = function() {

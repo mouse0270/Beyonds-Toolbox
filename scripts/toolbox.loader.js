@@ -21,28 +21,6 @@
 				});
 			}
 
-			this.build = function() {
-				if (Toolbox.settings.options.CharacterSheet)
-					_this.CharacterSheet();
-
-				if (Toolbox.settings.options.DiceRoller)
-					_this.diceRoller();
-
-				if (Toolbox.settings.options.Notes)
-					_this.notes();
-
-				if (Toolbox.settings.options.InitiativeTracker)
-					_this.initiative();
-
-				if (Toolbox.settings.options.Players)
-					_this.players();
-
-				if (Toolbox.settings.options.Encounters)
-					_this.encounters();
-
-				_this.menus();
-			};
-
 			this.settings = function() {
 				chrome.storage.sync.get("settings", function(items) {
 					if (typeof items.settings !== 'undefined') {
@@ -85,6 +63,27 @@
 
 				_this.build();
 			}
+
+			this.build = function() {
+				_this.CharacterSheet();
+
+				if (Toolbox.settings.options.DiceRoller)
+					_this.diceRoller();
+
+				if (Toolbox.settings.options.Notes)
+					_this.notes();
+
+				if (Toolbox.settings.options.InitiativeTracker)
+					_this.initiative();
+
+				if (Toolbox.settings.options.Players)
+					_this.players();
+
+				if (Toolbox.settings.options.Encounters)
+					_this.encounters();
+
+				_this.menus();
+			};
 
 			this.menus = function() {
 				Toolbox.Storage.get("menus", function(items) {
