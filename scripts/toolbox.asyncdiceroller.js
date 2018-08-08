@@ -10,7 +10,10 @@
 				var inputstring = "/([+−-]\\d+)|(([1-9]\\d*)?d([1-9]\\d*)\\s*([+-−]\\s*\\d+)?([,]\\s*\\d+)?)/i";
 				var flags = inputstring.replace(/.*\/([gimy]*)$/, '$1');
 				var pattern = inputstring.replace(new RegExp('^/(.*?)/' + flags + '$'), '$1');
+				//var regex = new RegExp(/((?:[+-]?[1-9]\d*)?d[1-9]\d*(?:\s+[-+x]\s+[1-9]\d*)?(?:\s+(?:[+-]?[1-9]\d*)?d[1-9]\d*(?:\s+[+-x]\s+[1-9]\d*))*)/, flags);
 				var regex = new RegExp(pattern, flags);
+
+				console.log(regex)
 
 				$('body').unmark({
 					className: 'tb-roller',

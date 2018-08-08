@@ -9,6 +9,14 @@
 		});
 	};
 
+	String.prototype.ArrayReplace = function(obj) {
+	    var retStr = this;
+	    for (var x in obj) {
+	        retStr = retStr.replace(new RegExp(x, 'g'), obj[x]);
+	    }
+	    return retStr;
+	};
+
 	// Moving Item in Array
 	Array.prototype.move = function (old_index, new_index) {
 		while (old_index < 0) { old_index += this.length; }
