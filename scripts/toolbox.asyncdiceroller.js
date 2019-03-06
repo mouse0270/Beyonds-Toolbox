@@ -13,8 +13,6 @@
 				//var regex = new RegExp(/((?:[+-]?[1-9]\d*)?d[1-9]\d*(?:\s+[-+x]\s+[1-9]\d*)?(?:\s+(?:[+-]?[1-9]\d*)?d[1-9]\d*(?:\s+[+-x]\s+[1-9]\d*))*)/, flags);
 				var regex = new RegExp(pattern, flags);
 
-				console.log(regex)
-
 				$('body').unmark({
 					className: 'tb-roller',
 					done: function() {

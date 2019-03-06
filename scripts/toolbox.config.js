@@ -107,7 +107,7 @@
 	};
 
 	Toolbox.settings = {
-		version: '0.7.5',
+		version: '0.8.0',
 		menus: {
 			tbContainer: false,
 			tbGroupDiceRoller: false,
@@ -125,6 +125,8 @@
 		characters: {},
 		options: {
 			CharacterSheetDiceRoller: true,
+			CharacterSheetDiceRollerContextMenu: true,
+			CharacterSheetSkillCalculator: true,
 			CharacterSheetSkillSorter: true,
 			CharacterSheetCustomThemeColor: true,
 			DiceRoller: true,

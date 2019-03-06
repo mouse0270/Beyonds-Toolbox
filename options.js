@@ -44,8 +44,10 @@
 function save_settings() {
 	var options = {
 			settings: {
-				CharacterSheetDiceRoller:document.getElementById('optionCharacterSheetDiceRoller').checked,
-				CharacterSheetSkillSorter:document.getElementById('optionCharacterSheetSkillSorter').checked,
+				CharacterSheetDiceRoller: document.getElementById('optionCharacterSheetDiceRoller').checked,
+				CharacterSheetDiceRollerContextMenu: document.getElementById('optionCharacterSheetDiceRollerContextMenu').checked,
+				CharacterSheetSkillCalculator: document.getElementById('optionCharacterSheetSkillCalculator').checked,
+				CharacterSheetSkillSorter: document.getElementById('optionCharacterSheetSkillSorter').checked,
 				CharacterSheetCustomThemeColor: document.getElementById('optionCharacterSheetCustomThemeColor').checked,
 				DiceRoller: document.getElementById('optionDiceRoller').checked,
 				AsyncDiceRoller: document.getElementById('optionAsyncDiceRoller').checked,
@@ -64,8 +66,6 @@ function save_settings() {
 
 	chrome.storage.sync.get(options, function(items) {
 		options.settings.GistID = items.settings.GistID;
-		console.log(options);
-		console.log(items);
 		chrome.storage.sync.set(options, function() {
 			if (chrome.runtime.lastError) {
 				console.log('Chrome Runtime Error', chrome.runtime.lastError.message);
@@ -82,6 +82,8 @@ function restore_settings() {
 	var options = {
 		settings: {
 			CharacterSheetDiceRoller: true,
+			CharacterSheetDiceRollerContextMenu: true,
+			CharacterSheetSkillCalculator: true,
 			CharacterSheetSkillSorter: true,
 			CharacterSheetCustomThemeColor: true,
 			DiceRoller: true,
@@ -98,12 +100,12 @@ function restore_settings() {
 	}
 
 	chrome.storage.sync.get(options, function(items) {
-		console.log(items)
-
 		document.getElementById('input').innerText = items.settings.Storage;
 		document.getElementById('optionGitHubToken').value = items.settings.GitHubToken;
 		document.getElementById('optionGitHubGistID').value = items.settings.GistID;
 		document.getElementById('optionCharacterSheetDiceRoller').checked = items.settings.CharacterSheetDiceRoller;
+		document.getElementById('optionCharacterSheetDiceRollerContextMenu').checked = items.settings.CharacterSheetDiceRollerContextMenu;
+		document.getElementById('optionCharacterSheetSkillCalculator').checked = items.settings.CharacterSheetSkillCalculator;
 		document.getElementById('optionCharacterSheetSkillSorter').checked = items.settings.CharacterSheetSkillSorter;
 		document.getElementById('optionCharacterSheetCustomThemeColor').checked = items.settings.CharacterSheetCustomThemeColor;
 		document.getElementById('optionDiceRoller').checked = items.settings.DiceRoller;

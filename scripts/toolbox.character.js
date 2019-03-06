@@ -19,13 +19,138 @@
 					if (Toolbox.settings.options.CharacterSheetCustomThemeColor)
 						_this.loadCustomTheme();
 
-					if (Toolbox.settings.options.CharacterSheetDiceRoller) 
-						_this.CharacterSheetRoller();
+						
+
+					if (Toolbox.settings.options.CharacterSheetSkillCalculator)
+						_this.SkillCalculator();
+
+					if (Toolbox.settings.options.CharacterSheetDiceRoller)
+						if (Toolbox.settings.options.CharacterSheetDiceRollerContextMenu)
+							_this.CharacterSheetRollerContextMenu();
+						else
+							_this.CharacterSheetRoller();
 				});
 			};
 
+			this.SkillCalculator = function() {
+				setInterval(function() {
+					$('.ct-skills .ct-skills__list .ct-skills__item').each(function(index, item) {
+						var $item = $(item),
+							$proficiency = $item.find('.ct-skills__col--proficiency'),
+							$ability = $item.find('.ct-skills__col--stat'),
+							$skill = $item.find('.ct-skills__col--skill'),
+							$bonus = $item.find('.ct-skills__col--modifier');
+
+						if ($ability.text() == '--') {
+							var bonus = 0;
+
+							// Modify Proficiency
+							if ($proficiency.find('.ct-proficiency-level-icon').hasClass('ct-half-proficiency-icon')) {
+								bonus = Math.ceil(parseInt($('.ct-proficiency-bonus-box__value').text()) / 2);
+							}else if ($proficiency.find('.ct-proficiency-level-icon').hasClass('ct-proficiency-icon')) {
+								bonus = parseInt($('.ct-proficiency-bonus-box__value').text());
+							}else if ($proficiency.find('.ct-proficiency-level-icon').hasClass('ct-twice-proficiency-icon')) {
+								bonus = parseInt($('.ct-proficiency-bonus-box__value').text()) * 2;
+							}
+
+							$bonus.html(`<span class="ct-signed-number"><span class="ct-signed-number__sign">+</span><span class="ct-signed-number__number">${bonus}</span></span>`)
+						}
+
+						if (!Number.isInteger($bonus.text())) {
+							var bonus = Math.ceil(parseInt($bonus.text())) || 0;
+							$bonus.find('.ct-signed-number__sign').html(bonus >= 0 ? '+' : '-');	
+							$bonus.find('.ct-signed-number__number').html(bonus);
+						}
+					});
+				}, 500);
+			}
+
+			this.CharacterSheetRollerContextMenu = function() {
+				$('body').on('click', function(event) {
+					if ($('.tb-context-menu').length >= 1) {
+						if ($(event.target).closest('.tb-context-menu').length == 0) {
+							$('.tb-context-menu').remove();
+						}
+					}
+				});
+
+				$('body').on('contextmenu', '.ct-quick-info__ability, .ct-saving-throws-summary__ability, .ct-skills__item', function(event) {
+					event.preventDefault();
+					$('.tb-context-menu').remove();
+
+					var modifier = 0;
+					var stats = {
+						heading: '',
+						modifier: 0
+					};
+
+					if ($(event.target).closest('.ct-quick-info__ability').length >= 1) {
+						var $ability = $(event.target).closest('.ct-quick-info__ability');
+						stats.heading = 'Pure {0} Check'.format($ability.find('.ct-ability-summary__heading > .ct-ability-summary__label').text());
+						
+						if ($ability.find('.ct-ability-summary__primary').text().includes('+') || $ability.find('.ct-ability-summary__primary').text().includes('-')) {
+							stats.modifier = $ability.find('.ct-ability-summary__primary').text()
+						}else{
+							stats.modifier = $ability.find('.ct-ability-summary__secondary').text();
+						}
+					}else if ($(event.target).closest('.ct-saving-throws-summary__ability').length >= 1) {
+						var $savingThrow = $(event.target).closest('.ct-saving-throws-summary__ability');
+						stats.heading = '{0} SAVING THROW'.format($savingThrow.find('.ct-saving-throws-summary__ability-name').text());
+						stats.modifier = $savingThrow.find('.ct-saving-throws-summary__ability-modifier').text();					
+					}else if ($(event.target).closest('.ct-skills__item').length >= 1) {
+						var $skill = $(event.target).closest('.ct-skills__item');
+						stats.heading = '{0} CHECK'.format($skill.find('.ct-skills__col--skill').text());
+						stats.modifier = $skill.find('.ct-skills__col--modifier').text();	
+					}
+
+					var $menu = $(`<div class="tb-context-menu">
+						<a href="#CharacterSheetContextMenuRoller" data-header="${stats.heading}" data-modifier="${stats.modifier}" data-type="normal" class="tb-context-menu-item">Roll 1d20</a>
+						<a href="#CharacterSheetContextMenuRoller" data-header="${stats.heading}" data-modifier="${stats.modifier}" data-type="advantage" class="tb-context-menu-item">Roll with Advantage</a>
+						<a href="#CharacterSheetContextMenuRoller" data-header="${stats.heading}" data-modifier="${stats.modifier}" data-type="disadvantage" class="tb-context-menu-item">Roll with Disadvantage</a>
+					</div>`);
+
+					$menu.css({
+						'top': event.pageY + 'px',
+						'left': event.pageX + 'px'
+					});
+
+					$('body').append($menu);
+				});
+
+				$('body').on('click', '.tb-context-menu a[href="#CharacterSheetContextMenuRoller"]', function(event) {
+					event.preventDefault();
+					$('.tb-context-menu').remove();
+					var NumberOfRolls = $(this).data('type') == 'normal' ? 1 : 2;
+					var stats = {
+						heading: $(this).data('header'),
+						type: $(this).data('type'),
+						roll: []
+					};
+
+					for (let index = 1; index <= NumberOfRolls; index++) {
+						stats.roll.push('1d20 ' + $(this).data('modifier'));					
+					}
+
+					_this.rollModal(stats, stats.heading);
+				});
+			}
+
 			this.CharacterSheetRoller = function() {
 				var abilityNameConversion = { 'str': 'Strength', 'dex': 'Dexterity', 'con': 'Constitution', 'int': 'Intelligence', 'wis': 'Wisdom', 'cha': 'Charisma' };
+
+				$('body').on('click', '.tb-csr-d20', function(event) {
+					event.preventDefault();
+					var stats = {
+						heading: $(this).data('title'),
+						roll: []
+					}
+
+					for (let index = 1; index <= $(this).data('dice'); index++) {
+						stats.roll.push('1d20 ' + $(this).data('modifier'));					
+					}
+
+					_this.rollModal(stats, stats.heading);
+				});
 
 				// ABILITY SCORES
 				$('body').on('click', '.ct-quick-info__ability', function(event) {
@@ -36,7 +161,6 @@
 							'1d20'+$(this).find('.ct-ability-summary__primary').text()
 						]
 					};
-
 					_this.rollModal(stats, 'Pure {0} Check'.format(stats.heading));
 				});
 
@@ -64,32 +188,32 @@
 					};
 
 					_this.rollModal(stats, '{0} Skill Check'.format(stats.heading));
-				});	
+				});
 			};
 
 			this.rollModal = function (stats, heading) {
-				$.modal(_this.roll(stats.roll), heading, [{
+				$.modal(_this.roll(stats), heading, [{
 					label: "Reroll",
 					className: '',
 					callback: function() {
-						$('.tb-modal .fullscreen-modal-content').html(_this.roll(stats.roll, heading));
-						$('.tb-modal .fullscreen-modal-content .tb-quick-menu-total').remove();
+						$('.tb-modal .fullscreen-modal-content').html(_this.roll(stats));
+						//$('.tb-modal .fullscreen-modal-content .tb-quick-menu-total').remove();
 						return false;
 					}
 				},{ label: "Cancel" }]);
-				$('.tb-modal .fullscreen-modal-content .tb-quick-menu-total').remove();
+				//$('.tb-modal .fullscreen-modal-content .tb-quick-menu-total').remove();
 				$('.tb-modal').addClass('tb-modal-small');
 			}
 
-			this.roll = function (diceRolls) {
+			this.roll = function (stats) {
 				var $content = $('<div></div>'),
 					$list = $('<ul class="quick-menu quick-menu-tier-2"></ul>'),
 					isCritical = false;
 
-				if (diceRolls.length >= 1) {
+				if (stats.roll.length >= 1) {
 					var attacks = false, totalDamage = 0;
 
-					diceRolls.forEach(function(roll, index) {
+					stats.roll.forEach(function(roll, index) {
 						var status = _this.rollDice(roll.replace('−', '-'))
 							template = $.grab('config', 'templates').quickMenuItem;
 							
@@ -100,15 +224,30 @@
 						$item.find('.quick-menu-item-link').prepend('<strong>Rolling {0}</strong><br/>'.format(roll));
 						$list.append($item);
 
-						attacks = true; totalDamage += status.total;
+						//attacks = true; 						
+
+						if (stats.type == 'normal') {
+							totalDamage = status.total;
+						}else if (stats.type == 'advantage') {
+							if (totalDamage == 0 || totalDamage < status.total) {
+								totalDamage = status.total
+							}
+						}else if (stats.type == 'disadvantage') {
+							if (totalDamage == 0 || totalDamage > status.total) {
+								totalDamage = status.total
+							}
+						}else{
+							totalDamage += status.total;
+						}
 					});
 
-					if (totalDamage >= 1) {
+					if (totalDamage >= 1 && typeof stats.type !== 'undefined') {
 						var template = $.grab('config', 'templates').quickMenuItem,
-							$item = $(template.format('', '{0} Total Value'.format(totalDamage), '', ''));
+							$item = $(template.format('', 'You Rolled: <strong>{0}</strong>'.format(totalDamage), '', ''));
 
-						$item.addClass('tb-quick-menu-total').find('.limited-list-item-callout').remove();
+						$item.find('.limited-list-item-callout').remove();
 						$item.find('.remove').remove();
+						$item.find('.quick-menu-item-link').prepend('<strong>{0}{1}</strong><br/>'.format(stats.heading, stats.type != 'normal' ? ` at ${stats.type}` : '').toUpperCase());
 						$list.append($item);
 					}
 
@@ -167,7 +306,12 @@
 				}
 
 				if (Toolbox.settings.options.CharacterSheetSkillSorter) {
-					$('body').on('click', '.ct-skills__heading', function(event) {
+					$('body').on('mouseover', '.ct-skills__header > div', function(event) {
+						$(this).css({ 'cursor': 'pointer' });
+					});
+					
+
+					$('body').on('click', '.ct-skills__header > div', function(event) {
 						var $heading = $(this).closest('.ct-skills__header');
 						var heading = $(this).text().toLowerCase();
 						var skillList;
@@ -177,6 +321,7 @@
 							$heading.data('sort', 'asc');
 							$heading.data('sortBy', heading);
 						}else{
+							$heading.data('sortBy', heading);
 							if ($heading.data('sort') == "asc") {
 								$heading.data('sort', 'desc')
 							}else{
@@ -249,6 +394,8 @@
 						stats.ability = 4;
 					}else if (stats.ability.toUpperCase() == "CHA") {
 						stats.ability = 5;
+					}else if (stats.ability.toUpperCase() == "--") {
+						stats.ability = 6;
 					}
 
 					$item.data('prof', stats.proficiency);
@@ -380,15 +527,14 @@
 			        var imgURL = $box.css('background-image');
 
 			        if (imgURL !== 'none') {
-				        // Correct URL
+						// Correct URL
 				        imgURL = (new URL(imgURL.replace('url(','').replace(')','').replace(/\"/gi, ""))).searchParams;
-
 				        var parameters = {
 				        	themeId: imgURL.get('themeId'), 
 				        	name: imgURL.get('name')
-				        };
+						};
 
-				        if (imgURL.get('themeId').length >= 1) {
+				        if (imgURL.get('themeId') !== null && imgURL.get('themeId').length >= 1) {
 					        $.ajax({
 								url: 'https://www.dndbeyond.com/api/character/svg/download',
 								data: parameters,
