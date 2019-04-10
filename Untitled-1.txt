@@ -1,0 +1,12 @@
+v0.8.4
+- UPDATED CSS to no longer push site nav off screen
+- UPDATED Theme Picker to not throw errors if you forgot to choose one of the base class themes first
+- UPDATED Theme Picker to have checks use theme color
+- UPDATED Theme Picker fixed some text not using custom theme color
+
+- FIXED Menu to work with New Mega Menus
+- FIXED Twitch Authentication Failed when Extension is Enabled
+
+- ADDED Option to use context menu on character sheet for rolling 1d20, with Advantage, or with Disadvantage.
+-- NOTE: Please keep in mind that not using the context menu will just roll 2d20 at all times.
+- ADDED Custom Scrollbar for Character Sheet (Uses Custom Theme Color if Set)
